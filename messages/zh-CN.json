@@ -1,0 +1,41 @@
+{
+    "Hero": {
+        "title": "寻找你的 <span class='text-gradient'>本命卡</span>",
+        "subtitle": "日本及香港实时报价。透明、快速、可靠。",
+        "searchPlaceholder": "输入卡名、编号或系列...",
+        "searchButton": "搜索"
+    },
+    "Header": {
+        "brand": "TCG HK",
+        "search": "搜索",
+        "merchant": "商户"
+    },
+    "Footer": {
+        "copy": "© {year} TCG HK 平台。数据仅供参考。"
+    },
+    "Search": {
+        "resultsFor": "搜索结果：",
+        "noResults": "未找到：",
+        "suggestion": "尝试搜索 '奇树', '喷火龙', 或者 'SAR'。",
+        "basePrice": "日版基准"
+    },
+    "CardDetail": {
+        "notFound": "未找到该卡片",
+        "benchmark": "日本 Yuyutei 基准价",
+        "disclaimer": "* 基准价仅供参考。实际本地价格见下表。",
+        "buyFromShops": "卡铺现货 (购买)",
+        "sellToShops": "卡铺回收 (出售)",
+        "emptyBuy": "暂时无现货。",
+        "emptySell": "暂时无店铺回收。",
+        "offer": "报价",
+        "whatsapp": "WhatsApp"
+    },
+    "Merchant": {
+        "title": "商户后台",
+        "subtitle": "管理价格和库存。欢迎你， {name}。",
+        "activeListings": "活跃刊登",
+        "pendingOrders": "待处理订单",
+        "matchMarket": "跟随市价",
+        "save": "保存"
+    }
+}

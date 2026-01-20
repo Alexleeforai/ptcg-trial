@@ -1,0 +1,41 @@
+{
+    "Hero": {
+        "title": "搵你既 <span class='text-gradient'>心頭好</span>",
+        "subtitle": "日本及香港實時報價。透明、快速、可靠。",
+        "searchPlaceholder": "輸入卡名、編號或系列...",
+        "searchButton": "搜尋"
+    },
+    "Header": {
+        "brand": "TCG HK",
+        "search": "搜尋",
+        "merchant": "商戶"
+    },
+    "Footer": {
+        "copy": "© {year} TCG HK 平台。數據僅供參考。"
+    },
+    "Search": {
+        "resultsFor": "搜尋結果：",
+        "noResults": "搵唔到：",
+        "suggestion": "試下搜 '奇樹', '噴火龍', 或者 'SAR'。",
+        "basePrice": "日版基準"
+    },
+    "CardDetail": {
+        "notFound": "搵唔到張卡",
+        "benchmark": "日本 Yuyutei 基準價",
+        "disclaimer": "* 基準價僅供參考。實際本地價格見下表。",
+        "buyFromShops": "卡鋪現貨 (入手)",
+        "sellToShops": "卡鋪回收 (放卡)",
+        "emptyBuy": "暫時冇現貨。",
+        "emptySell": "暫時冇鋪頭收。",
+        "offer": "報價",
+        "whatsapp": "WhatsApp"
+    },
+    "Merchant": {
+        "title": "商戶後台",
+        "subtitle": "管理價格同庫存。歡迎你， {name}。",
+        "activeListings": "活躍刊登",
+        "pendingOrders": "待處理訂單",
+        "matchMarket": "跟市價",
+        "save": "儲存"
+    }
+}

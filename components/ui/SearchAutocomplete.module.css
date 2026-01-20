@@ -1,0 +1,141 @@
+/* Search Component Styles */
+
+.searchContainer {
+    position: relative;
+    /* Ensure z-index is higher than background but handled by relative positioning context */
+}
+
+.form {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Ensure Input styles are retained but customized if needed */
+.searchInput {
+    height: 48px;
+    /* Slightly smaller than Hero (56px) for general use */
+    font-size: 1rem;
+    background: rgba(20, 20, 25, 0.8);
+    backdrop-filter: blur(10px);
+    border-color: var(--border-highlight);
+    width: 100%;
+}
+
+.searchInput:focus {
+    background: rgba(20, 20, 25, 0.95);
+}
+
+
+
+.suggestionsDropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(25, 25, 30, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-highlight);
+    border-radius: 0 0 12px 12px;
+    margin-top: 4px;
+    /* Height calculation: 4 items. Each item 66px. Total 264px.
+       Add a little buffer (270px) to ensure borders don't cut off 4th item visually */
+    max-height: 270px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    /* Hide Scrollbar */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.suggestionsDropdown::-webkit-scrollbar {
+    display: none;
+}
+
+.suggestionItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    /* Reduced padding */
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s;
+    height: 66px;
+    /* Fixed height to ensure perfect 4 items calculation */
+    box-sizing: border-box;
+}
+
+.suggestionItem:last-child {
+    border-bottom: none;
+}
+
+.suggestionItem:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.suggestionImage {
+    width: 36px;
+    /* Slightly smaller */
+    height: 50px;
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.suggestionInfo {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.suggestionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+}
+
+.suggestionName {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 8px;
+}
+
+.suggestionPrice {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #22c55e;
+    /* Bright Green */
+    white-space: nowrap;
+    margin-left: 8px;
+    /* Ensure space from name */
+    flex-shrink: 0;
+}
+
+.noPrice {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.85rem;
+}
+
+.suggestionMeta {
+    font-size: 0.75rem;
+    /* Smaller meta */
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

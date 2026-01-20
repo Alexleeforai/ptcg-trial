@@ -1,0 +1,41 @@
+{
+    "Hero": {
+        "title": "あなたの <span class='text-gradient'>最高の一枚</span> を探そう",
+        "subtitle": "日本と香港のリアルタイム価格。透明、高速、信頼。",
+        "searchPlaceholder": "カード名、番号、セット名で検索...",
+        "searchButton": "検索"
+    },
+    "Header": {
+        "brand": "TCG HK",
+        "search": "検索",
+        "merchant": "加盟店"
+    },
+    "Footer": {
+        "copy": "© {year} TCG HK Platform. データは参考用です。"
+    },
+    "Search": {
+        "resultsFor": "検索結果：",
+        "noResults": "見つかりませんでした：",
+        "suggestion": "'ナンジャモ', 'リザードン', 'SAR' などで試してみてください。",
+        "basePrice": "日本基準"
+    },
+    "CardDetail": {
+        "notFound": "カードが見つかりません",
+        "benchmark": "日本 Yuyutei 基準価格",
+        "disclaimer": "* 基準価格は参考用です。実際の現地価格は以下をご覧ください。",
+        "buyFromShops": "ショップから購入 (在庫)",
+        "sellToShops": "ショップへ売却 (買取)",
+        "emptyBuy": "現在在庫がありません。",
+        "emptySell": "現在買取中のショップはありません。",
+        "offer": "オファー",
+        "whatsapp": "WhatsApp"
+    },
+    "Merchant": {
+        "title": "加盟店ダッシュボード",
+        "subtitle": "価格と在庫の管理。ようこそ、{name}。",
+        "activeListings": "出品中",
+        "pendingOrders": "保留中の注文",
+        "matchMarket": "相場に合わせる",
+        "save": "保存"
+    }
+}

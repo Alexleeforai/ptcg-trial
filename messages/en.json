@@ -1,0 +1,41 @@
+{
+    "Hero": {
+        "title": "Find Your <span class='text-gradient'>Chase Card</span>",
+        "subtitle": "Real-time prices from JP & HK local shops. Transparent, fast, and reliable.",
+        "searchPlaceholder": "Search by card name, number, or set...",
+        "searchButton": "Search"
+    },
+    "Header": {
+        "brand": "TCG HK",
+        "search": "Search",
+        "merchant": "Merchant"
+    },
+    "Footer": {
+        "copy": "© {year} TCG HK Platform. Data for reference only."
+    },
+    "Search": {
+        "resultsFor": "Search Results for",
+        "noResults": "No cards found matching",
+        "suggestion": "Try searching for 'Iono', 'Charizard', or 'SAR'.",
+        "basePrice": "JP Base"
+    },
+    "CardDetail": {
+        "notFound": "Card not found",
+        "benchmark": "Japan Yuyutei Benchmark",
+        "disclaimer": "* Benchmark price is for reference only. Actual local prices below.",
+        "buyFromShops": "Buy from Shops",
+        "sellToShops": "Sell to Shops",
+        "emptyBuy": "No stock currently available.",
+        "emptySell": "No shops currently buying.",
+        "offer": "Offer",
+        "whatsapp": "WhatsApp"
+    },
+    "Merchant": {
+        "title": "Merchant Dashboard",
+        "subtitle": "Manage your prices and inventory. Welcome, {name}.",
+        "activeListings": "Active listings",
+        "pendingOrders": "Pending Orders",
+        "matchMarket": "Match Market",
+        "save": "Save"
+    }
+}
