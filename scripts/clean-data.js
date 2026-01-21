@@ -23,7 +23,13 @@ function clean() {
             'Digimon',
             'Vanguard',
             'ReZero',
-            'Hololive'
+            'Hololive',
+            'Topps',
+            'Labubu',
+            'Pop Mart',
+            'Lorcana',
+            'Shadowverse',
+            'Disney'
         ];
 
         const remaining = cards.filter(c => {
