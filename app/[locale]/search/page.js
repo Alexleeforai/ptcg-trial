@@ -72,7 +72,7 @@ export default async function SearchPage({ searchParams }) {
             ) : (
                 <div className={styles.grid}>
                     {results.map((card) => (
-                        <Link key={card.id} href={`/card/${card.id}`}>
+                        <Link key={card.id} href={`/card/${card.id}`} className={styles.linkItem}>
                             <Card hover className={styles.cardItem}>
                                 <div className={styles.imageWrapper}>
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
