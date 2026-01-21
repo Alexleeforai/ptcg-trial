@@ -9548,13 +9548,14 @@
     "id": "snkr-91391",
     "name": "Gyarados Pretend Pikachu: PROMO[XY-P 151/XY-P](XY-P Promotional cards)",
     "nameJP": "Gyarados Pretend Pikachu: PROMO[XY-P 151/XY-P](XY-P Promotional cards)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/7314696.webp?size=m",
+    "image": "",
     "price": 800000,
     "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/91391?slide=right",
+    "link": "https://snkrdunk.com/en/trading-cards/91391",
     "createdAt": "2026-01-21T09:37:32.019Z",
-    "updatedAt": "2026-01-21T09:37:32.019Z",
-    "cardType": "single"
+    "updatedAt": "2026-01-21T15:15:27.511Z",
+    "cardType": "single",
+    "releaseDate": "2015-06-25"
   },
   {
     "id": "snkr-386918",
@@ -22741,5 +22742,17 @@
     "link": "https://snkrdunk.com/en/trading-cards/309357?slide=right",
     "createdAt": "2026-01-21T12:36:24.609Z",
     "updatedAt": "2026-01-21T12:36:24.609Z"
+  },
+  {
+    "id": "snkr-729639",
+    "name": "Topps Chrome \"2025 Labubu 10th Anniversary Box\" Box",
+    "nameJP": "Topps Chrome \"2025 Labubu 10th Anniversary Box\" Box",
+    "price": 6896,
+    "image": "",
+    "releaseDate": "2025-12-13",
+    "set": "SNKRDUNK",
+    "link": "https://snkrdunk.com/en/trading-cards/729639",
+    "createdAt": "2026-01-21T14:31:12.001Z",
+    "updatedAt": "2026-01-21T14:31:14.508Z"
   }
 ]
