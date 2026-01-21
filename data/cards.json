@@ -312,19 +312,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-96205",
-    "name": "ONE PIECE Card Game Premium Card Collection 25th Anniversary Edition",
-    "nameJP": "ONE PIECE Card Game Premium Card Collection 25th Anniversary Edition",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20221007035310-0.webp?size=m",
-    "price": 6780,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/96205?slide=right",
-    "createdAt": "2026-01-21T08:33:00.010Z",
-    "updatedAt": "2026-01-21T10:53:35.291Z",
-    "cardType": "box",
-    "releaseDate": "2022-07-22"
-  },
-  {
     "id": "snkr-127809",
     "name": "Pikachu C: Monster Ball Mirror[SV2a 025/165](Enhanced Expansion Pack \"Pokemon Card 151\")",
     "nameJP": "Pikachu C: Monster Ball Mirror[SV2a 025/165](Enhanced Expansion Pack \"Pokemon Card 151\")",
@@ -346,18 +333,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/618445?slide=right",
     "createdAt": "2026-01-21T08:33:00.010Z",
     "updatedAt": "2026-01-21T09:29:32.668Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-706813",
-    "name": "Monkey.D.Luffy SR [ST21-014](Promotional Card \"ONE PIECE magazine Special Feature Weekly Shonen Jump & ONE PIECE 020\")",
-    "nameJP": "Monkey.D.Luffy SR [ST21-014](Promotional Card \"ONE PIECE magazine Special Feature Weekly Shonen Jump & ONE PIECE 020\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20251005093907-0.webp?size=m",
-    "price": 12500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/706813?slide=right",
-    "createdAt": "2026-01-21T08:33:00.010Z",
-    "updatedAt": "2026-01-21T09:46:42.852Z",
     "cardType": "single"
   },
   {
@@ -421,19 +396,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-548909",
-    "name": "ONE PIECE Card Game Booster Pack \"CARRYING ON HIS WILL\" Box",
-    "nameJP": "ONE PIECE Card Game Booster Pack \"CARRYING ON HIS WILL\" Box",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20250822063040-1.webp?size=m",
-    "price": 14994,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/548909?slide=right",
-    "createdAt": "2026-01-21T08:33:00.010Z",
-    "updatedAt": "2026-01-21T10:53:37.634Z",
-    "cardType": "box",
-    "releaseDate": "2025-08-22"
-  },
-  {
     "id": "snkr-737036",
     "name": "Pikachu ex SAR Style [MC 764/742](Start Deck 100 \"Battle Collection\")",
     "nameJP": "Pikachu ex SAR Style [MC 764/742](Start Deck 100 \"Battle Collection\")",
@@ -456,45 +418,6 @@
     "createdAt": "2026-01-21T08:33:00.010Z",
     "updatedAt": "2026-01-21T09:50:46.630Z",
     "cardType": "single"
-  },
-  {
-    "id": "snkr-725356",
-    "name": "ONE PIECE Card Game Booster Pack \"THE AZURE SEA'S SEVEN\" Box",
-    "nameJP": "ONE PIECE Card Game Booster Pack \"THE AZURE SEA'S SEVEN\" Box",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20251121110237-0.webp?size=m",
-    "price": 8000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/725356?slide=right",
-    "createdAt": "2026-01-21T08:33:00.010Z",
-    "updatedAt": "2026-01-21T10:53:39.886Z",
-    "cardType": "box",
-    "releaseDate": "2025-11-21"
-  },
-  {
-    "id": "snkr-498158",
-    "name": "ONE PIECE Card Game Booster Pack \"A Fist of Divine Speed\" Box",
-    "nameJP": "ONE PIECE Card Game Booster Pack \"A Fist of Divine Speed\" Box",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20250227074343-0.webp?size=m",
-    "price": 15000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/498158?slide=right",
-    "createdAt": "2026-01-21T08:33:00.010Z",
-    "updatedAt": "2026-01-21T10:53:42.316Z",
-    "cardType": "box",
-    "releaseDate": "2025-02-28"
-  },
-  {
-    "id": "snkr-299926",
-    "name": "ONE PIECE Card Game Booster Pack \"Emperors In The New World\" Box",
-    "nameJP": "ONE PIECE Card Game Booster Pack \"Emperors In The New World\" Box",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240828053218-1.webp?size=m",
-    "price": 8700,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/299926?slide=right",
-    "createdAt": "2026-01-21T08:33:00.010Z",
-    "updatedAt": "2026-01-21T10:53:44.628Z",
-    "cardType": "box",
-    "releaseDate": "2024-08-30"
   },
   {
     "id": "snkr-331669",
@@ -19420,18 +19343,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-126178",
-    "name": "Boa Hancock SR-SPC [OP01-078] (Booster Pack The Kingdom Of Conspiracy)",
-    "nameJP": "Boa Hancock SR-SPC [OP01-078] (Booster Pack The Kingdom Of Conspiracy)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/TCG-OPC-OP01-1929.webp?size=m",
-    "price": 32999,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/126178?slide=right",
-    "createdAt": "2026-01-21T09:46:31.414Z",
-    "updatedAt": "2026-01-21T09:46:31.414Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-91153",
     "name": "Gloria SR[S8b 276/184](High Class Pack \"VMAX Climax Box\")",
     "nameJP": "Gloria SR[S8b 276/184](High Class Pack \"VMAX Climax Box\")",
@@ -19441,18 +19352,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/91153?slide=right",
     "createdAt": "2026-01-21T09:46:31.414Z",
     "updatedAt": "2026-01-21T09:47:50.636Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-93516",
-    "name": "Boa Hancock SR-P [OP01-078] (Booster Pack ROMANCE DAWN)",
-    "nameJP": "Boa Hancock SR-P [OP01-078] (Booster Pack ROMANCE DAWN)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220903004742-0.webp?size=m",
-    "price": 4500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/93516?slide=right",
-    "createdAt": "2026-01-21T09:46:31.414Z",
-    "updatedAt": "2026-01-21T09:46:31.414Z",
     "cardType": "single"
   },
   {
@@ -19618,19 +19517,6 @@
     "updatedAt": "2026-01-21T10:54:56.092Z",
     "cardType": "box",
     "releaseDate": "2023-09-21"
-  },
-  {
-    "id": "snkr-411393",
-    "name": "Yu-Gi-Oh OCG Duel Monsters QUARTER CENTURY ART COLLECTION Box",
-    "nameJP": "Yu-Gi-Oh OCG Duel Monsters QUARTER CENTURY ART COLLECTION Box",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20250221091012-0.webp?size=m",
-    "price": 5900,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/411393?slide=right",
-    "createdAt": "2026-01-21T09:46:42.853Z",
-    "updatedAt": "2026-01-21T10:54:58.390Z",
-    "cardType": "box",
-    "releaseDate": "2025-02-22"
   },
   {
     "id": "snkr-743533",
@@ -19834,19 +19720,6 @@
     "createdAt": "2026-01-21T09:47:06.861Z",
     "updatedAt": "2026-01-21T09:47:06.861Z",
     "cardType": "single"
-  },
-  {
-    "id": "snkr-171904",
-    "name": "Yu-Gi-Oh OCG Duel Monsters QUARTER CENTURY CHRONICLE side:PRIDE Box",
-    "nameJP": "Yu-Gi-Oh OCG Duel Monsters QUARTER CENTURY CHRONICLE side:PRIDE Box",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240322035431-0.webp?size=m",
-    "price": 6500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/171904?slide=right",
-    "createdAt": "2026-01-21T09:47:06.861Z",
-    "updatedAt": "2026-01-21T10:55:26.040Z",
-    "cardType": "box",
-    "releaseDate": "2024-03-23"
   },
   {
     "id": "snkr-138599",
@@ -23483,17 +23356,6 @@
     "price": 1599,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/88175?slide=right",
-    "createdAt": "2026-01-21T12:36:24.609Z",
-    "updatedAt": "2026-01-21T12:36:24.609Z"
-  },
-  {
-    "id": "snkr-573693",
-    "name": "Yu-Gi-Oh OCG Duel Monsters 25th Anniversary \"Blue-Eyes White Dragon\" Ukiyo-e Style Limited Edition OCG Card and Frame Stamp Set (Unopen)",
-    "nameJP": "Yu-Gi-Oh OCG Duel Monsters 25th Anniversary \"Blue-Eyes White Dragon\" Ukiyo-e Style Limited Edition OCG Card and Frame Stamp Set (Unopen)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20250422054947-0.webp?size=m",
-    "price": 9000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/573693?slide=right",
     "createdAt": "2026-01-21T12:36:24.609Z",
     "updatedAt": "2026-01-21T12:36:24.609Z"
   },
