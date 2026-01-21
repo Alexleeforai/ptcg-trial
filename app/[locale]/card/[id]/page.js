@@ -21,6 +21,45 @@ export default async function CardDetailPage({ params }) {
     const t = await getTranslations('CardDetail');
     const rate = await getJpyToHkdRate();
 
+    // Check Staleness (4 hours)
+    if (card) {
+        const updatedAt = new Date(card.updatedAt || 0).getTime();
+        const now = Date.now();
+        const diffHours = (now - updatedAt) / (1000 * 60 * 60);
+
+        if (diffHours > 4) {
+            console.log(`[CardPage] Data stale (${diffHours.toFixed(1)}h old) for ${id}. Refreshing...`);
+            try {
+                // Determine SNKRDUNK ID
+                // If ID is snkr-XXXX, extract XXXX. If just numbers, use as is?
+                // Our IDs are mostly snkr-XXXX.
+                const snkrdunkId = id.startsWith('snkr-') ? id.replace('snkr-', '') : id; // What if it's 'sv1-001'? We assume scrape logic handles snkr ids primarily.
+
+                // Only try to rescrape if it LOOKS like a snkrdunk ID (number or snkr-number)
+                // Actually, our custom scrape logic in lib/snkrdunk uses ID to fetch URL? 
+                // getSnkrdunkCard constructs URL: https://snkrdunk.com/en/trading-cards/${snkrdunkId}
+                // So we need the numeric ID.
+                // Our DB IDs are usually snkr-12345.
+
+                if (id.startsWith('snkr-') || !isNaN(id)) {
+                    const scrapedCard = await getSnkrdunkCard(snkrdunkId);
+                    if (scrapedCard) {
+                        console.log(`[CardPage] Refresh successful for ${id}`);
+                        // Update in-memory card object for this render
+                        // Preserve some fields? Scrape returns full object.
+                        // We should merge to keep things like 'createdAt' if we cared, but scrape is fresh.
+                        card = { ...card, ...scrapedCard };
+
+                        // Attempt to update DB (Ephemeral on Vercel, Persistent on Local)
+                        upsertCards([scrapedCard]);
+                    }
+                }
+            } catch (e) {
+                console.error("Stale refresh failed:", e);
+            }
+        }
+    }
+
     // Fallback: If not in DB, try to scrape it live (for snkr- IDs)
     if (!card && id.startsWith('snkr-')) {
         const snkrdunkId = id.replace('snkr-', '');

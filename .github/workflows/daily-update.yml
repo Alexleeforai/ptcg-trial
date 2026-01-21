@@ -1,0 +1,46 @@
+
+name: Daily Price Update
+
+on:
+  schedule:
+    # Runs at 20:00 UTC every day (04:00 AM HKT)
+    - cron: '0 20 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Install Puppeteer Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgbm-dev
+    
+    - name: Run Price Update Script
+      run: node scripts/update-prices.js
+      env:
+        # Use simple Puppeteer in non-serverless mode for scraping script
+        NODE_ENV: development 
+
+    - name: Commit and Push Changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add data/cards.json
+        git commit -m "Data: Automatic price update" || exit 0
+        git push

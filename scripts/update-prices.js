@@ -16,50 +16,61 @@ async function updateAllPrices() {
         return;
     }
 
-    // 2. Identify unique search terms to refresh
-    // Since we store individual cards, but scrape by "Search Query", 
-    // we should ideally re-scrape the original queries. 
-    // However, we don't store "Original Query". 
-    // Strategy: Extract unique card names (simplest approximation) or re-search by name.
-
-    // For now, let's just update using the card Name as the query.
-    // To optimize, we can group similar ones, but doing 1-by-1 is safer for accuracy.
-
-    // Limit to updating a subset or all? 
-    // Let's do all, with delay.
+    // 2. Identify unique names to refresh
+    const uniqueNames = [...new Set(allCards.map(c => c.name))];
+    console.log(`Found ${uniqueNames.length} unique card names to query.`);
 
     let updatedCount = 0;
+    let queryCount = 0;
 
-    for (const card of allCards) {
-        console.log(`Updating: ${card.name}...`);
+    for (const name of uniqueNames) {
+        if (!name) continue;
+
+        queryCount++;
+        console.log(`[${queryCount}/${uniqueNames.length}] Querying: "${name}"...`);
+
         try {
-            // Re-scrape specific card name
-            const results = await searchSnkrdunk(card.name);
+            // Re-scrape by name (gets a list of cards)
+            const results = await searchSnkrdunk(name);
 
-            // Find the specific matching card in results (by ID if possible, or name match)
-            // SNKRDUNK IDs are stable (from URL).
-            const match = results.find(r => r.id === card.id);
-
-            if (match) {
-                // Update this specific card
-                upsertCards([match]);
-                console.log(`✓ Updated ${card.name}: ¥${match.price}`);
-                updatedCount++;
-            } else {
-                console.log(`? Could not find exact match for ${card.id} in search results. Results count: ${results.length}`);
-                // Optional: If we found other valid cards, might as well adding them? 
-                // Let's just focus on updating existing for now.
+            if (results.length === 0) {
+                console.log(`   No results found for "${name}"`);
             }
 
-            // Wait 5 seconds between requests to be polite
+            // Match results against DB
+            let matchCount = 0;
+            const updates = [];
+
+            for (const result of results) {
+                // Check if this result ID exists in our DB
+                const existingCard = allCards.find(c => c.id === result.id);
+
+                if (existingCard) {
+                    // It's a match! Update it.
+                    // preserving properties that might not be in result (like releaseDate if we scraped it separately, though result usually has less info)
+                    // Actually search result has price, name, image.
+                    updates.push(result);
+                    matchCount++;
+                }
+            }
+
+            if (updates.length > 0) {
+                upsertCards(updates);
+                updatedCount += updates.length;
+                console.log(`   ✓ Updated ${updates.length} cards matching "${name}"`);
+            } else {
+                console.log(`   No matching DB cards updated for "${name}"`);
+            }
+
+            // Wait 5 seconds between requests to be polite and avoid rate limits
             await delay(5000);
 
         } catch (e) {
-            console.error(`Failed to update ${card.name}:`, e);
+            console.error(`Failed to update query "${name}":`, e);
         }
     }
 
-    console.log(`Job Complete. Updated ${updatedCount}/${allCards.length} cards.`);
+    console.log(`Job Complete. Updated ${updatedCount} cards in total.`);
 }
 
 updateAllPrices();
