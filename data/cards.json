@@ -300,18 +300,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-129619",
-    "name": "Monkey D Luffy P [P-041] (ONEPIECE Day23' Day2 Participant Gifts)",
-    "nameJP": "Monkey D Luffy P [P-041] (ONEPIECE Day23' Day2 Participant Gifts)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20230825110842-0.webp?size=m",
-    "price": 1000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/129619?slide=right",
-    "createdAt": "2026-01-21T08:33:00.010Z",
-    "updatedAt": "2026-01-21T09:46:55.988Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-127809",
     "name": "Pikachu C: Monster Ball Mirror[SV2a 025/165](Enhanced Expansion Pack \"Pokemon Card 151\")",
     "nameJP": "Pikachu C: Monster Ball Mirror[SV2a 025/165](Enhanced Expansion Pack \"Pokemon Card 151\")",
@@ -992,18 +980,6 @@
     "price": 2500,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/469630?slide=right",
-    "createdAt": "2026-01-21T09:30:17.212Z",
-    "updatedAt": "2026-01-21T10:01:29.488Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-91173",
-    "name": "Glaceon V SR: SA[S6a 077/069](Enhanced Expansion Pack \"Eevee Heroes\")",
-    "nameJP": "Glaceon V SR: SA[S6a 077/069](Enhanced Expansion Pack \"Eevee Heroes\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20230529043218-0.webp?size=m",
-    "price": 15000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/91173?slide=right",
     "createdAt": "2026-01-21T09:30:17.212Z",
     "updatedAt": "2026-01-21T10:01:29.488Z",
     "cardType": "single"
@@ -3114,18 +3090,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-91141",
-    "name": "Origin Forme Palkia V SR: SA[S10P 071/067](Expansion Pack \"Space Juggler\")",
-    "nameJP": "Origin Forme Palkia V SR: SA[S10P 071/067](Expansion Pack \"Space Juggler\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220929091225-3.webp?size=m",
-    "price": 7000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/91141?slide=right",
-    "createdAt": "2026-01-21T09:31:59.563Z",
-    "updatedAt": "2026-01-21T09:31:59.563Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-107399",
     "name": "Palkia R :1ED [CP2 005/027](Concept Pack \"Legend Kira Collection\")",
     "nameJP": "Palkia R :1ED [CP2 005/027](Concept Pack \"Legend Kira Collection\")",
@@ -3133,18 +3097,6 @@
     "price": 6980,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/107399?slide=right",
-    "createdAt": "2026-01-21T09:31:59.563Z",
-    "updatedAt": "2026-01-21T09:31:59.563Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-91143",
-    "name": "Origin Forme Palkia VSTAR UR[S10P 086/067](Expansion Pack \"Space Juggler\")",
-    "nameJP": "Origin Forme Palkia VSTAR UR[S10P 086/067](Expansion Pack \"Space Juggler\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20221015013802-0.webp?size=m",
-    "price": 2980,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/91143?slide=right",
     "createdAt": "2026-01-21T09:31:59.563Z",
     "updatedAt": "2026-01-21T09:31:59.563Z",
     "cardType": "single"
@@ -3217,30 +3169,6 @@
     "price": 5700,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/91316?slide=right",
-    "createdAt": "2026-01-21T09:31:59.563Z",
-    "updatedAt": "2026-01-21T09:31:59.563Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-96643",
-    "name": "Origin Forme Palkia V SR[S10P 070/067](Expansion Pack\"Space Juggler\")",
-    "nameJP": "Origin Forme Palkia V SR[S10P 070/067](Expansion Pack\"Space Juggler\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220915072017-0.webp?size=m",
-    "price": 2500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/96643?slide=right",
-    "createdAt": "2026-01-21T09:31:59.563Z",
-    "updatedAt": "2026-01-21T09:31:59.563Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-96637",
-    "name": "Origin Forme Palkia VSTAR HR[S10P 081/067](Expansion Pack\"Space Juggler\")",
-    "nameJP": "Origin Forme Palkia VSTAR HR[S10P 081/067](Expansion Pack\"Space Juggler\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220915071503-0.webp?size=m",
-    "price": 4999,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/96637?slide=right",
     "createdAt": "2026-01-21T09:31:59.563Z",
     "updatedAt": "2026-01-21T09:31:59.563Z",
     "cardType": "single"
@@ -4039,18 +3967,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-108435",
-    "name": "Xerneas EX[XYC 012/023](Super Legend Set 60 \"Zeruneasu EX Iberutaru EX\")",
-    "nameJP": "Xerneas EX[XYC 012/023](Super Legend Set 60 \"Zeruneasu EX Iberutaru EX\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20221227020705-0.webp?size=m",
-    "price": 11800,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/108435?slide=right",
-    "createdAt": "2026-01-21T09:32:44.799Z",
-    "updatedAt": "2026-01-21T09:32:44.799Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-141432",
     "name": "Xerneas [s8a 012/028](Expansion Pack \"25th Anniversary Collection\")",
     "nameJP": "Xerneas [s8a 012/028](Expansion Pack \"25th Anniversary Collection\")",
@@ -4252,18 +4168,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/739252?slide=right",
     "createdAt": "2026-01-21T09:32:44.799Z",
     "updatedAt": "2026-01-21T09:32:44.799Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-108434",
-    "name": "Yveltal EX[XYC 006/023](Super Legend Set 60 \"Zeruneasu EX Iberutaru EX\")",
-    "nameJP": "Yveltal EX[XYC 006/023](Super Legend Set 60 \"Zeruneasu EX Iberutaru EX\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20221227020515-0.webp?size=m",
-    "price": 3500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/108434?slide=right",
-    "createdAt": "2026-01-21T09:32:55.948Z",
-    "updatedAt": "2026-01-21T09:32:55.948Z",
     "cardType": "single"
   },
   {
@@ -5952,18 +5856,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-123606",
-    "name": "Mimikyu (Acerola) CHR[SM11b 058/049](Enhanced Expansion\"Dream League\")",
-    "nameJP": "Mimikyu (Acerola) CHR[SM11b 058/049](Enhanced Expansion\"Dream League\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240731092943-0.webp?size=m",
-    "price": 5000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/123606?slide=right",
-    "createdAt": "2026-01-21T09:34:15.126Z",
-    "updatedAt": "2026-01-21T09:47:28.832Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-732728",
     "name": "Team Rocket's Mimikyu :Team Rocket Mark Mirror [M2a 079/193](High Class Pack \"MEGA Dream ex\")",
     "nameJP": "Team Rocket's Mimikyu :Team Rocket Mark Mirror [M2a 079/193](High Class Pack \"MEGA Dream ex\")",
@@ -6033,30 +5925,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/336255?slide=right",
     "createdAt": "2026-01-21T09:34:15.126Z",
     "updatedAt": "2026-01-21T09:34:15.126Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-96731",
-    "name": "Mimikyu VMAX (Acerola) CSR[S8b 234/184](High Class Pack\"VMAX Climax Box\")",
-    "nameJP": "Mimikyu VMAX (Acerola) CSR[S8b 234/184](High Class Pack\"VMAX Climax Box\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220915091825-0.webp?size=m",
-    "price": 5000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/96731?slide=right",
-    "createdAt": "2026-01-21T09:34:15.126Z",
-    "updatedAt": "2026-01-21T09:47:17.822Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-126327",
-    "name": "Mimikyu V (Acerola) CSR[s8b 233/184](Enhanced Expansion\"VMAX Climax\")",
-    "nameJP": "Mimikyu V (Acerola) CSR[s8b 233/184](Enhanced Expansion\"VMAX Climax\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20230529014816-0.webp?size=m",
-    "price": 4300,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/126327?slide=right",
-    "createdAt": "2026-01-21T09:34:15.126Z",
-    "updatedAt": "2026-01-21T09:47:17.822Z",
     "cardType": "single"
   },
   {
@@ -6422,18 +6290,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-104636",
-    "name": "Greninja & Zoroark GX SR: SA[SM9a 059/055](Enhanced Expansion Pack \"Night Unison\")",
-    "nameJP": "Greninja & Zoroark GX SR: SA[SM9a 059/055](Enhanced Expansion Pack \"Night Unison\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20221123012920-0.webp?size=m",
-    "price": 17780,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/104636?slide=right",
-    "createdAt": "2026-01-21T09:34:37.858Z",
-    "updatedAt": "2026-01-21T09:48:24.433Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-107018",
     "name": "Greninja PROMO[PROMO339/S-P](Promotional Cards \"Pokemon Centers / Pokemon Stores / Pokemon Center Online Bonus for purchases over 2000 yen\")",
     "nameJP": "Greninja PROMO[PROMO339/S-P](Promotional Cards \"Pokemon Centers / Pokemon Stores / Pokemon Center Online Bonus for purchases over 2000 yen\")",
@@ -6494,18 +6350,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-396054",
-    "name": "Greninja & Zoroark GX RR [SM12a 072/173](High Class Pack \"TAG TEAM GX Tag All Stars\")",
-    "nameJP": "Greninja & Zoroark GX RR [SM12a 072/173](High Class Pack \"TAG TEAM GX Tag All Stars\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-7327856-yu.webp?size=m",
-    "price": 1900,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/396054?slide=right",
-    "createdAt": "2026-01-21T09:34:37.859Z",
-    "updatedAt": "2026-01-21T09:34:37.859Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-169062",
     "name": "Ash Greninja EX: PROMO[XY-P 218](Next Generation World Hobby Fair '16 Winter Visitors Distributed Items)",
     "nameJP": "Ash Greninja EX: PROMO[XY-P 218](Next Generation World Hobby Fair '16 Winter Visitors Distributed Items)",
@@ -6527,18 +6371,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/91297?slide=right",
     "createdAt": "2026-01-21T09:34:37.859Z",
     "updatedAt": "2026-01-21T09:47:39.770Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-393207",
-    "name": "Greninja & Zoroark GX RR [SM9a 025/055](Enhanced Expansion Pack \"Night Unison\")",
-    "nameJP": "Greninja & Zoroark GX RR [SM9a 025/055](Enhanced Expansion Pack \"Night Unison\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-7326550-yu.webp?size=m",
-    "price": 1600,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/393207?slide=right",
-    "createdAt": "2026-01-21T09:34:37.859Z",
-    "updatedAt": "2026-01-21T09:34:37.859Z",
     "cardType": "single"
   },
   {
@@ -7536,246 +7368,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/740255?slide=right",
     "createdAt": "2026-01-21T09:35:24.581Z",
     "updatedAt": "2026-01-21T09:35:24.581Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-455594",
-    "name": "Glaceon ex SAR [SV8a 206/187](High Class Pack \"Terastal Festival ex\")",
-    "nameJP": "Glaceon ex SAR [SV8a 206/187](High Class Pack \"Terastal Festival ex\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20241205122509-0.webp?size=m",
-    "price": 5000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/455594?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-122061",
-    "name": "Glaceon: PROMO [SV-P 069](SV-P Promotional cards「YU NAGABA×Pokemon Card Game」)",
-    "nameJP": "Glaceon: PROMO [SV-P 069](SV-P Promotional cards「YU NAGABA×Pokemon Card Game」)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20230523021515-0.webp?size=m",
-    "price": 7300,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/122061?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-103795",
-    "name": "Glaceon VSTAR SAR[s12a 217/172](High Class Pack \"VSTAR Universe\")",
-    "nameJP": "Glaceon VSTAR SAR[s12a 217/172](High Class Pack \"VSTAR Universe\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20221201140301-0.webp?size=m",
-    "price": 2700,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/103795?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:49:14.986Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-93024",
-    "name": "Glaceon VMAX HR: SA[S6a 091/069](Enhanced Expansion Pack \"Eevee Heroes\")",
-    "nameJP": "Glaceon VMAX HR: SA[S6a 091/069](Enhanced Expansion Pack \"Eevee Heroes\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220831085707-0.webp?size=m",
-    "price": 86000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/93024?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-471594",
-    "name": "Glaceon :Master Ball Mirror [SV8a 040/187](High Class Pack \"Terastal Festival ex\")",
-    "nameJP": "Glaceon :Master Ball Mirror [SV8a 040/187](High Class Pack \"Terastal Festival ex\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20241206011732-3.webp?size=m",
-    "price": 1800,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/471594?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-112782",
-    "name": "Glaceon GX SSR[SM8b 215/150](High Class Pack\"GX Ultra Shiny\")",
-    "nameJP": "Glaceon GX SSR[SM8b 215/150](High Class Pack\"GX Ultra Shiny\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20230209081457-0.webp?size=m",
-    "price": 7800,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/112782?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:47:39.770Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-434888",
-    "name": "Glaceon ex RR [SV8a 041/187](High Class Pack \"Terastal Festival ex\")",
-    "nameJP": "Glaceon ex RR [SV8a 041/187](High Class Pack \"Terastal Festival ex\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20241205123529-0.webp?size=m",
-    "price": 1000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/434888?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-96554",
-    "name": "Glaceon V SR[S6a 076/069](Enhanced Expansion\"Eevee Heroes\")",
-    "nameJP": "Glaceon V SR[S6a 076/069](Enhanced Expansion\"Eevee Heroes\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220915035353-0.webp?size=m",
-    "price": 2000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/96554?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-141674",
-    "name": "Glaceon VMAX RRR[s6a 025/069](Enhanced Expansion Pack \"Eevee Heroes\")",
-    "nameJP": "Glaceon VMAX RRR[s6a 025/069](Enhanced Expansion Pack \"Eevee Heroes\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/TCG-PKG-S6a-0869.webp?size=m",
-    "price": 1990,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/141674?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-466318",
-    "name": "Glaceon :Monster Ball Mirror [SV8a 040/187](High Class Pack \"Terastal Festival ex\")",
-    "nameJP": "Glaceon :Monster Ball Mirror [SV8a 040/187](High Class Pack \"Terastal Festival ex\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-046878_P_GUREISHIA-of.webp?size=m",
-    "price": 1000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/466318?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-96619",
-    "name": "Glaceon VMAX HR[S6a 090/069](Enhanced Expansion\"Eevee Heroes\")",
-    "nameJP": "Glaceon VMAX HR[S6a 090/069](Enhanced Expansion\"Eevee Heroes\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220915063606-1.webp?size=m",
-    "price": 2800,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/96619?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-112747",
-    "name": "Glaceon GX RR[SM8b 027/150](High Class Pack\"GX Ultra Shiny\")",
-    "nameJP": "Glaceon GX RR[SM8b 027/150](High Class Pack\"GX Ultra Shiny\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20230209072554-0.webp?size=m",
-    "price": 2000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/112747?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-105393",
-    "name": "Glaceon GX HR[SM5M 073/066](Expansion Pack \"Ultra Moon\")",
-    "nameJP": "Glaceon GX HR[SM5M 073/066](Expansion Pack \"Ultra Moon\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240731061930-0.webp?size=m",
-    "price": 8000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/105393?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-93049",
-    "name": "Glaceon GX: PROMO[SM-P 269](SM-P Promotional cards)",
-    "nameJP": "Glaceon GX: PROMO[SM-P 269](SM-P Promotional cards)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20220831092106-0.webp?size=m",
-    "price": 32000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/93049?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-740333",
-    "name": "Glaceon ex [MC 162/742](Start Deck 100 \"Battle Collection\")",
-    "nameJP": "Glaceon ex [MC 162/742](Start Deck 100 \"Battle Collection\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-2025-12-12-48878-of.webp?size=m",
-    "price": 1000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/740333?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-450901",
-    "name": "Glaceon [PtS 005/012](Collection Pack \"Shaymin LV.X\")",
-    "nameJP": "Glaceon [PtS 005/012](Collection Pack \"Shaymin LV.X\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-7314142-.webp?size=m",
-    "price": 11000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/450901?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:42:02.490Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-299256",
-    "name": "Glaceon : PROMO P [S-P 216](Pokemon Card Game Sword & Shield Promo Card Pack \"7th edition\")",
-    "nameJP": "Glaceon : PROMO P [S-P 216](Pokemon Card Game Sword & Shield Promo Card Pack \"7th edition\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-215-yu.webp?size=m",
-    "price": 3980,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/299256?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-292985",
-    "name": "Glaceon V : PROMO P [S-P 270](S-P Promotional cards)",
-    "nameJP": "Glaceon V : PROMO P [S-P 270](S-P Promotional cards)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-S-P-270.webp?size=m",
-    "price": 4500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/292985?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-105395",
-    "name": "Glaceon GX SR[SM5M 067/066](Expansion Pack \"Ultra Moon\")",
-    "nameJP": "Glaceon GX SR[SM5M 067/066](Expansion Pack \"Ultra Moon\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240731061824-0.webp?size=m",
-    "price": 15000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/105395?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-389653",
-    "name": "Glaceon EX SR [XY10 079/078](Expansion Pack \"Fates Collide\")",
-    "nameJP": "Glaceon EX SR [XY10 079/078](Expansion Pack \"Fates Collide\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-7322452-yu.webp?size=m",
-    "price": 44000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/389653?slide=right",
-    "createdAt": "2026-01-21T09:35:36.422Z",
-    "updatedAt": "2026-01-21T09:35:36.422Z",
     "cardType": "single"
   },
   {
@@ -15512,18 +15104,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-450908",
-    "name": "Time-Space Distortion [PtS 012/012](Collection Pack \"Shaymin LV.X\")",
-    "nameJP": "Time-Space Distortion [PtS 012/012](Collection Pack \"Shaymin LV.X\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-7314149-.webp?size=m",
-    "price": 1680,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/450908?slide=right",
-    "createdAt": "2026-01-21T09:42:02.491Z",
-    "updatedAt": "2026-01-21T09:42:02.491Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-404461",
     "name": "Shaymin P [SM-P 225](Promotional Cards \"Pokemon Center 20th Anniversary Campaign\")",
     "nameJP": "Shaymin P [SM-P 225](Promotional Cards \"Pokemon Center 20th Anniversary Campaign\")",
@@ -15663,18 +15243,6 @@
     "price": 2480,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/450633?slide=right",
-    "createdAt": "2026-01-21T09:42:13.729Z",
-    "updatedAt": "2026-01-21T09:42:13.729Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-427660",
-    "name": "Manaphy :1ED [DP1 #529](Expansion Pack \"Creation of Space Time Diamond Collection\")",
-    "nameJP": "Manaphy :1ED [DP1 #529](Expansion Pack \"Creation of Space Time Diamond Collection\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-7310912-yu.webp?size=m",
-    "price": 2000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/427660?slide=right",
     "createdAt": "2026-01-21T09:42:13.729Z",
     "updatedAt": "2026-01-21T09:42:13.729Z",
     "cardType": "single"
@@ -16136,18 +15704,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-139583",
-    "name": "Heatran V SR[s10P 072/067](Expansion Pack \"Space Juggler\")",
-    "nameJP": "Heatran V SR[s10P 072/067](Expansion Pack \"Space Juggler\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/TCG-PKG-S10P-3441.webp?size=m",
-    "price": 1500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/139583?slide=right",
-    "createdAt": "2026-01-21T09:42:36.595Z",
-    "updatedAt": "2026-01-21T09:42:36.595Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-453273",
     "name": "Heatran [DP-P 083](Promotional Card \"Pokemon Chocolate Snacks Vol. 8\")",
     "nameJP": "Heatran [DP-P 083](Promotional Card \"Pokemon Chocolate Snacks Vol. 8\")",
@@ -16515,18 +16071,6 @@
     "price": 0,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/727993?slide=right",
-    "createdAt": "2026-01-21T09:42:47.642Z",
-    "updatedAt": "2026-01-21T09:42:47.642Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-591377",
-    "name": "Space-Time Distortion[PtR 012/012](Collection Pack Regigigas Lv.X)",
-    "nameJP": "Space-Time Distortion[PtR 012/012](Collection Pack Regigigas Lv.X)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20250514052548-0.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/591377?slide=right",
     "createdAt": "2026-01-21T09:42:47.642Z",
     "updatedAt": "2026-01-21T09:42:47.642Z",
     "cardType": "single"
@@ -19271,18 +18815,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-730961",
-    "name": "N's Zoroark ex SAR [M2a 242/193](High Class Pack \"MEGA Dream ex\")",
-    "nameJP": "N's Zoroark ex SAR [M2a 242/193](High Class Pack \"MEGA Dream ex\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20251128023630-2.webp?size=m",
-    "price": 6500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/730961?slide=right",
-    "createdAt": "2026-01-21T09:46:20.442Z",
-    "updatedAt": "2026-01-21T09:49:03.076Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-469031",
     "name": "Palafin ex SAR [SV8a 207/187](High Class Pack \"Terastal Festival ex\")",
     "nameJP": "Palafin ex SAR [SV8a 207/187](High Class Pack \"Terastal Festival ex\")",
@@ -19292,30 +18824,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/469031?slide=right",
     "createdAt": "2026-01-21T09:46:20.442Z",
     "updatedAt": "2026-01-21T09:46:20.442Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-664122",
-    "name": "Acerola's Mischief SR [M1S 084/063](Expansion Pack \"Mega Symphonia\")",
-    "nameJP": "Acerola's Mischief SR [M1S 084/063](Expansion Pack \"Mega Symphonia\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20250731011411-2.webp?size=m",
-    "price": 1000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/664122?slide=right",
-    "createdAt": "2026-01-21T09:46:31.413Z",
-    "updatedAt": "2026-01-21T09:49:03.076Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-635880",
-    "name": "Roronoa Zoro SR [ST21-015](Promotional Card \"Flagship Battle Top 8 Souvenirs\")",
-    "nameJP": "Roronoa Zoro SR [ST21-015](Promotional Card \"Flagship Battle Top 8 Souvenirs\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20250701071049-0.webp?size=m",
-    "price": 11111,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/635880?slide=right",
-    "createdAt": "2026-01-21T09:46:31.414Z",
-    "updatedAt": "2026-01-21T09:46:31.414Z",
     "cardType": "single"
   },
   {
@@ -19352,42 +18860,6 @@
     "link": "https://snkrdunk.com/en/trading-cards/91153?slide=right",
     "createdAt": "2026-01-21T09:46:31.414Z",
     "updatedAt": "2026-01-21T09:47:50.636Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-184326",
-    "name": "Tony Tony.Chopper SR-SP (Comic Parallel) [EB01-006](Extra Booster \"Memorial Collection\")",
-    "nameJP": "Tony Tony.Chopper SR-SP (Comic Parallel) [EB01-006](Extra Booster \"Memorial Collection\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240524103403-2.webp?size=m",
-    "price": 140000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/184326?slide=right",
-    "createdAt": "2026-01-21T09:46:31.414Z",
-    "updatedAt": "2026-01-21T09:46:31.414Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-300067",
-    "name": "Monkey.D.Luffy SR [ST13-015](Special Goods Set \"2nd ANNIVERSARY SET\")",
-    "nameJP": "Monkey.D.Luffy SR [ST13-015](Special Goods Set \"2nd ANNIVERSARY SET\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240621064823-0.webp?size=m",
-    "price": 19999,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/300067?slide=right",
-    "createdAt": "2026-01-21T09:46:31.414Z",
-    "updatedAt": "2026-01-21T09:46:31.414Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-135440",
-    "name": "Monkey D Luffy SR [ST01-012] (Booster Pack Awakening of the New Era)",
-    "nameJP": "Monkey D Luffy SR [ST01-012] (Booster Pack Awakening of the New Era)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20230829094840-0.webp?size=m",
-    "price": 1500,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/135440?slide=right",
-    "createdAt": "2026-01-21T09:46:31.414Z",
-    "updatedAt": "2026-01-21T09:46:31.414Z",
     "cardType": "single"
   },
   {
@@ -19454,18 +18926,6 @@
     "updatedAt": "2026-01-21T10:54:49.096Z",
     "cardType": "box",
     "releaseDate": "2023-10-26"
-  },
-  {
-    "id": "snkr-159276",
-    "name": "Monkey D Luffy P [P-041] (BANDAI CARD GAMES Fest23-24 World Tour)",
-    "nameJP": "Monkey D Luffy P [P-041] (BANDAI CARD GAMES Fest23-24 World Tour)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/20240414052902-0.webp?size=m",
-    "price": 4000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/159276?slide=right",
-    "createdAt": "2026-01-21T09:46:42.853Z",
-    "updatedAt": "2026-01-21T09:46:42.853Z",
-    "cardType": "single"
   },
   {
     "id": "snkr-151755",
@@ -21774,18 +21234,6 @@
     "cardType": "single"
   },
   {
-    "id": "snkr-487497",
-    "name": "Glaceon VMAX RR [209/203](Sword & Shield \"Evolving Skies\")",
-    "nameJP": "Glaceon VMAX RR [209/203](Sword & Shield \"Evolving Skies\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-en-SS-ES-209-ot.webp?size=m",
-    "price": 98000,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/487497?slide=right",
-    "createdAt": "2026-01-21T09:51:09.464Z",
-    "updatedAt": "2026-01-21T09:51:09.464Z",
-    "cardType": "single"
-  },
-  {
     "id": "snkr-519488",
     "name": "Pokemon Card Game [EN Ver.] Sword & Shield Evolving Skies Build & Battle Box",
     "nameJP": "Pokemon Card Game [EN Ver.] Sword & Shield Evolving Skies Build & Battle Box",
@@ -21793,18 +21241,6 @@
     "price": 0,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/519488?slide=right",
-    "createdAt": "2026-01-21T09:51:09.464Z",
-    "updatedAt": "2026-01-21T09:51:09.464Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-518934",
-    "name": "Pokemon Card Game [EN Ver.] Sword & Shield Evolving Skies Elite Trainer Box (Vaporeon Espeon Glaceon & Sylveon)",
-    "nameJP": "Pokemon Card Game [EN Ver.] Sword & Shield Evolving Skies Elite Trainer Box (Vaporeon Espeon Glaceon & Sylveon)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-en-EVS-ETB1.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/518934?slide=right",
     "createdAt": "2026-01-21T09:51:09.464Z",
     "updatedAt": "2026-01-21T09:51:09.464Z",
     "cardType": "single"
@@ -21889,18 +21325,6 @@
     "price": 0,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/487520?slide=right",
-    "createdAt": "2026-01-21T09:51:09.464Z",
-    "updatedAt": "2026-01-21T09:51:09.464Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-487519",
-    "name": "Full Face Guard HR [231/203](Sword & Shield \"Evolving Skies\")",
-    "nameJP": "Full Face Guard HR [231/203](Sword & Shield \"Evolving Skies\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-en-SS-ES-231-ot.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/487519?slide=right",
     "createdAt": "2026-01-21T09:51:09.464Z",
     "updatedAt": "2026-01-21T09:51:09.464Z",
     "cardType": "single"
@@ -22441,30 +21865,6 @@
     "price": 0,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/488369?slide=right",
-    "createdAt": "2026-01-21T09:51:32.150Z",
-    "updatedAt": "2026-01-21T09:51:32.150Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-488368",
-    "name": "Mimikyu VMAX (Acerola) UR [TG17/TG30](Sword & Shield \"Brilliant Stars\")",
-    "nameJP": "Mimikyu VMAX (Acerola) UR [TG17/TG30](Sword & Shield \"Brilliant Stars\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-en-BS-TG-TG17-ot.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/488368?slide=right",
-    "createdAt": "2026-01-21T09:51:32.150Z",
-    "updatedAt": "2026-01-21T09:51:32.150Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-488367",
-    "name": "Mimikyu V (Acerola) UR [TG16/TG30](Sword & Shield \"Brilliant Stars\")",
-    "nameJP": "Mimikyu V (Acerola) UR [TG16/TG30](Sword & Shield \"Brilliant Stars\")",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/pkmn-tcg-en-BS-TG-TG16-ot.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/488367?slide=right",
     "createdAt": "2026-01-21T09:51:32.150Z",
     "updatedAt": "2026-01-21T09:51:32.150Z",
     "cardType": "single"
@@ -23239,54 +22639,6 @@
     "price": 0,
     "set": "SNKRDUNK",
     "link": "https://snkrdunk.com/en/trading-cards/290319?slide=right",
-    "createdAt": "2026-01-21T10:08:35.839Z",
-    "updatedAt": "2026-01-21T10:09:21.192Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-248233",
-    "name": "Elemental Eruption R [OTC 0063] [EN](Outlaws of Thunder Junction)",
-    "nameJP": "Elemental Eruption R [OTC 0063] [EN](Outlaws of Thunder Junction)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/en_8d221bfb33-of.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/248233?slide=right",
-    "createdAt": "2026-01-21T10:08:35.839Z",
-    "updatedAt": "2026-01-21T10:09:21.192Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-248196",
-    "name": "Elemental Eruption R [OTC 0027] [EN](Outlaws of Thunder Junction)",
-    "nameJP": "Elemental Eruption R [OTC 0027] [EN](Outlaws of Thunder Junction)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/en_e174766f01-of.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/248196?slide=right",
-    "createdAt": "2026-01-21T10:08:35.839Z",
-    "updatedAt": "2026-01-21T10:09:21.192Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-247335",
-    "name": "Elemental Eruption R [OTC 0063] [JP](Outlaws of Thunder Junction)",
-    "nameJP": "Elemental Eruption R [OTC 0063] [JP](Outlaws of Thunder Junction)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/jp_8d221bfb33-of.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/247335?slide=right",
-    "createdAt": "2026-01-21T10:08:35.839Z",
-    "updatedAt": "2026-01-21T10:09:21.192Z",
-    "cardType": "single"
-  },
-  {
-    "id": "snkr-247298",
-    "name": "Elemental Eruption R [OTC 0027] [JP](Outlaws of Thunder Junction)",
-    "nameJP": "Elemental Eruption R [OTC 0027] [JP](Outlaws of Thunder Junction)",
-    "image": "https://cdn.snkrdunk.com/upload_bg_removed/jp_e174766f01-of.webp?size=m",
-    "price": 0,
-    "set": "SNKRDUNK",
-    "link": "https://snkrdunk.com/en/trading-cards/247298?slide=right",
     "createdAt": "2026-01-21T10:08:35.839Z",
     "updatedAt": "2026-01-21T10:09:21.192Z",
     "cardType": "single"
