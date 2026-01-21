@@ -47,6 +47,32 @@ async function updateAllPrices() {
 
                 if (existingCard) {
                     // It's a match! Update it.
+
+                    // 1. Manage Price History
+                    // Initialize or get existing history
+                    const history = Array.isArray(existingCard.priceHistory) ? [...existingCard.priceHistory] : [];
+                    const today = new Date().toISOString().split('T')[0];
+
+                    // Check if we already have an entry for today
+                    const lastEntry = history[history.length - 1];
+                    if (lastEntry && lastEntry.date === today) {
+                        // Update today's price
+                        lastEntry.price = result.price;
+                    } else {
+                        // Add new entry
+                        history.push({ date: today, price: result.price });
+                    }
+
+                    // Limit history size? maybe keep last 365 days
+                    if (history.length > 365) {
+                        history.shift();
+                    }
+
+                    // Attach to result object before upserting
+                    // We must use 'result' properties but attach 'priceHistory' from existing
+                    // Actually, 'upsertCards' merges, but we want to be explicit.
+                    result.priceHistory = history;
+
                     // preserving properties that might not be in result (like releaseDate if we scraped it separately, though result usually has less info)
                     // Actually search result has price, name, image.
                     updates.push(result);

@@ -10,13 +10,25 @@ export default function TrendChart({ data = [] }) {
     const max = Math.max(...prices);
     const range = max - min || 1;
 
-    const points = data.map((d, i) => {
-        const x = (i / (data.length - 1)) * (width - 2 * padding) + padding;
-        // Invert Y because SVG 0 is top
-        const normalizedPrice = (d.price - min) / range;
-        const y = height - (normalizedPrice * (height - 2 * padding) + padding);
-        return `${x},${y}`;
-    }).join(' ');
+    let points;
+    if (data.length === 1) {
+        // Single point: Draw a line across or a dot in middle
+        // Let's draw a straight line at Y
+        const normalizedPrice = (prices[0] - min) / range; // 0/1 = 0
+        // Wait, if range is 0 (max=min), normalized is 0.
+        // If range is 1 (avoid div0), normalized is 0.
+        // If single point, we want it in the middle?
+        const y = height / 2;
+        points = `0,${y} ${width},${y}`;
+    } else {
+        points = data.map((d, i) => {
+            const x = (i / (data.length - 1)) * (width - 2 * padding) + padding;
+            // Invert Y because SVG 0 is top
+            const normalizedPrice = (d.price - min) / range;
+            const y = height - (normalizedPrice * (height - 2 * padding) + padding);
+            return `${x},${y}`;
+        }).join(' ');
+    }
 
     return (
         <div style={{ width: '100%', marginTop: '16px' }}>

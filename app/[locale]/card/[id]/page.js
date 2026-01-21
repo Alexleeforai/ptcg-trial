@@ -83,8 +83,27 @@ export default async function CardDetailPage({ params }) {
     }
 
     // Listings and trend data not yet implemented
+    // Listings and trend data
     const listings = [];
-    const trendData = [];
+
+    // Convert history to trend data (JPY -> HKD)
+    // If no history, we might want to pretend we have at least one point (current)
+    const rawHistory = card.priceHistory || [];
+    // If history is empty but we have current price, maybe push current?
+    // Actually TrendChart handles empty.
+
+    const trendData = rawHistory.map(h => ({
+        date: h.date,
+        price: convertJpyToHkd(h.price, rate)
+    }));
+
+    // If we have no history but we have a current price, show it as a single point?
+    if (trendData.length === 0 && card.price) {
+        trendData.push({
+            date: new Date().toISOString().split('T')[0],
+            price: convertJpyToHkd(card.price, rate)
+        });
+    }
 
     // Exchange rate assumption: Dynamic
     // Use card.price (from SNKRDUNK)
