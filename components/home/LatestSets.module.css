@@ -92,3 +92,36 @@
     font-weight: 700;
     color: var(--primary);
 }
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .setCard {
+        border-radius: var(--radius-sm);
+    }
+
+    .imageWrapper {
+        /* Ensure image is large relative to card */
+        aspect-ratio: 1;
+    }
+
+    .setInfo {
+        padding: 10px;
+    }
+
+    .setName {
+        font-size: 0.85rem;
+        height: 2.8em;
+        /* slightly shorter */
+        margin-bottom: 4px;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+    }
+
+    .price {
+        font-size: 0.9rem;
+    }
+}
