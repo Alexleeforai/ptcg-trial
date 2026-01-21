@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from '@/lib/navigation';
 import { useTransition } from 'react';
+import { useLocale } from 'next-intl';
 import styles from './LanguageSwitcher.module.css';
 
 const locales = [
@@ -14,9 +15,8 @@ const locales = [
 export default function LanguageSwitcher() {
     const router = useRouter();
     const pathname = usePathname();
+    const activeLocale = useLocale();
     const [isPending, startTransition] = useTransition();
-
-    const currentLocale = pathname.split('/')[1] || 'en'; // Fallback logic if needed, but router handles it
 
     const switchLocale = (nextLocale) => {
         startTransition(() => {
@@ -31,9 +31,7 @@ export default function LanguageSwitcher() {
                     key={l.code}
                     onClick={() => switchLocale(l.code)}
                     disabled={isPending}
-                    className={`${styles.button} ${currentLocale === l.code ? styles.active : ''}`} // Note: currentLocale logic might need refinement if pathname doesn't have locale, but next-intl usually supplies it in props if we pass it, or we rely on hook. 
-                // Actually usePathname from navigation strips the locale usually.
-                // Let's rely on `useLocale` hook from next-intl if we want to be sure, or just simple check.
+                    className={`${styles.button} ${activeLocale === l.code ? styles.active : ''}`}
                 >
                     {l.label}
                 </button>

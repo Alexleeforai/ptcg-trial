@@ -1,4 +1,5 @@
-import { getCardById, getListingsByCardId, getTrendData } from '@/lib/data';
+import { getCardById, upsertCards } from '@/lib/db';
+import { getSnkrdunkCard } from '@/lib/snkrdunk';
 import styles from './CardDetail.module.css';
 import TrendChart from '@/components/card/TrendChart';
 import TCGPlayerPrice from '@/components/card/TCGPlayerPrice';
@@ -7,24 +8,49 @@ import Button from '@/components/ui/Button';
 import RecentlyViewedTracker from '@/components/card/RecentlyViewedTracker';
 import { getTranslations } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
+import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 
 export const dynamic = 'force-dynamic';
 
 export default async function CardDetailPage({ params }) {
     const { id } = await params;
-    const card = await getCardById(id);
-    const t = await getTranslations('CardDetail');
+    console.log(`[CardPage] Loading ID: ${id}`);
 
+    let card = getCardById(id);
+    console.log(`[CardPage] DB Result for ${id}:`, card ? 'Found' : 'Not Found');
+    const t = await getTranslations('CardDetail');
+    const rate = await getJpyToHkdRate();
+
+    // Fallback: If not in DB, try to scrape it live (for snkr- IDs)
+    if (!card && id.startsWith('snkr-')) {
+        const snkrdunkId = id.replace('snkr-', '');
+        console.log(`[CardPage] Attempting fallback scrape for ${snkrdunkId}`);
+        try {
+            const scrapedCard = await getSnkrdunkCard(snkrdunkId);
+            if (scrapedCard) {
+                console.log(`[CardPage] Scrape successful for ${snkrdunkId}`);
+                upsertCards([scrapedCard]);
+                card = scrapedCard;
+            } else {
+                console.log(`[CardPage] Scrape returned null for ${snkrdunkId}`);
+            }
+        } catch (e) {
+            console.error("Fallback scrape failed:", e);
+        }
+    }
 
     if (!card) {
         return <div className="container">{t('notFound')}</div>;
     }
 
-    const listings = await getListingsByCardId(id);
-    const trendData = await getTrendData(id);
+    // Listings and trend data not yet implemented
+    const listings = [];
+    const trendData = [];
 
-    // Exchange rate assumption: 100 JPY = 5.2 HKD
-    const hkdBenchmark = Math.round(card.basePriceJPY * 0.052);
+    // Exchange rate assumption: Dynamic
+    // Use card.price (from SNKRDUNK)
+    const price = card.price || 0;
+    const hkdBenchmark = convertJpyToHkd(price, rate);
 
     const sellListings = listings.filter(l => l.type === 'sell');
     const buyListings = listings.filter(l => l.type === 'buy');
@@ -41,7 +67,14 @@ export default async function CardDetailPage({ params }) {
 
                 <div className={styles.infoColumn}>
                     <div className={styles.header}>
-                        <span className={styles.setInfo}>{card.set} • {card.number}</span>
+                        <div className={styles.metaRow}>
+                            <span className={styles.setInfo}>{card.set} • {card.number}</span>
+                            {card.releaseDate && (
+                                <span style={{ marginLeft: '12px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                                    Released: {card.releaseDate}
+                                </span>
+                            )}
+                        </div>
                         <h1 className={styles.title}>{card.name}</h1>
                         <h2 className={styles.subTitle}>
                             {card.nameCN && <span>{card.nameCN}</span>}
@@ -54,8 +87,13 @@ export default async function CardDetailPage({ params }) {
                     <Card className={styles.benchmarkCard}>
                         <div className={styles.benchmarkLabel}>{t('benchmark')}</div>
                         <div className={styles.benchmarkPrice}>
-                            <span className={styles.curr}>¥</span>{card.basePriceJPY.toLocaleString()}
-                            <span className={styles.approx}>≈ HK${hkdBenchmark}</span>
+                            <span className={styles.priceValue}>
+                                約 ${hkdBenchmark.toLocaleString()}
+                                <span className={styles.priceOriginal}>
+                                    (¥{price.toLocaleString()})
+                                </span>
+                            </span>
+
                         </div>
                         <div className={styles.trendRow}>
                             <TrendChart data={trendData} />
@@ -68,7 +106,7 @@ export default async function CardDetailPage({ params }) {
                     </Card>
 
                     <p className={styles.disclaimer}>
-                        {t('disclaimer')}
+                        {t('disclaimer')} (Rate: {rate})
                     </p>
                 </div>
             </div>

@@ -18,7 +18,7 @@ export default function RecentlyViewedTracker({ card }) {
                 id: card.id,
                 name: card.name,
                 image: card.image,
-                basePriceJPY: card.basePriceJPY,
+                price: card.price || 0, // Use price instead of basePriceJPY
                 path: window.location.pathname // Save the current localized path
             };
 

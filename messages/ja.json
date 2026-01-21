@@ -21,7 +21,7 @@
     },
     "CardDetail": {
         "notFound": "カードが見つかりません",
-        "benchmark": "日本 Yuyutei 基準価格",
+        "benchmark": "日本 SNKRDUNK 基準価格",
         "disclaimer": "* 基準価格は参考用です。実際の現地価格は以下をご覧ください。",
         "buyFromShops": "ショップから購入 (在庫)",
         "sellToShops": "ショップへ売却 (買取)",

@@ -1,10 +1,14 @@
 import Hero from '@/components/home/Hero';
 import LatestSets from '@/components/home/LatestSets';
 import RecentlyViewed from '@/components/home/RecentlyViewed';
-import { getLatestSets } from '@/lib/data';
+import { getJpyToHkdRate } from '@/lib/currency';
+import { getLatestBoxes } from '@/lib/db';
+
+export const revalidate = 3600; // 1 hour
 
 export default async function Home() {
-  const latestSets = await getLatestSets();
+  const latestBoxes = getLatestBoxes(8); // Fetch top 8 latest boxes/sets
+  const rate = await getJpyToHkdRate();
 
   return (
     <div className="container">
@@ -15,9 +19,9 @@ export default async function Home() {
           Featured Cards (Coming Soon)
         </div>
 
-        <LatestSets sets={latestSets} />
+        <LatestSets sets={latestBoxes} rate={rate} />
 
-        <RecentlyViewed />
+        <RecentlyViewed rate={rate} />
       </div>
     </div>
   );

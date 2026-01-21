@@ -1,27 +1,40 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/lib/navigation';
 import styles from './LatestSets.module.css';
 
-export default function LatestSets({ sets }) {
+export default function LatestSets({ sets, rate = 0.052 }) {
     if (!sets || sets.length === 0) return null;
 
     return (
         <div className={styles.section}>
-            <h2 className={styles.title}>Latest Card Sets</h2>
+            <h2 className={styles.title}>Latest Box Sets & Packs</h2>
             <div className={styles.grid}>
-                {sets.map(set => (
-                    <div key={set.id} className={styles.setCard}>
-                        <div className={styles.imageWrapper}>
-                            {/* Use Set Name as fallback for logo if image fails or is placeholder */}
-                            <div className={styles.setLogoPlaceholder}>{set.baseSet}</div>
-                        </div>
-                        <div className={styles.setInfo}>
-                            <h3 className={styles.setName}>{set.name}</h3>
-                            <span className={styles.releaseDate}>{set.releaseDate}</span>
-                        </div>
-                    </div>
-                ))}
+                {sets.map(product => {
+                    const hkdPrice = Math.round((product.price || 0) * rate);
+                    return (
+                        <Link key={product.id} href={`/card/${product.id}`} className={styles.setCard}>
+                            <div className={styles.imageWrapper}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={product.image} alt={product.name} className={styles.productImage} />
+                            </div>
+                            <div className={styles.setInfo}>
+                                <h3 className={styles.setName}>{product.name}</h3>
+                                {product.releaseDate && (
+                                    <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '4px' }}>
+                                        {product.releaseDate}
+                                    </div>
+                                )}
+                                <div className={styles.priceRow}>
+                                    <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
+                                    <span style={{ fontSize: '0.8rem', color: '#888', fontWeight: 'normal' }}>
+                                        (¥{(product.price || 0).toLocaleString()})
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
+                    );
+                })}
             </div>
         </div>
     );

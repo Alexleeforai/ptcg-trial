@@ -1,16 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// We need a way to navigate to card detail, using shared Link or standard a tag
-// Assuming we can use standard a tag for simplicity or pass a Link component if needed
-import Link from 'next/link';
+import { useRouter } from '@/lib/navigation';
 import styles from './RecentlyViewed.module.css';
 
-export default function RecentlyViewed() {
+export default function RecentlyViewed({ rate = 0.052 }) {
     const [cards, setCards] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
-        // Load from local storage
+        // ... (existing helper logic)
         try {
             const stored = localStorage.getItem('ptcg_recently_viewed');
             if (stored) {
@@ -38,28 +37,29 @@ export default function RecentlyViewed() {
                 </button>
             </div>
             <div className={styles.grid}>
-                {cards.map(card => (
-                    <a key={card.id} href={`/search?q=${card.name}`} className={styles.cardItem}
-                        // Ideally this links to /card/[id], but we need to handle locale if we use raw <a>
-                        // For now, let's assume we link to the detail page. 
-                        // Since this is a client component, we might not know the current locale easily without hooks.
-                        // Let's rely on the fact that when saving, we store the full link or construct it.
-                        // Actually, better to just store ID and construct link if possible, or store the Path.
-                        // Let's try to store the path when saving.
-                        onClick={(e) => {
-                            e.preventDefault();
-                            window.location.href = card.path || `/card/${card.id}`;
-                        }}
-                    >
-                        <div className={styles.imageWrapper}>
-                            <img src={card.image} alt={card.name} className={styles.cardImage} />
+                {cards.map(card => {
+                    const price = card.price || card.basePriceJPY || 0;
+                    const hkdPrice = Math.round(price * rate);
+                    return (
+                        <div key={card.id} className={styles.cardItem}
+                            onClick={() => router.push(`/card/${card.id}`)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <div className={styles.imageWrapper}>
+                                <img src={card.image} alt={card.name} className={styles.cardImage} />
+                            </div>
+                            <div className={styles.cardInfo}>
+                                <div className={styles.cardName}>{card.name}</div>
+                                <div className={styles.cardPrice}>
+                                    HK${hkdPrice.toLocaleString()}
+                                    <span style={{ fontSize: '0.8em', color: '#888', marginLeft: '4px', fontWeight: 'normal' }}>
+                                        (¥{price.toLocaleString()})
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div className={styles.cardInfo}>
-                            <div className={styles.cardName}>{card.name}</div>
-                            <div className={styles.cardPrice}>¥{card.basePriceJPY?.toLocaleString()}</div>
-                        </div>
-                    </a>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );

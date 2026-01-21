@@ -1,61 +1,94 @@
 .section {
-    margin-top: 40px;
-    padding: 0 20px;
+    margin-bottom: 40px;
 }
 
 .title {
     font-size: 1.5rem;
-    margin-bottom: 16px;
     font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--foreground);
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
 }
 
 .setCard {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    display: block;
+    background: #000;
+    border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
-    transition: transform 0.2s;
-    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
 .setCard:hover {
     transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
     border-color: var(--primary);
 }
 
+
 .imageWrapper {
-    height: 100px;
-    background: var(--surface-highlight);
+    width: 100%;
+    aspect-ratio: 1;
+    /* Square for products */
+    background: #000;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    overflow: hidden;
 }
 
-.setLogoPlaceholder {
-    font-size: 2rem;
-    font-weight: 900;
-    opacity: 0.3;
-    color: var(--text-muted);
+/* Dark mode adjustment for placeholder bg */
+@media (prefers-color-scheme: dark) {
+    .imageWrapper {
+        background: #000;
+    }
+}
+
+.productImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.setCard:hover .productImage {
+    transform: scale(1.05);
 }
 
 .setInfo {
-    padding: 12px;
+    padding: 16px;
+    border-top: 1px solid var(--border);
 }
 
 .setName {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin: 0 0 8px 0;
+    color: #fff;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 3em;
+    /* limit height */
 }
 
-.releaseDate {
-    font-size: 0.75rem;
-    color: var(--text-muted);
+.priceRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-weight: 700;
+    color: var(--primary);
 }

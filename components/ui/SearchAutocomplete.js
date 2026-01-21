@@ -16,6 +16,7 @@ export default function SearchAutocomplete({
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const searchRef = useRef(null);
     const router = useRouter();
 
@@ -35,6 +36,7 @@ export default function SearchAutocomplete({
     useEffect(() => {
         const timer = setTimeout(async () => {
             if (query.trim().length >= 1) {
+                setIsLoading(true);
                 try {
                     const res = await fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}`);
                     const data = await res.json();
@@ -46,12 +48,15 @@ export default function SearchAutocomplete({
                     }
                 } catch (e) {
                     console.error("Suggestion fetch error", e);
+                } finally {
+                    setIsLoading(false);
                 }
             } else {
                 setSuggestions([]);
                 setShowSuggestions(false);
+                setIsLoading(false);
             }
-        }, 300);
+        }, 500); // Increased debounce for scraping
         return () => clearTimeout(timer);
     }, [query]);
 
@@ -79,7 +84,11 @@ export default function SearchAutocomplete({
                     onChange={(e) => setQuery(e.target.value)}
                     onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
                     placeholder={placeholder || t('searchPlaceholder')}
-                    icon={<span style={{ fontSize: '1.2rem' }}>🔍</span>}
+                    icon={isLoading ? (
+                        <div className={styles.spinner}></div>
+                    ) : (
+                        <span style={{ fontSize: '1.2rem' }}>🔍</span>
+                    )}
                     className={styles.searchInput}
                     wrapperClassName={styles.innerInputWrapper}
                     autoFocus={autoFocus}
