@@ -110,3 +110,34 @@
 .separator {
     margin: 0 4px;
 }
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .imageWrapper {
+        margin-bottom: 8px;
+    }
+
+    .cardName {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .priceInfo {
+        padding: 6px 8px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .price {
+        font-size: 0.9rem;
+    }
+
+    .label {
+        font-size: 0.7rem;
+    }
+}
