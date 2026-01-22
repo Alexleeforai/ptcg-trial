@@ -2,6 +2,7 @@
 
 import { Link, usePathname } from '@/lib/navigation';
 import { useTranslations } from 'next-intl';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import LanguageSwitcher from './LanguageSwitcher';
 import styles from './Header.module.css';
 import SearchAutocomplete from '@/components/ui/SearchAutocomplete';
@@ -28,7 +29,12 @@ export default function Header() {
             </div>
           )}
           <nav className={styles.nav}>
-            <Link href="/merchant" className={styles.merchantLink}>{t('merchant')}</Link>
+            <SignedOut>
+              <Link href="/merchant" className={styles.merchantLink}>{t('merchant')}</Link>
+            </SignedOut>
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
             <LanguageSwitcher />
           </nav>
         </div>
