@@ -14,6 +14,11 @@ async function getMerchantUser() {
     return userId;
 }
 
+// Helper to convert to plain objects
+function toPlainObject(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 export async function getMerchantListings() {
     const userId = await getMerchantUser();
     await connectToDatabase();
@@ -36,7 +41,7 @@ export async function getMerchantListings() {
         };
     });
 
-    return listings;
+    return toPlainObject(listings);
 }
 
 export async function addListing(cardId, price, stock) {
