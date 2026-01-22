@@ -1,5 +1,6 @@
 
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 
 const intlMiddleware = createMiddleware({
@@ -8,14 +9,21 @@ const intlMiddleware = createMiddleware({
 });
 
 const isMerchantRoute = createRouteMatcher(['/merchant(.*)']);
+const isAuthRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
+    // Protect merchant routes with Clerk
     if (isMerchantRoute(req)) {
         await auth.protect();
-        return;
+        return NextResponse.next();
     }
 
-    // For non-merchant routes, run intl middleware
+    // Let auth routes pass through without intl handling
+    if (isAuthRoute(req)) {
+        return NextResponse.next();
+    }
+
+    // For all other routes, apply intl middleware
     return intlMiddleware(req);
 });
 
