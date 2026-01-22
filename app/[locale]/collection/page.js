@@ -6,6 +6,9 @@ import { Link } from '@/lib/navigation';
 import styles from './Collection.module.css';
 import Card from '@/components/ui/Card';
 
+// Revalidate every 5 minutes
+export const revalidate = 300;
+
 export default async function CollectionPage() {
     const { userId } = await auth();
     const t = await getTranslations('Collection');

@@ -4,6 +4,7 @@ import RecentlyViewed from '@/components/home/RecentlyViewed';
 import { getJpyToHkdRate } from '@/lib/currency';
 import { getLatestBoxes } from '@/lib/db';
 
+// Static page with 1 hour revalidation
 export const revalidate = 3600; // 1 hour
 
 export default async function Home() {
