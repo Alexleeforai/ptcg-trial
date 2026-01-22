@@ -1,11 +1,22 @@
 
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import createMiddleware from 'next-intl/middleware';
 
-// Protect merchant routes
+const intlMiddleware = createMiddleware({
+    locales: ['en', 'zh'],
+    defaultLocale: 'zh'
+});
+
 const isMerchantRoute = createRouteMatcher(['/merchant(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
-    if (isMerchantRoute(req)) await auth.protect();
+    if (isMerchantRoute(req)) {
+        await auth.protect();
+        return;
+    }
+
+    // For non-merchant routes, run intl middleware
+    return intlMiddleware(req);
 });
 
 export const config = {
