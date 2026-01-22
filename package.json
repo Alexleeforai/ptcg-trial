@@ -9,9 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.36.9",
     "@sparticuz/chromium": "^143.0.4",
     "cheerio": "^1.1.2",
+    "dotenv": "^17.2.3",
     "iconv-lite": "^0.7.2",
+    "mongoose": "^9.1.5",
     "next": "16.1.4",
     "next-intl": "^4.7.0",
     "puppeteer": "^24.35.0",
