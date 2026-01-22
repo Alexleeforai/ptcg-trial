@@ -3,8 +3,8 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import createMiddleware from 'next-intl/middleware';
 
 const intlMiddleware = createMiddleware({
-    locales: ['en', 'zh'],
-    defaultLocale: 'zh'
+    locales: ['en', 'ja', 'zh-CN', 'zh-HK'],
+    defaultLocale: 'en'
 });
 
 const isMerchantRoute = createRouteMatcher(['/merchant(.*)']);
