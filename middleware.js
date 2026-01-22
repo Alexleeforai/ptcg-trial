@@ -22,12 +22,20 @@ const isLocalizedAuthRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+    const url = new URL(req.url);
+
     // Redirect localized auth routes to root level
     if (isLocalizedAuthRoute(req)) {
-        const url = new URL(req.url);
         // Extract the auth path (e.g., /sign-in or /sign-up)
         const authPath = url.pathname.replace(/^\/(en|ja|zh-CN|zh-HK)/, '');
         return NextResponse.redirect(new URL(authPath + url.search, req.url));
+    }
+
+    // Redirect root /merchant to localized version
+    if (url.pathname === '/merchant' || url.pathname.startsWith('/merchant/')) {
+        // Get locale from cookie or default to 'zh-HK'
+        const locale = req.cookies.get('NEXT_LOCALE')?.value || 'zh-HK';
+        return NextResponse.redirect(new URL(`/${locale}${url.pathname}${url.search}`, req.url));
     }
 
     // Protect merchant routes with Clerk
