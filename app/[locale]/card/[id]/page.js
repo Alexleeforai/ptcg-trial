@@ -16,7 +16,7 @@ export default async function CardDetailPage({ params }) {
     const { id } = await params;
     console.log(`[CardPage] Loading ID: ${id}`);
 
-    let card = getCardById(id);
+    let card = await getCardById(id);
     console.log(`[CardPage] DB Result for ${id}:`, card ? 'Found' : 'Not Found');
     const t = await getTranslations('CardDetail');
     const rate = await getJpyToHkdRate();

@@ -81,7 +81,7 @@ async function updateAllPrices() {
             }
 
             if (updates.length > 0) {
-                upsertCards(updates);
+                await upsertCards(updates);
                 updatedCount += updates.length;
                 console.log(`   ✓ Updated ${updates.length} cards matching "${name}"`);
             } else {

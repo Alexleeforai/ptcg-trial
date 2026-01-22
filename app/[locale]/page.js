@@ -7,7 +7,7 @@ import { getLatestBoxes } from '@/lib/db';
 export const revalidate = 3600; // 1 hour
 
 export default async function Home() {
-  const latestBoxes = getLatestBoxes(8); // Fetch top 8 latest boxes/sets
+  const latestBoxes = await getLatestBoxes(8); // Fetch top 8 latest boxes/sets
   const rate = await getJpyToHkdRate();
 
   return (

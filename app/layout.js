@@ -1,3 +1,9 @@
+import { ClerkProvider } from '@clerk/nextjs'
+
 export default function RootLayout({ children }) {
-  return children;
+  return (
+    <ClerkProvider>
+      {children}
+    </ClerkProvider>
+  )
 }

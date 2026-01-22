@@ -49,7 +49,7 @@ export default async function SearchPage({ searchParams }) {
         searchQuery = translatedQ;
     }
 
-    let results = findCards(searchQuery);
+    let results = await findCards(searchQuery);
 
     // Apply sorting
     results = sortResults(results, sort);

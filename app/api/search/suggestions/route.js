@@ -52,7 +52,7 @@ export async function GET(request) {
     }
 
     // 1. Check DB first
-    let dbResults = findCards(searchQuery);
+    let dbResults = await findCards(searchQuery);
 
     // 2. If no results in DB, scrape SNKRDUNK
     if (dbResults.length === 0) {
@@ -61,7 +61,7 @@ export async function GET(request) {
             const scrapedResults = await searchSnkrdunk(searchQuery);
             if (scrapedResults.length > 0) {
                 // 3. Save to DB
-                upsertCards(scrapedResults);
+                await upsertCards(scrapedResults);
                 dbResults = scrapedResults;
             }
         } catch (e) {
