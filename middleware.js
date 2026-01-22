@@ -15,7 +15,21 @@ const isProtectedRoute = createRouteMatcher([
     '/(en|ja|zh-CN|zh-HK)/merchant(.*)'
 ]);
 
+// Check if route is a localized auth route
+const isLocalizedAuthRoute = createRouteMatcher([
+    '/(en|ja|zh-CN|zh-HK)/sign-in(.*)',
+    '/(en|ja|zh-CN|zh-HK)/sign-up(.*)'
+]);
+
 export default clerkMiddleware(async (auth, req) => {
+    // Redirect localized auth routes to root level
+    if (isLocalizedAuthRoute(req)) {
+        const url = new URL(req.url);
+        // Extract the auth path (e.g., /sign-in or /sign-up)
+        const authPath = url.pathname.replace(/^\/(en|ja|zh-CN|zh-HK)/, '');
+        return NextResponse.redirect(new URL(authPath + url.search, req.url));
+    }
+
     // Protect merchant routes with Clerk
     if (isProtectedRoute(req)) {
         await auth.protect();
