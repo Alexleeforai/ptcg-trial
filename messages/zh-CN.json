@@ -8,7 +8,8 @@
     "Header": {
         "brand": "TCG HK",
         "search": "搜索",
-        "merchant": "登录"
+        "merchant": "登录",
+        "collection": "我的收藏"
     },
     "Footer": {
         "copy": "© {year} TCG HK 平台。数据仅供参考。"
@@ -28,7 +29,10 @@
         "emptyBuy": "暂时无现货。",
         "emptySell": "暂时无店铺回收。",
         "offer": "报价",
-        "whatsapp": "WhatsApp"
+        "whatsapp": "WhatsApp",
+        "bookmark": "加入收藏",
+        "unbookmark": "移除收藏",
+        "bookmarked": "已收藏"
     },
     "Merchant": {
         "title": "商户后台",
@@ -37,5 +41,13 @@
         "pendingOrders": "待处理订单",
         "matchMarket": "跟随市价",
         "save": "保存"
+    },
+    "Collection": {
+        "title": "我的收藏",
+        "subtitle": "追踪你喜欢的卡牌价格",
+        "empty": "你还没有收藏卡牌",
+        "emptyHint": "浏览卡牌，点击书签图标保存",
+        "browseCards": "浏览卡牌",
+        "unauthorized": "请登录查看你的收藏"
     }
 }

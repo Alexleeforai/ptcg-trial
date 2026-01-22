@@ -33,6 +33,10 @@ export default function Header() {
               <Link href="/merchant" className={styles.merchantLink}>{t('merchant')}</Link>
             </SignedOut>
             <SignedIn>
+              <Link href="/collection" className={styles.navLink}>
+                <span className={styles.navIcon}>📚</span>
+                {t('collection')}
+              </Link>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
             <LanguageSwitcher />

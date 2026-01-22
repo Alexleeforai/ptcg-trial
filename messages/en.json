@@ -8,7 +8,8 @@
     "Header": {
         "brand": "TCG HK",
         "search": "Search",
-        "merchant": "Login"
+        "merchant": "Login",
+        "collection": "Collection"
     },
     "Footer": {
         "copy": "© {year} TCG HK Platform. Data for reference only."
@@ -28,7 +29,10 @@
         "emptyBuy": "No stock currently available.",
         "emptySell": "No shops currently buying.",
         "offer": "Offer",
-        "whatsapp": "WhatsApp"
+        "whatsapp": "WhatsApp",
+        "bookmark": "Add to Collection",
+        "unbookmark": "Remove from Collection",
+        "bookmarked": "In Collection"
     },
     "Merchant": {
         "title": "Merchant Dashboard",
@@ -37,5 +41,13 @@
         "pendingOrders": "Pending Orders",
         "matchMarket": "Match Market",
         "save": "Save"
+    },
+    "Collection": {
+        "title": "My Collection",
+        "subtitle": "Track prices of your favorite cards",
+        "empty": "No cards in your collection yet",
+        "emptyHint": "Browse cards and click the bookmark icon to save them here",
+        "browseCards": "Browse Cards",
+        "unauthorized": "Please sign in to view your collection"
     }
 }

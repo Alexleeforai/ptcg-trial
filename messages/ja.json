@@ -8,7 +8,8 @@
     "Header": {
         "brand": "TCG HK",
         "search": "検索",
-        "merchant": "ログイン"
+        "merchant": "ログイン",
+        "collection": "コレクション"
     },
     "Footer": {
         "copy": "© {year} TCG HK Platform. データは参考用です。"
@@ -28,7 +29,10 @@
         "emptyBuy": "現在在庫がありません。",
         "emptySell": "現在買取中のショップはありません。",
         "offer": "オファー",
-        "whatsapp": "WhatsApp"
+        "whatsapp": "WhatsApp",
+        "bookmark": "コレクションに追加",
+        "unbookmark": "コレクションから削除",
+        "bookmarked": "コレクションにあります"
     },
     "Merchant": {
         "title": "加盟店ダッシュボード",
@@ -37,5 +41,13 @@
         "pendingOrders": "保留中の注文",
         "matchMarket": "相場に合わせる",
         "save": "保存"
+    },
+    "Collection": {
+        "title": "マイコレクション",
+        "subtitle": "お気に入りカードの価格を追跡",
+        "empty": "まだコレクションにカードがありません",
+        "emptyHint": "カードを閲覧してブックマークアイコンをクリックして保存しましょう",
+        "browseCards": "カードを見る",
+        "unauthorized": "コレクションを見るにはログインしてください"
     }
 }

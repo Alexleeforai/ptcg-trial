@@ -1,4 +1,4 @@
-import { getCardById, upsertCards } from '@/lib/db';
+import { getCardById, upsertCards, isInCollection } from '@/lib/db';
 import { getSnkrdunkCard } from '@/lib/snkrdunk';
 import styles from './CardDetail.module.css';
 import TrendChart from '@/components/card/TrendChart';
@@ -6,9 +6,11 @@ import TCGPlayerPrice from '@/components/card/TCGPlayerPrice';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import RecentlyViewedTracker from '@/components/card/RecentlyViewedTracker';
+import BookmarkButton from '@/components/card/BookmarkButton';
 import { getTranslations } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
+import { auth } from '@clerk/nextjs/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +22,13 @@ export default async function CardDetailPage({ params }) {
     console.log(`[CardPage] DB Result for ${id}:`, card ? 'Found' : 'Not Found');
     const t = await getTranslations('CardDetail');
     const rate = await getJpyToHkdRate();
+
+    // Check if card is bookmarked (for signed-in users)
+    const { userId } = await auth();
+    let isBookmarked = false;
+    if (userId && card) {
+        isBookmarked = await isInCollection(userId, id);
+    }
 
     // Check Staleness (4 hours)
     if (card) {
@@ -140,6 +149,11 @@ export default async function CardDetailPage({ params }) {
                             {card.nameEN && <span>{card.nameEN}</span>}
                             {/* If no translation, show nothing or just JP again? Title is JP. */}
                         </h2>
+
+                        {/* Bookmark Button */}
+                        <div style={{ marginTop: '16px' }}>
+                            <BookmarkButton cardId={id} initialBookmarked={isBookmarked} />
+                        </div>
                     </div>
 
                     <Card className={styles.benchmarkCard}>

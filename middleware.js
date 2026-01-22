@@ -8,9 +8,10 @@ const intlMiddleware = createMiddleware({
     defaultLocale: 'zh-HK'
 });
 
-// Only localized /merchant routes require authentication
+// Only localized /merchant and /collection routes require authentication
 const isProtectedRoute = createRouteMatcher([
-    '/(en|ja|zh-CN|zh-HK)/merchant(.*)'
+    '/(en|ja|zh-CN|zh-HK)/merchant(.*)',
+    '/(en|ja|zh-CN|zh-HK)/collection(.*)'
 ]);
 
 // Auth routes that should NOT be localized
