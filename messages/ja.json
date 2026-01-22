@@ -5,6 +5,9 @@
         "searchPlaceholder": "カード名、番号、セット名で検索...",
         "searchButton": "検索"
     },
+    "LatestSets": {
+        "title": "最新ボックス・パック"
+    },
     "Header": {
         "brand": "TCG HK",
         "search": "検索",

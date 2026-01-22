@@ -5,6 +5,9 @@
         "searchPlaceholder": "输入卡名、编号或系列...",
         "searchButton": "搜索"
     },
+    "LatestSets": {
+        "title": "最新盒装与补充包"
+    },
     "Header": {
         "brand": "TCG HK",
         "search": "搜索",

@@ -5,6 +5,9 @@
         "searchPlaceholder": "Search by card name, number, or set...",
         "searchButton": "Search"
     },
+    "LatestSets": {
+        "title": "Latest Box Sets & Packs"
+    },
     "Header": {
         "brand": "TCG HK",
         "search": "Search",

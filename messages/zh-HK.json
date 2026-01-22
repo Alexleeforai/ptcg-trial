@@ -1,9 +1,12 @@
 {
     "Hero": {
-        "title": "搵你既 <span class='text-gradient'>心頭好</span>",
+        "title": "搵你嘅 <span class='text-gradient'>心頭好</span>",
         "subtitle": "日本及香港實時報價。透明、快速、可靠。",
         "searchPlaceholder": "輸入卡名、編號或系列...",
         "searchButton": "搜尋"
+    },
+    "LatestSets": {
+        "title": "最新盒裝與補充包"
     },
     "Header": {
         "brand": "TCG HK",

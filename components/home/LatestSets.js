@@ -1,14 +1,17 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Link } from '@/lib/navigation';
 import styles from './LatestSets.module.css';
 
 export default function LatestSets({ sets, rate = 0.052 }) {
     if (!sets || sets.length === 0) return null;
 
+    const t = useTranslations('LatestSets');
+
     return (
         <div className={styles.section}>
-            <h2 className={styles.title}>Latest Box Sets & Packs</h2>
+            <h2 className={styles.title}>{t('title')}</h2>
             <div className={styles.grid}>
                 {sets.map(product => {
                     const hkdPrice = Math.round((product.price || 0) * rate);
