@@ -14,6 +14,10 @@ const CardSchema = new mongoose.Schema({
     releaseDate: String,
     link: String,
 
+    // Statistics
+    views: { type: Number, default: 0 },
+    lastViewedAt: Date,
+
     // Stats
     updatedAt: Date,
     createdAt: Date,

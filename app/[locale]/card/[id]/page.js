@@ -1,4 +1,4 @@
-import { getCardById, upsertCards, isInCollection } from '@/lib/db';
+import { getCardById, upsertCards, isInCollection, incrementCardView } from '@/lib/db';
 import { getSnkrdunkCard } from '@/lib/snkrdunk';
 import styles from './CardDetail.module.css';
 import TrendChart from '@/components/card/TrendChart';
@@ -22,6 +22,11 @@ export default async function CardDetailPage({ params }) {
     console.log(`[CardPage] DB Result for ${id}:`, card ? 'Found' : 'Not Found');
     const t = await getTranslations('CardDetail');
     const rate = await getJpyToHkdRate();
+
+    // Track View (Fire and forget)
+    if (card) {
+        incrementCardView(id).catch(e => console.error("View track failed", e));
+    }
 
     // Check if card is bookmarked (for signed-in users)
     const { userId } = await auth();
