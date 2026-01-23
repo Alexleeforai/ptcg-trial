@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { removeListing, addListing } from '@/app/actions/merchant';
 
 export default function MerchantListingsTable({ initialListings }) {
@@ -59,7 +60,13 @@ export default function MerchantListingsTable({ initialListings }) {
                     {listings.map(item => (
                         <tr key={item.cardId} style={{ borderBottom: '1px solid #222' }}>
                             <td style={{ padding: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <img src={item.cardImage} alt={item.cardName} style={{ width: '40px', height: 'auto', borderRadius: '4px' }} />
+                                <Image
+                                    src={item.cardImage}
+                                    alt={item.cardName}
+                                    width={40}
+                                    height={56}
+                                    style={{ borderRadius: '4px', objectFit: 'cover' }}
+                                />
                                 <span>{item.cardName}</span>
                             </td>
                             <td style={{ padding: '12px', color: '#888' }}>{item.cardSet}</td>

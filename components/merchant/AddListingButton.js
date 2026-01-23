@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { searchCardsForMerchant, addListing } from '@/app/actions/merchant';
 
 export default function AddListingButton() {
@@ -107,7 +108,13 @@ function AddListingModal({ onClose }) {
                                     onMouseOver={e => e.currentTarget.style.borderColor = '#555'}
                                     onMouseOut={e => e.currentTarget.style.borderColor = 'transparent'}
                                 >
-                                    <img src={card.image} alt={card.name} style={{ width: '50px', objectFit: 'contain' }} />
+                                    <Image
+                                        src={card.image}
+                                        alt={card.name}
+                                        width={50}
+                                        height={70}
+                                        style={{ objectFit: 'contain' }}
+                                    />
                                     <div>
                                         <div style={{ fontWeight: 'bold' }}>{card.name}</div>
                                         <div style={{ color: '#888', fontSize: '0.8rem' }}>{card.set} • ¥{card.price?.toLocaleString()}</div>
@@ -120,7 +127,13 @@ function AddListingModal({ onClose }) {
                 ) : (
                     <form onSubmit={handleSubmit}>
                         <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', padding: '15px', background: '#222', borderRadius: '8px' }}>
-                            <img src={selectedCard.image} alt={selectedCard.name} style={{ width: '60px' }} />
+                            <Image
+                                src={selectedCard.image}
+                                alt={selectedCard.name}
+                                width={60}
+                                height={84}
+                                style={{ objectFit: 'contain' }}
+                            />
                             <div>
                                 <div>{selectedCard.name}</div>
                                 <div style={{ color: '#888' }}>{selectedCard.set}</div>

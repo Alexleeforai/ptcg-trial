@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import Image from 'next/image';
 import styles from '@/app/[locale]/merchant/Merchant.module.css';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
@@ -88,8 +89,14 @@ export default function DashboardTable() {
 
             {items.map(item => (
                 <div key={item.id} className={styles.tableRow}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.image} alt={item.name} className={styles.cardImage} />
+                    <Image
+                        src={item.image}
+                        alt={item.name}
+                        className={styles.cardImage}
+                        width={80}
+                        height={112}
+                        style={{ objectFit: 'cover' }}
+                    />
 
                     <div>
                         <div className={styles.cardName}>{item.name}</div>

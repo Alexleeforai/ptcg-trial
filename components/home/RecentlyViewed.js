@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/lib/navigation';
+import Image from 'next/image';
 import styles from './RecentlyViewed.module.css';
 
 export default function RecentlyViewed({ rate = 0.052 }) {
@@ -46,7 +47,14 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                             style={{ cursor: 'pointer' }}
                         >
                             <div className={styles.imageWrapper}>
-                                <img src={card.image} alt={card.name} className={styles.cardImage} />
+                                <Image
+                                    src={card.image}
+                                    alt={card.name}
+                                    className={styles.cardImage}
+                                    fill
+                                    sizes="(max-width: 768px) 33vw, 20vw"
+                                    style={{ objectFit: 'contain' }}
+                                />
                             </div>
                             <div className={styles.cardInfo}>
                                 <div className={styles.cardName}>{card.name}</div>

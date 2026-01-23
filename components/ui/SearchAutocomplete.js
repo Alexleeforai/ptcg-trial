@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from '@/lib/navigation';
+import Image from 'next/image';
 import Input from '@/components/ui/Input';
 import styles from './SearchAutocomplete.module.css';
 import { useTranslations } from 'next-intl';
@@ -103,7 +104,14 @@ export default function SearchAutocomplete({
                             className={styles.suggestionItem}
                             onClick={() => handleSelectSuggestion(s.id)}
                         >
-                            <img src={s.image} alt={s.name} className={styles.suggestionImage} />
+                            <Image
+                                src={s.image}
+                                alt={s.name}
+                                className={styles.suggestionImage}
+                                width={60}
+                                height={84}
+                                style={{ objectFit: 'cover' }}
+                            />
                             <div className={styles.suggestionInfo}>
                                 <div className={styles.suggestionHeader}>
                                     <span className={styles.suggestionName}>{s.name}</span>

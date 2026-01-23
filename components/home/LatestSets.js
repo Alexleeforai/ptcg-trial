@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/lib/navigation';
+import Image from 'next/image';
 import styles from './LatestSets.module.css';
 
 export default function LatestSets({ sets, rate = 0.052 }) {
@@ -18,8 +19,14 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                     return (
                         <Link key={product.id} href={`/card/${product.id}`} className={styles.setCard}>
                             <div className={styles.imageWrapper}>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={product.image} alt={product.name} className={styles.productImage} />
+                                <Image
+                                    src={product.image}
+                                    alt={product.name}
+                                    className={styles.productImage}
+                                    fill
+                                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                    style={{ objectFit: 'contain' }}
+                                />
                             </div>
                             <div className={styles.setInfo}>
                                 <h3 className={styles.setName}>{product.name}</h3>
