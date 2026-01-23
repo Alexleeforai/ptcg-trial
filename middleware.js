@@ -20,10 +20,24 @@ const isAuthRoute = createRouteMatcher([
     '/sign-up(.*)'
 ]);
 
+// API routes should NOT be localized
+const isApiRoute = createRouteMatcher([
+    '/api(.*)'
+]);
+
 export default clerkMiddleware(async (auth, req) => {
     // Skip i18n for auth routes - let them stay at root level
     if (isAuthRoute(req)) {
         // Only apply Clerk protection, no i18n routing
+        return NextResponse.next();
+    }
+
+    // Skip i18n for API routes - let them stay at root level
+    if (isApiRoute(req)) {
+        // Protect collection API routes with Clerk
+        if (req.url.includes('/api/collection')) {
+            await auth.protect();
+        }
         return NextResponse.next();
     }
 

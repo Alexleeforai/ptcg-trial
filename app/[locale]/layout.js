@@ -1,4 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl';
+import { ClerkProvider } from '@clerk/nextjs';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Geist, Geist_Mono } from "next/font/google";
@@ -37,13 +38,15 @@ export default async function LocaleLayout({ children, params }) {
     return (
         <html lang={locale}>
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                <NextIntlClientProvider messages={messages}>
-                    <Header />
-                    <main style={{ minHeight: '80vh' }}>
-                        {children}
-                    </main>
-                    <Footer />
-                </NextIntlClientProvider>
+                <ClerkProvider>
+                    <NextIntlClientProvider messages={messages}>
+                        <Header />
+                        <main style={{ minHeight: '80vh' }}>
+                            {children}
+                        </main>
+                        <Footer />
+                    </NextIntlClientProvider>
+                </ClerkProvider>
             </body>
         </html>
     );
