@@ -17,6 +17,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'cdn.snkrdunk.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: '**.snkrdunk.com',
         pathname: '/**',
       },
