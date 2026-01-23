@@ -19,14 +19,29 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                     return (
                         <Link key={product.id} href={`/card/${product.id}`} className={styles.setCard}>
                             <div className={styles.imageWrapper}>
-                                <Image
-                                    src={product.image}
-                                    alt={product.name}
-                                    className={styles.productImage}
-                                    fill
-                                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                                    style={{ objectFit: 'contain' }}
-                                />
+                                {product.image ? (
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        className={styles.productImage}
+                                        fill
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                        style={{ objectFit: 'contain' }}
+                                    />
+                                ) : (
+                                    <div style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        background: '#1a1a1a',
+                                        color: '#666',
+                                        fontSize: '0.8rem'
+                                    }}>
+                                        No Image
+                                    </div>
+                                )}
                             </div>
                             <div className={styles.setInfo}>
                                 <h3 className={styles.setName}>{product.name}</h3>

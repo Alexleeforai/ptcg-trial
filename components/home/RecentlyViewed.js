@@ -47,14 +47,29 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                             style={{ cursor: 'pointer' }}
                         >
                             <div className={styles.imageWrapper}>
-                                <Image
-                                    src={card.image}
-                                    alt={card.name}
-                                    className={styles.cardImage}
-                                    fill
-                                    sizes="(max-width: 768px) 33vw, 20vw"
-                                    style={{ objectFit: 'contain' }}
-                                />
+                                {card.image ? (
+                                    <Image
+                                        src={card.image}
+                                        alt={card.name}
+                                        className={styles.cardImage}
+                                        fill
+                                        sizes="(max-width: 768px) 33vw, 20vw"
+                                        style={{ objectFit: 'contain' }}
+                                    />
+                                ) : (
+                                    <div style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        background: '#1a1a1a',
+                                        color: '#666',
+                                        fontSize: '0.7rem'
+                                    }}>
+                                        No Image
+                                    </div>
+                                )}
                             </div>
                             <div className={styles.cardInfo}>
                                 <div className={styles.cardName}>{card.name}</div>
