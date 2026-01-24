@@ -62,6 +62,7 @@ export default function CategoryGrid({ categories }) {
                         </div>
                         <div className={styles.pokemonInfo}>
                             <div className={styles.pokemonName}>{p.name}</div>
+                            {p.nameCN && <div className={styles.pokemonNameCN}>({p.nameCN})</div>}
                             <div className={styles.pokemonCount}>{p.count}</div>
                         </div>
                     </Link>

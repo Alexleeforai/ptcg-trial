@@ -137,7 +137,13 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
+}
+
+.pokemonNameCN {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 4px;
 }
 
 .pokemonCount {
