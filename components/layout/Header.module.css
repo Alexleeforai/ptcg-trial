@@ -114,3 +114,28 @@
     font-size: 1.1rem;
     line-height: 1;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+    .navText {
+        display: none;
+    }
+
+    .navLink {
+        padding: 8px;
+        /* Square button on mobile */
+    }
+
+    .brandName {
+        display: none;
+        /* Optional: hide brand name if space is very tight */
+    }
+
+    .actions {
+        gap: 12px;
+    }
+
+    .nav {
+        gap: 12px;
+    }
+}

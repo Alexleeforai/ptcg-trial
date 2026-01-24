@@ -35,7 +35,7 @@ export default function Header() {
             <SignedIn>
               <Link href="/collection" className={styles.navLink}>
                 <span className={styles.navIcon}>📚</span>
-                {t('collection')}
+                <span className={styles.navText}>{t('collection')}</span>
               </Link>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
