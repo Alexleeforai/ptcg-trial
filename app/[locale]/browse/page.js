@@ -1,5 +1,6 @@
 import { getBrowseCategories } from '@/lib/db';
 import CategoryGrid from '@/components/browse/CategoryGrid';
+import { Link } from '@/lib/navigation';
 
 export const revalidate = 3600; // 1 hour cache
 
