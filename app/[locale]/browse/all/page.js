@@ -4,12 +4,12 @@ import styles from '@/components/home/TrendingSection.module.css';
 import PaginateControl from '@/components/browse/PaginateControl';
 import CardItem from '@/components/browse/CardItem';
 
-// Disable caching for browse all to reflect updates instantly or short cache
-export const revalidate = 60;
+// Force dynamic rendering to ensure pagination params (searchParams) work instantly
+export const dynamic = 'force-dynamic';
 
 export default async function BrowseAllPage({ searchParams }) {
     const page = parseInt(searchParams.page) || 1;
-    const limit = 36;
+    const limit = 100; // Increased to 100 per page
     const data = await getCardsPaginated(page, limit);
 
     return (
