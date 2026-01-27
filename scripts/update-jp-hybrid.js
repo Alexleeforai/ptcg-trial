@@ -14,6 +14,7 @@ const CardSchema = new mongoose.Schema({
     price: Number,
     currency: String,
     set: String,
+    setId: String, // Added setId
     cardType: String,
     updatedAt: Date
 }, { strict: false });
@@ -56,7 +57,6 @@ async function updateHybrid() {
         if (match) {
             const setCode = match[1].toLowerCase();
             const num = parseInt(match[2]);
-            // Key: "sv4a-1"
             const key = `${setCode}-${num}`;
             if (!priceMap.has(key)) {
                 priceMap.set(key, { price: item.price, legacyId: item.id });
@@ -90,7 +90,12 @@ async function updateHybrid() {
 
             for (const card of cards) {
                 // TCGdex LocalID might be "001" or "1". Parse Int.
-                const num = parseInt(card.localId);
+                let num = 0;
+                // Try parsing localId. If string contains letters (e.g. '001a'), parser stops?
+                // TCGdex localId usually numeric for JP main sets.
+                // If not numeric, no match.
+                try { num = parseInt(card.localId); } catch (e) { }
+
                 const key = `${setId.toLowerCase()}-${num}`; // "sv4a-1"
 
                 const match = priceMap.get(key);
@@ -114,6 +119,7 @@ async function updateHybrid() {
                                 price: price, // Legacy Price or 0
                                 currency: 'JPY',
                                 set: card.set,
+                                setId: setId, // Added setId
                                 cardType: 'single',
                                 updatedAt: new Date()
                             }
@@ -141,7 +147,7 @@ async function updateHybrid() {
     if (legacyIdsToDelete.length > 0) {
         // Remove duplicates from list
         const uniqueIds = [...new Set(legacyIdsToDelete)];
-        console.log(`Deleting ${uniqueIds.length} migrated legacy cards to avoid duplicates...`);
+        console.log(`Deleting ${uniqueIds.length} migrated legacy cards...`);
         const res = await Card.deleteMany({ id: { $in: uniqueIds } });
         console.log(`  -> Deleted ${res.deletedCount}`);
     } else {

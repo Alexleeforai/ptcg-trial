@@ -1,31 +1,44 @@
-import { getBrowseCategories } from '@/lib/db';
-import CategoryGrid from '@/components/browse/CategoryGrid';
+import { getBrowseSets } from '@/lib/db';
 import { Link } from '@/lib/navigation';
 
-export const revalidate = 3600; // 1 hour cache
+export const revalidate = 3600; // Revalidate every hour
 
 export default async function BrowsePage() {
-    const categories = await getBrowseCategories();
+    // New Logic: Browse by Set
+    const sets = await getBrowseSets();
 
     return (
         <div className="container" style={{ paddingBottom: '80px' }}>
-            <div style={{ marginTop: '40px', marginBottom: '20px' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Browse Cards</h1>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <p style={{ color: '#888' }}>Explore cards by Pokemon, Trainer, or Item type.</p>
-                    <Link href="/browse/all" style={{
-                        padding: '8px 16px',
-                        backgroundColor: '#333',
-                        color: '#fff',
-                        borderRadius: '8px',
-                        fontSize: '0.9rem'
-                    }}>
-                        View All Cards &rarr;
+            <h1 className="page-title" style={{ marginTop: '40px', marginBottom: '30px' }}>Browse by Set</h1>
+
+            {/* Set Grid */}
+            <div className="grid">
+                {sets.map((set) => (
+                    <Link href={`/browse/${encodeURIComponent(set.id)}`} key={set.id} style={{ textDecoration: 'none' }}>
+                        <div className="card-item">
+                            <div className="card-image-container">
+                                {set.image ? (
+                                    <img src={set.image} alt={set.name} loading="lazy" />
+                                ) : (
+                                    <div className="placeholder" />
+                                )}
+                            </div>
+                            <div className="card-info">
+                                <h3 className="card-name">{set.name}</h3>
+                                <p className="card-price" style={{ color: '#666', fontSize: '0.9rem' }}>
+                                    {set.id} • {set.count} Cards
+                                </p>
+                            </div>
+                        </div>
                     </Link>
-                </div>
+                ))}
             </div>
 
-            <CategoryGrid categories={categories} />
+            {sets.length === 0 && (
+                <div style={{ textAlign: 'center', color: '#666', marginTop: '50px' }}>
+                    No sets found. Database might be updating.
+                </div>
+            )}
         </div>
     );
 }
