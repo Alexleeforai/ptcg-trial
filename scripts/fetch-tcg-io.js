@@ -1,5 +1,7 @@
 import { searchPokemonTCG, getAllSets } from '../lib/pokemontcg.js';
 import { upsertCards } from '../lib/db.js';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
 
 // Common search terms for Pokemon cards
 const SEARCH_TERMS = [
