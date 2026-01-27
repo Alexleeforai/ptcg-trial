@@ -12,7 +12,8 @@
         "brand": "TCG HK",
         "search": "検索",
         "merchant": "ログイン",
-        "collection": "コレクション"
+        "collection": "コレクション",
+        "browse": "カード一覧"
     },
     "Footer": {
         "copy": "© {year} TCG HK Platform. データは参考用です。"

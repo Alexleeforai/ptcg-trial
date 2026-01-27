@@ -12,7 +12,8 @@
         "brand": "TCG HK",
         "search": "Search",
         "merchant": "Login",
-        "collection": "Collection"
+        "collection": "Collection",
+        "browse": "Browse"
     },
     "Footer": {
         "copy": "© {year} TCG HK Platform. Data for reference only."
