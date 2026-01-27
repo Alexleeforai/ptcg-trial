@@ -5,7 +5,12 @@ import Image from 'next/image';
 import { Link } from '@/lib/navigation';
 import styles from './TopRisersSection.module.css';
 
-export default function TopRisersSection({ cards, rate = 0.052 }) {
+import { useCurrency } from '@/hooks/useCurrency';
+import { convertPrice, formatPrice } from '@/lib/currency';
+
+export default function TopRisersSection({ cards }) {
+    const currency = useCurrency();
+
     if (!cards || cards.length === 0) return null;
 
     return (
@@ -15,8 +20,16 @@ export default function TopRisersSection({ cards, rate = 0.052 }) {
             </div>
             <div className={styles.grid}>
                 {cards.map((card, index) => {
-                    const price = card.price || 0;
-                    const hkdPrice = Math.round(price * rate);
+                    const originalPrice = card.price || 0;
+                    const cardCurrency = card.currency || 'JPY';
+
+                    const displayPrice = convertPrice(originalPrice, cardCurrency, currency);
+                    const formattedPrice = formatPrice(displayPrice, currency);
+
+                    // Convert rise amount too
+                    const riseAmount = card.riseAmount || 0;
+                    const displayRise = convertPrice(riseAmount, cardCurrency, currency);
+                    const formattedRise = formatPrice(displayRise, currency);
 
                     return (
                         <Link key={card.id} href={`/card/${card.id}`} className={styles.card}>
@@ -39,11 +52,11 @@ export default function TopRisersSection({ cards, rate = 0.052 }) {
                                 <div className={styles.name}>{card.name}</div>
                                 <div className={styles.priceData}>
                                     <div className={styles.priceColumn}>
-                                        <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
-                                        <span className={styles.originalPrice}>(¥{price.toLocaleString()})</span>
+                                        <span className={styles.price}>{formattedPrice}</span>
+                                        <span className={styles.originalPrice}>({card.currency === 'JPY' ? '¥' : '$'}{originalPrice.toLocaleString()})</span>
                                     </div>
                                     <span className={styles.riseAmount}>
-                                        +¥{Math.round(card.riseAmount).toLocaleString()}
+                                        +{formattedRise}
                                     </span>
                                 </div>
                             </div>

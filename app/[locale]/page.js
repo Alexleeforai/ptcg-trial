@@ -7,14 +7,14 @@ import { getJpyToHkdRate } from '@/lib/currency';
 import { getLatestBoxes, getTrendingCards, getTopRisers } from '@/lib/db';
 
 // Static page with 1 hour revalidation
-export const revalidate = 3600; // 1 hour
+// Static page with short revalidation
+export const revalidate = 60; // 1 minute
 
 export default async function Home() {
-  const [latestBoxes, trendingCards, topRisers, rate] = await Promise.all([
+  const [latestBoxes, trendingCards, topRisers] = await Promise.all([
     getLatestBoxes(8),
     getTrendingCards(4),
-    getTopRisers(4),
-    getJpyToHkdRate()
+    getTopRisers(4)
   ]);
 
   return (
@@ -23,12 +23,12 @@ export default async function Home() {
       <div style={{ marginTop: '40px', marginBottom: '80px' }}>
 
         {/* Featured Sections */}
-        <TrendingSection cards={trendingCards} rate={rate} />
-        <TopRisersSection cards={topRisers} rate={rate} />
+        <TrendingSection cards={trendingCards} />
+        <TopRisersSection cards={topRisers} />
 
-        <LatestSets sets={latestBoxes} rate={rate} />
+        <LatestSets sets={latestBoxes} />
 
-        <RecentlyViewed rate={rate} />
+        <RecentlyViewed />
       </div>
     </div>
   );

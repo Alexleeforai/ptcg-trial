@@ -5,7 +5,12 @@ import Image from 'next/image';
 import { Link } from '@/lib/navigation';
 import styles from './TrendingSection.module.css';
 
-export default function TrendingSection({ cards, rate = 0.052 }) {
+import { useCurrency } from '@/hooks/useCurrency';
+import { convertPrice, formatPrice } from '@/lib/currency';
+
+export default function TrendingSection({ cards }) {
+    const currency = useCurrency();
+
     if (!cards || cards.length === 0) return null;
 
     return (
@@ -15,8 +20,11 @@ export default function TrendingSection({ cards, rate = 0.052 }) {
             </div>
             <div className={styles.grid}>
                 {cards.map((card, index) => {
-                    const price = card.price || 0;
-                    const hkdPrice = Math.round(price * rate);
+                    const originalPrice = card.price || 0;
+                    const cardCurrency = card.currency || 'JPY';
+
+                    const displayPrice = convertPrice(originalPrice, cardCurrency, currency);
+                    const formattedPrice = formatPrice(displayPrice, currency);
 
                     return (
                         <Link key={card.id} href={`/card/${card.id}`} className={styles.card}>
@@ -38,7 +46,7 @@ export default function TrendingSection({ cards, rate = 0.052 }) {
                             <div className={styles.info}>
                                 <div className={styles.name}>{card.name}</div>
                                 <div className={styles.priceData}>
-                                    <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
+                                    <span className={styles.price}>{formattedPrice}</span>
                                     <span className={styles.views}>👀 {card.views || 0}</span>
                                 </div>
                             </div>
