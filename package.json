@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "update-db:api": "node scripts/fetch-tcg-io.js",
-    "update-db:jp": "node scripts/update-jp-cards.js"
+    "update-db:jp": "node scripts/update-jp-cards.js",
+    "clean-db": "node scripts/clean-db.js",
+    "surgical-clean": "node scripts/surgical-clean.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.9",
