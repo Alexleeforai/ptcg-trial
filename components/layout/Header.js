@@ -4,6 +4,7 @@ import { Link, usePathname } from '@/lib/navigation';
 import { useTranslations } from 'next-intl';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import LanguageSwitcher from './LanguageSwitcher';
+import CurrencySelector from '@/components/ui/CurrencySelector';
 import styles from './Header.module.css';
 import SearchAutocomplete from '@/components/ui/SearchAutocomplete';
 
@@ -49,6 +50,7 @@ export default function Header() {
               </Link>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
+            <CurrencySelector />
             <LanguageSwitcher />
           </nav>
         </div>

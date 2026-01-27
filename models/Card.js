@@ -8,11 +8,13 @@ const CardSchema = new mongoose.Schema({
     nameCN: String,
     nameEN: String,
     image: String,
-    price: Number, // Latest market price (JPY)
+    price: Number, // Latest market price
+    currency: { type: String, default: 'JPY' }, // JPY, USD, EUR, etc.
     set: String,
     cardType: String, // 'single', 'box'
     releaseDate: String,
     link: String,
+    tcgPlayerId: String, // Optional: TCGPlayer/Pokemon TCG API ID
 
     // Statistics
     views: { type: Number, default: 0 },
