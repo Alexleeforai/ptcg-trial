@@ -30,6 +30,16 @@ const nextConfig = {
         hostname: 'images.pokemontcg.io',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.justtcg.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.tcgdex.net',
+        pathname: '/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
