@@ -28,9 +28,11 @@
 
 .imageContainer {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    /* Force 1:1 aspect ratio using padding hack - more robust than aspect-ratio */
+    height: 0;
+    padding-bottom: 100%;
     position: relative;
-    /* Required for Next.js Image fill */
+
     border-radius: 10px;
     overflow: hidden;
     background: #1a1a1f;
