@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './Browse.module.css';
 
-export const revalidate = 3600; // Revalidate every hour
+// export const revalidate = 3600; // Disable static cache for now to debug sorting
+export const dynamic = 'force-dynamic'; // Force render on every request
 
 // Use server component but allow searchParams prop
 export default async function BrowsePage({ searchParams }) {
