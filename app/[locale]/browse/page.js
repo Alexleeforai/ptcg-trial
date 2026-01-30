@@ -26,8 +26,8 @@ export default async function BrowsePage() {
                                 <Image
                                     src={getHighQualityImage(set.image)}
                                     alt={set.name}
-                                    width={280}
-                                    height={390}
+                                    fill
+                                    sizes="(max-width: 768px) 50vw, 25vw"
                                     quality={95}
                                     className={styles.setImage}
                                 />

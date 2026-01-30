@@ -29,6 +29,8 @@
 .imageContainer {
     width: 100%;
     aspect-ratio: 5 / 7;
+    position: relative;
+    /* Required for Next.js Image fill */
     border-radius: 10px;
     overflow: hidden;
     background: #1a1a1f;
