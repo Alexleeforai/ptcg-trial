@@ -156,11 +156,17 @@ function parseCardsFromHTML($, set) {
 async function getCardsFromSet(set) {
     const allCards = [];
     const seenCardIds = new Set();
+    let cursor = null;
     let page = 1;
-    let consecutiveDuplicates = 0;
+
+    // PriceCharting uses cursor-based pagination for API
+    // We look for <input type="hidden" name="cursor" value="..."> in the response
 
     while (page <= CONFIG.MAX_PAGES_PER_SET) {
-        const url = `${BASE_URL}${set.url}?page=${page}`;
+        // Construct URL with cursor if present
+        const url = cursor
+            ? `${BASE_URL}${set.url}?cursor=${cursor}`
+            : `${BASE_URL}${set.url}`;
 
         try {
             const html = await fetchWithRetry(url);
@@ -168,11 +174,9 @@ async function getCardsFromSet(set) {
             const cards = parseCardsFromHTML($, set);
 
             if (cards.length === 0) {
-                // No cards on this page - we've reached the end
                 break;
             }
 
-            // Check for duplicates - if ALL cards on this page are duplicates, we've looped
             let newCardsCount = 0;
             for (const card of cards) {
                 if (!seenCardIds.has(card.id)) {
@@ -182,20 +186,21 @@ async function getCardsFromSet(set) {
                 }
             }
 
-            // If no new cards were found, we've hit a duplicate page (pagination loop)
-            if (newCardsCount === 0) {
-                consecutiveDuplicates++;
-                if (consecutiveDuplicates >= 2) {
-                    // Two consecutive pages with all duplicates = end of real data
-                    break;
-                }
-            } else {
-                consecutiveDuplicates = 0;
-                process.stdout.write(`p${page}(${newCardsCount}) `);
+            process.stdout.write(`p${page}(${newCardsCount}) `);
+
+            // Extract next cursor from form
+            // Format: <form class="js-next-page"> <input name="cursor" value="50">
+            const nextCursor = $('form.js-next-page input[name="cursor"]').val();
+
+            if (!nextCursor) {
+                // No next cursor means we are on the last page
+                break;
             }
 
+            cursor = nextCursor;
             page++;
             await sleep(CONFIG.DELAY_BETWEEN_PAGES);
+
         } catch (error) {
             console.log(`\n  Error on page ${page}: ${error.message}`);
             break;

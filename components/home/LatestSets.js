@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/lib/navigation';
 import Image from 'next/image';
+import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './LatestSets.module.css';
 
 export default function LatestSets({ sets, rate = 0.052 }) {
@@ -15,13 +16,30 @@ export default function LatestSets({ sets, rate = 0.052 }) {
             <h2 className={styles.title}>{t('title')}</h2>
             <div className={styles.grid}>
                 {sets.map(product => {
-                    const hkdPrice = Math.round((product.price || 0) * rate);
+                    // Support both formats:
+                    // Old format: product.price (JPY)
+                    // PriceCharting format: product.priceRaw (USD)
+                    // Use FIXED rates to avoid hydration mismatch
+                    let hkdPrice = 0;
+                    let jpyPrice = 0;
+
+                    if (product.priceRaw && product.currency === 'USD') {
+                        // PriceCharting data (USD) - fixed conversion rates
+                        const usdPrice = product.priceRaw;
+                        hkdPrice = Math.round(usdPrice * 7.8); // USD to HKD
+                        jpyPrice = Math.round(usdPrice * 150); // USD to JPY
+                    } else if (product.price) {
+                        // Old format (JPY) - fixed conversion rates
+                        jpyPrice = product.price;
+                        hkdPrice = Math.round(product.price * 0.052); // JPY to HKD (fixed rate)
+                    }
+
                     return (
                         <Link key={product.id} href={`/card/${product.id}`} className={styles.setCard}>
                             <div className={styles.imageWrapper}>
                                 {product.image ? (
                                     <Image
-                                        src={product.image}
+                                        src={getHighQualityImage(product.image)}
                                         alt={product.name}
                                         className={styles.productImage}
                                         fill
@@ -53,7 +71,7 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                                 <div className={styles.priceRow}>
                                     <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
                                     <span style={{ fontSize: '0.8rem', color: '#888', fontWeight: 'normal' }}>
-                                        (¥{(product.price || 0).toLocaleString()})
+                                        (¥{jpyPrice.toLocaleString()})
                                     </span>
                                 </div>
                             </div>

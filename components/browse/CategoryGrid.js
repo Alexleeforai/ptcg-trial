@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/lib/navigation';
+import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './CategoryGrid.module.css';
 
 export default function CategoryGrid({ categories }) {
@@ -21,7 +22,7 @@ export default function CategoryGrid({ categories }) {
                         <div className={styles.specialImageWrapper}>
                             {cat.image ? (
                                 <Image
-                                    src={cat.image}
+                                    src={getHighQualityImage(cat.image)}
                                     alt={cat.name}
                                     fill
                                     className={styles.image}
@@ -50,7 +51,7 @@ export default function CategoryGrid({ categories }) {
                         <div className={styles.pokemonImageWrapper}>
                             {p.image ? (
                                 <Image
-                                    src={p.image}
+                                    src={getHighQualityImage(p.image)}
                                     alt={p.name}
                                     fill
                                     className={styles.image}

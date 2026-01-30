@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/lib/navigation';
+import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './TopRisersSection.module.css';
 
 import { useCurrency } from '@/hooks/useCurrency';
@@ -20,8 +21,19 @@ export default function TopRisersSection({ cards }) {
             </div>
             <div className={styles.grid}>
                 {cards.map((card, index) => {
-                    const originalPrice = card.price || 0;
-                    const cardCurrency = card.currency || 'JPY';
+                    // Support both formats: priceRaw (USD) or price (JPY)
+                    let originalPrice = 0;
+                    let cardCurrency = 'JPY';
+
+                    if (card.priceRaw && card.currency === 'USD') {
+                        // PriceCharting data
+                        originalPrice = card.priceRaw;
+                        cardCurrency = 'USD';
+                    } else if (card.price) {
+                        // SNKRDUNK data
+                        originalPrice = card.price;
+                        cardCurrency = card.currency || 'JPY';
+                    }
 
                     const displayPrice = convertPrice(originalPrice, cardCurrency, currency);
                     const formattedPrice = formatPrice(displayPrice, currency);
@@ -37,7 +49,7 @@ export default function TopRisersSection({ cards }) {
                             <div className={styles.imageWrapper}>
                                 {card.image ? (
                                     <Image
-                                        src={card.image}
+                                        src={getHighQualityImage(card.image)}
                                         alt={card.name}
                                         fill
                                         sizes="(max-width: 768px) 33vw, 20vw"

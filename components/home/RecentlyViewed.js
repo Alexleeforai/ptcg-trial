@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/lib/navigation';
 import Image from 'next/image';
+import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './RecentlyViewed.module.css';
 
 export default function RecentlyViewed({ rate = 0.052 }) {
@@ -39,8 +40,21 @@ export default function RecentlyViewed({ rate = 0.052 }) {
             </div>
             <div className={styles.grid}>
                 {cards.map(card => {
-                    const price = card.price || card.basePriceJPY || 0;
-                    const hkdPrice = Math.round(price * rate);
+                    // Support both formats: priceRaw (USD) or price (JPY)
+                    let hkdPrice = 0;
+                    let jpyPrice = 0;
+
+                    if (card.priceRaw && card.currency === 'USD') {
+                        // PriceCharting data
+                        hkdPrice = Math.round(card.priceRaw * 7.8);
+                        jpyPrice = Math.round(card.priceRaw * 150);
+                    } else {
+                        // SNKRDUNK data
+                        const price = card.price || card.basePriceJPY || 0;
+                        hkdPrice = Math.round(price * rate);
+                        jpyPrice = price;
+                    }
+
                     return (
                         <div key={card.id} className={styles.cardItem}
                             onClick={() => router.push(`/card/${card.id}`)}
@@ -49,7 +63,7 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                             <div className={styles.imageWrapper}>
                                 {card.image ? (
                                     <Image
-                                        src={card.image}
+                                        src={getHighQualityImage(card.image)}
                                         alt={card.name}
                                         className={styles.cardImage}
                                         fill
@@ -76,7 +90,7 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                                 <div className={styles.cardPrice}>
                                     HK${hkdPrice.toLocaleString()}
                                     <span style={{ fontSize: '0.8em', color: '#888', marginLeft: '4px', fontWeight: 'normal' }}>
-                                        (¥{price.toLocaleString()})
+                                        (¥{jpyPrice.toLocaleString()})
                                     </span>
                                 </div>
                             </div>

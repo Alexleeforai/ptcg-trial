@@ -40,6 +40,11 @@ const nextConfig = {
         hostname: 'assets.tcgdex.net',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        pathname: '/images.pricecharting.com/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

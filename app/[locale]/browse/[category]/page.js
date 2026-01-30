@@ -25,6 +25,18 @@ export default async function BrowseCategoryPage({ params }) {
     const cards = await findCards(decodedCategory);
     const rate = await getJpyToHkdRate();
 
+    // Debug: Check if cards have priceRaw
+    if (cards.length > 0) {
+        console.log('[Browse] Sample card data:', {
+            name: cards[0].name,
+            priceRaw: cards[0].priceRaw,
+            currency: cards[0].currency,
+            hasPrice: !!cards[0].price,
+            hasPriceRaw: !!cards[0].priceRaw,
+            allKeys: Object.keys(cards[0])
+        });
+    }
+
     // Filter out boxes if browsing specific pokemon
     const singles = cards.filter(c => c.cardType === 'single');
 

@@ -1,16 +1,23 @@
-import { getCardById, upsertCards, isInCollection, incrementCardView } from '@/lib/db';
-import { getSnkrdunkCard } from '@/lib/snkrdunk';
-import styles from './CardDetail.module.css';
-import TrendChart from '@/components/card/TrendChart';
-import TCGPlayerPrice from '@/components/card/TCGPlayerPrice';
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
-import RecentlyViewedTracker from '@/components/card/RecentlyViewedTracker';
-import BookmarkButton from '@/components/card/BookmarkButton';
-import { getTranslations } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
+import { getListings, getCardById, getUserBookmarks, incrementCardView } from '@/lib/db';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 import { auth } from '@clerk/nextjs/server';
+import { Link } from '@/lib/navigation';
+import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
+import styles from './CardDetail.module.css';
+import Card from '@/components/ui/Card';
+import TrendChart from '@/components/card/TrendChart';
+import { notFound } from 'next/navigation';
+import TCGPlayerPrice from '@/components/card/TCGPlayerPrice';
+import BookmarkButton from '@/components/card/BookmarkButton';
+import RecentlyViewedTracker from '@/components/card/RecentlyViewedTracker';
+import MerchantListingsTable from '@/components/merchant/MerchantListingsTable';
+import AddListingButton from '@/components/merchant/AddListingButton';
+import { getHighQualityImage } from '@/lib/imageUtils';
+import { useTranslations } from 'next-intl';
+// The following imports were already present and are kept if not explicitly removed by the instruction's provided block.
+// The instruction's provided block seems to be a complete replacement for the initial import block.
+// Based on the instruction, the new import block should be:
 
 export const dynamic = 'force-dynamic';
 
@@ -120,12 +127,26 @@ export default async function CardDetailPage({ params }) {
     }
 
     // Exchange rate assumption: Dynamic
-    // Use card.price (from SNKRDUNK)
-    const price = card.price || 0;
-    const hkdBenchmark = convertJpyToHkd(price, rate);
+    // Support both formats:
+    // - SNKRDUNK: card.price (JPY)
+    // - PriceCharting: card.priceRaw (USD)
+    let price = 0;
+    let hkdBenchmark = 0;
+
+    if (card.priceRaw && card.currency === 'USD') {
+        // PriceCharting data (USD)
+        price = Math.round(card.priceRaw * 150); // USD to JPY for display
+        hkdBenchmark = Math.round(card.priceRaw * 7.8); // USD to HKD
+    } else if (card.price) {
+        // SNKRDUNK data (JPY)
+        price = card.price;
+        hkdBenchmark = convertJpyToHkd(price, rate);
+    }
 
     const sellListings = listings.filter(l => l.type === 'sell');
     const buyListings = listings.filter(l => l.type === 'buy');
+
+    const displayImage = getHighQualityImage(card.image);
 
     return (
         <div className={`container ${styles.page}`}>
@@ -133,7 +154,7 @@ export default async function CardDetailPage({ params }) {
                 <div className={styles.imageColumn}>
                     <div className={styles.cardWrapper}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={card.image} alt={card.name} className={styles.mainImage} />
+                        <img src={displayImage} alt={card.name} className={styles.mainImage} />
                     </div>
                 </div>
 
@@ -163,15 +184,66 @@ export default async function CardDetailPage({ params }) {
 
                     <Card className={styles.benchmarkCard}>
                         <div className={styles.benchmarkLabel}>{t('benchmark')}</div>
-                        <div className={styles.benchmarkPrice}>
-                            <span className={styles.priceValue}>
-                                約 ${hkdBenchmark.toLocaleString()}
-                                <span className={styles.priceOriginal}>
-                                    (¥{price.toLocaleString()})
-                                </span>
-                            </span>
 
-                        </div>
+                        {/* Display graded prices for PriceCharting cards */}
+                        {card.priceRaw && card.currency === 'USD' ? (
+                            <>
+                                <div style={{ display: 'flex', gap: '16px', marginTop: '16px', flexWrap: 'wrap' }}>
+                                    {/* Raw Price */}
+                                    <div style={{ flex: '1', minWidth: '150px' }}>
+                                        <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '4px' }}>Raw / Ungraded</div>
+                                        <div className={styles.benchmarkPrice}>
+                                            <span className={styles.priceValue}>
+                                                HK${Math.round(card.priceRaw * 7.8).toLocaleString()}
+                                                <span className={styles.priceOriginal}>
+                                                    (${card.priceRaw.toLocaleString()})
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* PSA 10 Price */}
+                                    {card.pricePSA10 && (
+                                        <div style={{ flex: '1', minWidth: '150px' }}>
+                                            <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '4px' }}>PSA 10</div>
+                                            <div className={styles.benchmarkPrice}>
+                                                <span className={styles.priceValue}>
+                                                    HK${Math.round(card.pricePSA10 * 7.8).toLocaleString()}
+                                                    <span className={styles.priceOriginal}>
+                                                        (${card.pricePSA10.toLocaleString()})
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Grade 9 Price */}
+                                    {card.priceGrade9 && (
+                                        <div style={{ flex: '1', minWidth: '150px' }}>
+                                            <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '4px' }}>Grade 9</div>
+                                            <div className={styles.benchmarkPrice}>
+                                                <span className={styles.priceValue}>
+                                                    HK${Math.round(card.priceGrade9 * 7.8).toLocaleString()}
+                                                    <span className={styles.priceOriginal}>
+                                                        (${card.priceGrade9.toLocaleString()})
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        ) : (
+                            <div className={styles.benchmarkPrice}>
+                                <span className={styles.priceValue}>
+                                    約 ${hkdBenchmark.toLocaleString()}
+                                    <span className={styles.priceOriginal}>
+                                        (¥{price.toLocaleString()})
+                                    </span>
+                                </span>
+                            </div>
+                        )}
+
                         <div className={styles.trendRow}>
                             <TrendChart data={trendData} />
                         </div>

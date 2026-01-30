@@ -1,6 +1,7 @@
 import { findCards } from '@/lib/db';
 import { translateQuery } from '@/lib/translate';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
+import { getHighQualityImage } from '@/lib/imageUtils';
 import { Link } from '@/lib/navigation';
 import Card from '@/components/ui/Card';
 import SortFilter from '@/components/search/SortFilter';
@@ -13,11 +14,20 @@ export const revalidate = 60;
 // Sort function
 function sortResults(results, sortBy) {
     const sorted = [...results];
+
+    // Helper to get comparable price (convert USD to HKD for fair comparison)
+    const getPrice = (card) => {
+        if (card.priceRaw && card.currency === 'USD') {
+            return card.priceRaw * 7.8; // USD to HKD
+        }
+        return card.price || 0;
+    };
+
     switch (sortBy) {
         case 'price-desc':
-            return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+            return sorted.sort((a, b) => getPrice(b) - getPrice(a));
         case 'price-asc':
-            return sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+            return sorted.sort((a, b) => getPrice(a) - getPrice(b));
         case 'name-asc':
             return sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
         case 'name-desc':
@@ -27,7 +37,7 @@ function sortResults(results, sortBy) {
         case 'date-asc':
             return sorted.sort((a, b) => new Date(a.updatedAt || 0) - new Date(b.updatedAt || 0));
         default:
-            return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+            return sorted.sort((a, b) => getPrice(b) - getPrice(a));
     }
 }
 
@@ -76,7 +86,7 @@ export default async function SearchPage({ searchParams }) {
                             <Card hover className={styles.cardItem}>
                                 <div className={styles.imageWrapper}>
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={card.image} alt={card.name} className={styles.cardImage} />
+                                    <img src={getHighQualityImage(card.image)} alt={card.name} className={styles.cardImage} />
                                 </div>
                                 <div className={styles.cardInfo}>
                                     <div className={styles.cardHeader}>
@@ -94,10 +104,21 @@ export default async function SearchPage({ searchParams }) {
                                     <div className={styles.priceInfo}>
                                         <span className={styles.label}>{t('basePrice')}</span>
                                         <span className={styles.price}>
-                                            約 ${convertJpyToHkd(card.price || 0, rate).toLocaleString()}
-                                            <span style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 'normal' }}>
-                                                (¥{(card.price || 0).toLocaleString()})
-                                            </span>
+                                            {card.priceRaw && card.currency === 'USD' ? (
+                                                <>
+                                                    約 ${Math.round(card.priceRaw * 7.8).toLocaleString()}
+                                                    <span style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 'normal' }}>
+                                                        (¥{Math.round(card.priceRaw * 150).toLocaleString()})
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    約 ${convertJpyToHkd(card.price || 0, rate).toLocaleString()}
+                                                    <span style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 'normal' }}>
+                                                        (¥{(card.price || 0).toLocaleString()})
+                                                    </span>
+                                                </>
+                                            )}
                                         </span>
                                     </div>
                                 </div>
