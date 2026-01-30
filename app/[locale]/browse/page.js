@@ -9,7 +9,8 @@ export const dynamic = 'force-dynamic'; // Force render on every request
 
 // Use server component but allow searchParams prop
 export default async function BrowsePage({ searchParams }) {
-    const sort = searchParams?.sort || 'name'; // Default to name
+    const resolvedParams = await searchParams; // Await params in Next.js 15+
+    const sort = resolvedParams?.sort || 'name'; // Default to name
     const sets = await getBrowseSets(sort);
 
     return (
