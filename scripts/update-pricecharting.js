@@ -1,6 +1,10 @@
 /**
- * PriceCharting Scraper for Pokemon Cards
- * Scrapes Sets + Cards with Graded Prices (PSA 10, 9.5, 9, Ungraded/Raw)
+ * PriceCharting Scraper for Pokemon Cards v3
+ * 
+ * Fixes:
+ * - Duplicate detection to prevent infinite pagination loop
+ * - Properly detects end of pagination
+ * - Upsert mode (preserves existing data)
  */
 
 import mongoose from 'mongoose';
@@ -14,11 +18,10 @@ const CardSchema = new mongoose.Schema({
     name: { type: String, required: true },
     nameEN: String,
     image: String,
-    // Graded Prices (USD)
-    priceRaw: Number,       // Ungraded
-    priceGrade9: Number,    // Grade 9
-    priceGrade95: Number,   // Grade 9.5
-    pricePSA10: Number,     // PSA 10
+    priceRaw: Number,
+    priceGrade9: Number,
+    priceGrade95: Number,
+    pricePSA10: Number,
     currency: { type: String, default: 'USD' },
     set: String,
     setId: String,
@@ -32,9 +35,17 @@ const Card = mongoose.models.Card || mongoose.model('Card', CardSchema);
 const BASE_URL = 'https://www.pricecharting.com';
 const CATEGORY_URL = `${BASE_URL}/category/pokemon-cards`;
 
+// Configuration
+const CONFIG = {
+    DELAY_BETWEEN_PAGES: 1500,      // 1.5 seconds between pages
+    DELAY_BETWEEN_SETS: 2000,       // 2 seconds between sets
+    MAX_RETRIES: 3,
+    INITIAL_BACKOFF: 30000,
+    MAX_PAGES_PER_SET: 100,         // Safety limit
+};
+
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-// Parse price from text (e.g., "$123.45" -> 123.45)
 function parsePrice(text) {
     if (!text) return null;
     const cleaned = text.replace(/[$,]/g, '').trim();
@@ -42,24 +53,42 @@ function parsePrice(text) {
     return isNaN(num) ? null : num;
 }
 
-async function fetchHTML(url) {
-    const res = await fetch(url, {
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-            'Accept': 'text/html,application/xhtml+xml',
+async function fetchWithRetry(url, retryCount = 0) {
+    try {
+        const res = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml',
+            }
+        });
+
+        if (res.status === 429) {
+            if (retryCount >= CONFIG.MAX_RETRIES) {
+                throw new Error(`HTTP 429 - Max retries exceeded`);
+            }
+            const backoff = CONFIG.INITIAL_BACKOFF * Math.pow(2, retryCount);
+            console.log(`\n  ⚠️  Rate limited. Waiting ${backoff / 1000}s...`);
+            await sleep(backoff);
+            return fetchWithRetry(url, retryCount + 1);
         }
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.text();
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.text();
+    } catch (error) {
+        if (retryCount < CONFIG.MAX_RETRIES) {
+            await sleep(CONFIG.INITIAL_BACKOFF);
+            return fetchWithRetry(url, retryCount + 1);
+        }
+        throw error;
+    }
 }
 
 async function getAllSets() {
     console.log("Fetching Set List...");
-    const html = await fetchHTML(CATEGORY_URL);
+    const html = await fetchWithRetry(CATEGORY_URL);
     const $ = cheerio.load(html);
 
     const sets = [];
-    // Find all set links in the category page
     $('a[href^="/console/pokemon"]').each((i, el) => {
         const href = $(el).attr('href');
         const name = $(el).text().trim();
@@ -76,44 +105,31 @@ async function getAllSets() {
     return sets;
 }
 
-async function getCardsFromSet(set) {
-    const url = `${BASE_URL}${set.url}`;
-    const html = await fetchHTML(url);
-    const $ = cheerio.load(html);
-
+// Parse cards from HTML
+function parseCardsFromHTML($, set) {
     const cards = [];
 
-    // Find the product table (correct selector: #games_table)
     $('#games_table tbody tr[id^="product-"]').each((i, row) => {
         const $row = $(row);
-
-        // Get card name and link
         const $link = $row.find('td.title a').first();
         const name = $link.text().trim();
         const cardUrl = $link.attr('href');
 
         if (!name || !cardUrl) return;
 
-        // Get thumbnail image from td.image
         const $img = $row.find('td.image img');
         let image = $img.attr('src') || $img.attr('data-src');
-        // Convert thumbnail to larger image if possible
         if (image) {
             image = image.replace('/tiny/', '/large/').replace('/small/', '/large/');
         }
 
-        // Get prices from correct columns
-        // PriceCharting uses: used_price (Ungraded), cib_price (Grade 9), new_price (PSA 10)
         const priceRaw = parsePrice($row.find('td.price.used_price .js-price').text()) ||
             parsePrice($row.find('td.price.used_price').text());
         const priceGrade9 = parsePrice($row.find('td.price.cib_price .js-price').text()) ||
             parsePrice($row.find('td.price.cib_price').text());
-        // Grade 9.5 might not exist on all pages
-        const priceGrade95 = null; // Not available on PriceCharting
         const pricePSA10 = parsePrice($row.find('td.price.new_price .js-price').text()) ||
             parsePrice($row.find('td.price.new_price').text());
 
-        // Create unique ID
         const cardId = `pc-${set.id}-${cardUrl.split('/').pop()}`;
 
         cards.push({
@@ -123,7 +139,7 @@ async function getCardsFromSet(set) {
             image,
             priceRaw,
             priceGrade9,
-            priceGrade95,
+            priceGrade95: null,
             pricePSA10,
             currency: 'USD',
             set: set.name,
@@ -137,25 +153,80 @@ async function getCardsFromSet(set) {
     return cards;
 }
 
+async function getCardsFromSet(set) {
+    const allCards = [];
+    const seenCardIds = new Set();
+    let page = 1;
+    let consecutiveDuplicates = 0;
+
+    while (page <= CONFIG.MAX_PAGES_PER_SET) {
+        const url = `${BASE_URL}${set.url}?page=${page}`;
+
+        try {
+            const html = await fetchWithRetry(url);
+            const $ = cheerio.load(html);
+            const cards = parseCardsFromHTML($, set);
+
+            if (cards.length === 0) {
+                // No cards on this page - we've reached the end
+                break;
+            }
+
+            // Check for duplicates - if ALL cards on this page are duplicates, we've looped
+            let newCardsCount = 0;
+            for (const card of cards) {
+                if (!seenCardIds.has(card.id)) {
+                    seenCardIds.add(card.id);
+                    allCards.push(card);
+                    newCardsCount++;
+                }
+            }
+
+            // If no new cards were found, we've hit a duplicate page (pagination loop)
+            if (newCardsCount === 0) {
+                consecutiveDuplicates++;
+                if (consecutiveDuplicates >= 2) {
+                    // Two consecutive pages with all duplicates = end of real data
+                    break;
+                }
+            } else {
+                consecutiveDuplicates = 0;
+                process.stdout.write(`p${page}(${newCardsCount}) `);
+            }
+
+            page++;
+            await sleep(CONFIG.DELAY_BETWEEN_PAGES);
+        } catch (error) {
+            console.log(`\n  Error on page ${page}: ${error.message}`);
+            break;
+        }
+    }
+
+    return allCards;
+}
+
 async function main() {
+    console.log("🚀 PriceCharting Scraper v3 (with duplicate detection)");
+    console.log("=======================================================");
+    console.log(`Config: ${CONFIG.DELAY_BETWEEN_PAGES / 1000}s between pages, max ${CONFIG.MAX_PAGES_PER_SET} pages/set\n`);
+
     console.log("Connecting to DB...");
     await mongoose.connect(process.env.MONGODB_URI);
 
-    // Clean old data
-    console.log("Cleaning DB...");
-    await Card.deleteMany({});
+    const existingCount = await Card.countDocuments();
+    console.log(`Existing cards in DB: ${existingCount}`);
+    console.log("⚠️  Running in UPSERT mode\n");
 
-    // Get all sets
     const sets = await getAllSets();
 
-    let totalCards = 0;
+    let totalCardsAdded = 0;
+    let successfulSets = 0;
 
     for (let i = 0; i < sets.length; i++) {
         const set = sets[i];
         process.stdout.write(`[${i + 1}/${sets.length}] ${set.name}... `);
 
         try {
-            await sleep(500); // Rate limit
             const cards = await getCardsFromSet(set);
 
             if (cards.length > 0) {
@@ -167,16 +238,23 @@ async function main() {
                     }
                 }));
                 await Card.bulkWrite(ops);
-                totalCards += cards.length;
+                totalCardsAdded += cards.length;
+                successfulSets++;
             }
 
-            console.log(`${cards.length} cards.`);
+            console.log(`✓ ${cards.length} cards`);
+            await sleep(CONFIG.DELAY_BETWEEN_SETS);
         } catch (e) {
-            console.log(`Error: ${e.message}`);
+            console.log(`✗ Error: ${e.message}`);
+            await sleep(CONFIG.DELAY_BETWEEN_SETS * 2);
         }
     }
 
-    console.log(`\n✅ Import Complete. Total: ${totalCards} cards.`);
+    const finalCount = await Card.countDocuments();
+    console.log(`\n=======================================================`);
+    console.log(`✅ Complete! Sets: ${successfulSets}/${sets.length}`);
+    console.log(`   Cards added/updated: ${totalCardsAdded}`);
+    console.log(`   Total in DB: ${finalCount}`);
     process.exit(0);
 }
 
