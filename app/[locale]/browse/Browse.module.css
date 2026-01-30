@@ -12,7 +12,7 @@
 /* 4-column grid layout */
 .setsRow {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
     padding: 10px 0;
 }
@@ -100,7 +100,7 @@
 /* Responsive */
 @media (max-width: 768px) {
     .setsRow {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 
