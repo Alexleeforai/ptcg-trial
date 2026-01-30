@@ -2,11 +2,45 @@
     padding-bottom: 80px;
 }
 
-.title {
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 40px;
     margin-bottom: 30px;
+}
+
+.title {
     font-size: 1.8rem;
     font-weight: 600;
+    margin: 0;
+}
+
+.sortOptions {
+    display: flex;
+    gap: 10px;
+}
+
+.sortBtn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #2a2a30;
+    color: #888;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.sortBtn:hover {
+    background: #3a3a40;
+    color: #fff;
+}
+
+.sortBtn.active {
+    background: #6366f1;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
 }
 
 /* 4-column grid layout */

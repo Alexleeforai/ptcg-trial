@@ -6,12 +6,28 @@ import styles from './Browse.module.css';
 
 export const revalidate = 3600; // Revalidate every hour
 
-export default async function BrowsePage() {
-    const sets = await getBrowseSets();
+// Use server component but allow searchParams prop
+export default async function BrowsePage({ searchParams }) {
+    const sort = searchParams?.sort || 'name'; // Default to name
+    const sets = await getBrowseSets(sort);
 
     return (
         <div className={`container ${styles.container}`}>
-            <h1 className={styles.title}>Browse by Set</h1>
+            <div className={styles.headerRow}>
+                <h1 className={styles.title}>Browse by Set</h1>
+
+                <div className={styles.sortOptions}>
+                    <Link href="/browse?sort=name" className={`${styles.sortBtn} ${sort === 'name' ? styles.active : ''}`}>
+                        A-Z
+                    </Link>
+                    <Link href="/browse?sort=date" className={`${styles.sortBtn} ${sort === 'date' ? styles.active : ''}`}>
+                        Newest
+                    </Link>
+                    <Link href="/browse?sort=count" className={`${styles.sortBtn} ${sort === 'count' ? styles.active : ''}`}>
+                        Most Cards
+                    </Link>
+                </div>
+            </div>
 
             {/* Horizontal scrolling row of sets */}
             <div className={styles.setsRow}>
