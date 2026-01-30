@@ -1,4 +1,4 @@
-import { getListings, getCardById, getUserBookmarks, incrementCardView } from '@/lib/db';
+import { getListings, getCardById, getUserBookmarks, incrementCardView, isInCollection } from '@/lib/db';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 import { auth } from '@clerk/nextjs/server';
 import { Link } from '@/lib/navigation';
