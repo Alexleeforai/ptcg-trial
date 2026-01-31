@@ -16,7 +16,7 @@ export default async function BrowsePage({ searchParams }) {
     return (
         <div className={`container ${styles.container}`}>
             <div className={styles.headerRow}>
-                <h1 className={styles.title}>Browse by Set</h1>
+                <h1 className={styles.title}>Browse Sets 🗂️</h1>
 
                 <div className={styles.sortOptions}>
                     <Link href="/browse?sort=name" className={`${styles.sortBtn} ${sort === 'name' ? styles.active : ''}`}>
