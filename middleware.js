@@ -10,8 +10,13 @@ const intlMiddleware = createMiddleware({
 
 // Only localized /merchant and /collection routes require authentication
 const isProtectedRoute = createRouteMatcher([
-    '/(en|ja|zh-CN|zh-HK)/merchant(.*)',
-    '/(en|ja|zh-CN|zh-HK)/collection(.*)'
+    '/(.*)/merchant(.*)',
+    '/(.*)/collection(.*)'
+]);
+
+// API routes should NOT be localized
+const isApiRoute = createRouteMatcher([
+    '/api(.*)'
 ]);
 
 // Auth routes that should NOT be localized
@@ -20,51 +25,34 @@ const isAuthRoute = createRouteMatcher([
     '/sign-up(.*)'
 ]);
 
-// API routes should NOT be localized
-const isApiRoute = createRouteMatcher([
-    '/api(.*)'
-]);
-
 export default clerkMiddleware(async (auth, req) => {
-    // Skip i18n for auth routes - let them stay at root level
-    if (isAuthRoute(req)) {
-        // Only apply Clerk protection, no i18n routing
-        return NextResponse.next();
-    }
-
-    // Skip i18n for API routes - let them stay at root level
+    // 1. API: Handle separately (No Intl)
     if (isApiRoute(req)) {
-        // Protect collection API routes with Clerk
-        if (req.url.includes('/api/collection')) {
+        if (req.nextUrl.pathname.startsWith('/api/collection')) {
             await auth.protect();
         }
         return NextResponse.next();
     }
 
-    // Protect merchant routes with Clerk
+    // 2. Auth Pages: Handle separately (No Intl needed usually, but can be skipped)
+    if (isAuthRoute(req)) {
+        return NextResponse.next();
+    }
+
+    // 3. Protected Pages: Enforce Auth
     if (isProtectedRoute(req)) {
         await auth.protect();
     }
 
-    // Apply intl middleware for all non-auth routes
+    // 4. Public Pages: Apply i18n
     return intlMiddleware(req);
 });
 
 export const config = {
     matcher: [
-        // Ensure we handle internationalized pathnames
-        '/',
-        '/(zh-HK|zh-CN|en|ja)/:path*',
-
-        // Match specific protected routes
-        '/merchant/:path*',
-        '/collection/:path*',
-        '/sign-in/:path*',
-        '/sign-up/:path*',
-
-        // Enable redirects that add locale to root
-        '/((?!_next|.*\\..*|api/|trpc/).*)'
-    ]
+        // Skip Next.js internals and all static files
+        '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+        // Always run for API routes
+        '/(api|trpc)(.*)',
+    ],
 };
-
-
