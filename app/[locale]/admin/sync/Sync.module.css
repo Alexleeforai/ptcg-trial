@@ -1,0 +1,151 @@
+.container {
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 3rem;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.card h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.description {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.syncButton {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.syncButton:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.syncButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.successBox,
+.errorBox {
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.successBox {
+    background: #d4edda;
+    border: 2px solid #28a745;
+}
+
+.successBox h3 {
+    color: #155724;
+    margin-bottom: 1rem;
+}
+
+.errorBox {
+    background: #f8d7da;
+    border: 2px solid #dc3545;
+}
+
+.errorBox h3 {
+    color: #721c24;
+    margin-bottom: 0.5rem;
+}
+
+.errorBox p {
+    color: #721c24;
+    margin: 0;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.label {
+    display: block;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.value {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #155724;
+}
+
+.timestamp {
+    color: #666;
+    font-size: 0.85rem;
+    margin: 0;
+    text-align: center;
+}
+
+.infoBox {
+    background: #e7f3ff;
+    border: 2px solid #004085;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.infoBox h3 {
+    color: #004085;
+    margin-bottom: 1rem;
+}
+
+.infoBox ol {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: #004085;
+}
+
+.infoBox li {
+    margin-bottom: 0.5rem;
+}
+
+.infoBox a {
+    color: #667eea;
+    text-decoration: underline;
+}
+
+.infoBox a:hover {
+    color: #764ba2;
+}

@@ -22,11 +22,11 @@
         "resultsFor": "搜尋結果：",
         "noResults": "搵唔到：",
         "suggestion": "試下搜 '奇樹', '噴火龍', 或者 'SAR'。",
-        "basePrice": "日版基準"
+        "basePrice": "基準價"
     },
     "CardDetail": {
         "notFound": "搵唔到張卡",
-        "benchmark": "日本 SNKRDUNK 基準價",
+        "benchmark": "PriceCharting 國際基準價",
         "disclaimer": "* 基準價僅供參考。實際本地價格見下表。",
         "buyFromShops": "卡鋪現貨 (入手)",
         "sellToShops": "卡鋪回收 (放卡)",

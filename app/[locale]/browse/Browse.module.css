@@ -16,6 +16,39 @@
     margin: 0;
 }
 
+.controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.filterGroup {
+    display: flex;
+    gap: 8px;
+}
+
+.filterBtn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #2a2a30;
+    color: #888;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.filterBtn:hover {
+    background: #3a3a40;
+    color: #fff;
+}
+
+.filterBtn.active {
+    background: #10b981;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
 .sortOptions {
     display: flex;
     gap: 10px;
@@ -133,6 +166,29 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    .headerRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .filterGroup {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .filterBtn,
+    .sortBtn {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+
     .setsRow {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;

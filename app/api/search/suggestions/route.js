@@ -87,6 +87,8 @@ export async function GET(request) {
         set: card.set,
         number: card.number || '',
         price: card.price, // JPY
+        priceRaw: card.priceRaw, // USD (PriceCharting)
+        priceGrade9: card.priceGrade9, // USD
         link: card.link
     }));
 

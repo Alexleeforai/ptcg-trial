@@ -1,29 +1,77 @@
 .switcher {
-    display: flex;
-    gap: 4px;
-    background: var(--surface-highlight);
-    padding: 4px;
-    border-radius: var(--radius-sm);
+    position: relative;
 }
 
 .button {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 4px 8px;
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
 }
 
 .button:hover {
-    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-.active {
-    background: var(--bg-card);
-    color: var(--text-primary);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+.label {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: rgba(20, 20, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 160px;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.option.active {
+    background: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+}
+
+.optionLabel {
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 24px;
+}
+
+.optionName {
+    font-size: 13px;
+    opacity: 0.9;
 }

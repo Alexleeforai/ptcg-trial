@@ -115,10 +115,12 @@ export default function SearchAutocomplete({
                             <div className={styles.suggestionInfo}>
                                 <div className={styles.suggestionHeader}>
                                     <span className={styles.suggestionName}>{s.name}</span>
-                                    <span className={`${styles.suggestionPrice} ${s.price > 0 ? '' : styles.noPrice}`}>
+                                    <span className={`${styles.suggestionPrice} ${s.price > 0 || s.priceRaw > 0 ? '' : styles.noPrice}`}>
                                         {s.price > 0
                                             ? `HK$${Math.round(s.price * 0.055).toLocaleString()}`
-                                            : 'HK$ ---'
+                                            : s.priceRaw > 0
+                                                ? `HK$${Math.round(s.priceRaw * 7.8).toLocaleString()}`
+                                                : 'HK$ ---'
                                         }
                                     </span>
                                 </div>

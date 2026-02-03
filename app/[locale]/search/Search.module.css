@@ -3,10 +3,11 @@
     margin-bottom: 40px;
 }
 
+/* Mobile First Grid: Default to 2 columns */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
 }
 
 .cardItem {
@@ -21,8 +22,12 @@
     background: var(--bg-main);
     border-radius: var(--radius-sm);
     overflow: hidden;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     position: relative;
+    /* Center the image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cardImage {
@@ -59,9 +64,9 @@
 }
 
 .cardName {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     line-height: 1.4;
     color: var(--text-primary);
 }
@@ -69,20 +74,22 @@
 .priceInfo {
     margin-top: auto;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
     background: var(--surface-highlight);
-    padding: 8px 12px;
+    padding: 6px 8px;
     border-radius: var(--radius-sm);
+    gap: 2px;
 }
 
 .label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
 }
 
 .price {
     font-weight: 700;
+    font-size: 0.9rem;
     color: var(--text-primary);
 }
 
@@ -119,33 +126,34 @@
     height: 100%;
 }
 
-@media (max-width: 768px) {
+/* Desktop Overrides */
+@media (min-width: 768px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 24px;
     }
 
     .imageWrapper {
-        margin-bottom: 8px;
+        margin-bottom: 16px;
     }
 
     .cardName {
-        font-size: 0.9rem;
-        margin-bottom: 8px;
+        font-size: 1rem;
+        margin-bottom: 12px;
     }
 
     .priceInfo {
-        padding: 6px 8px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
     }
 
     .price {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
     .label {
-        font-size: 0.7rem;
+        font-size: 0.8rem;
     }
 }

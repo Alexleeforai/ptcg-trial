@@ -2,9 +2,10 @@ import { auth } from '@clerk/nextjs/server';
 import { getUserCollection } from '@/lib/db';
 import { getTranslations } from 'next-intl/server';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
+import { getHighQualityImage } from '@/lib/imageUtils';
 import { Link } from '@/lib/navigation';
 import styles from './Collection.module.css';
-import Card from '@/components/ui/Card';
+import CollectionCard from '@/components/collection/CollectionCard';
 
 // Revalidate every 5 minutes
 export const revalidate = 300;
@@ -43,40 +44,21 @@ export default async function CollectionPage() {
                 </div>
             ) : (
                 <div className={styles.grid}>
-                    {collection.map((card) => {
-                        const hkdPrice = convertJpyToHkd(card.price || 0, rate);
-
-                        return (
-                            <Link
-                                key={card.id}
-                                href={`/card/${card.id}`}
-                                className={styles.cardLink}
-                            >
-                                <Card className={styles.card}>
-                                    <div className={styles.imageWrapper}>
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img
-                                            src={card.image}
-                                            alt={card.name}
-                                            className={styles.cardImage}
-                                        />
-                                    </div>
-                                    <div className={styles.cardInfo}>
-                                        <h3 className={styles.cardName}>{card.name}</h3>
-                                        <p className={styles.cardSet}>{card.set}</p>
-                                        <div className={styles.priceRow}>
-                                            <span className={styles.price}>
-                                                ${hkdPrice.toLocaleString()} HKD
-                                            </span>
-                                            <span className={styles.priceJpy}>
-                                                ¥{(card.price || 0).toLocaleString()}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </Link>
-                        );
-                    })}
+                    {collection.map((card) => (
+                        <CollectionCard
+                            key={card.id}
+                            cardId={card.id}
+                            name={card.name}
+                            image={card.image}
+                            set={card.set}
+                            priceJpy={card.price}
+                            priceRawUsd={card.priceRaw}
+                            currency={card.currency}
+                            rate={rate}
+                            initialPurchasePrice={card.purchasePrice}
+                            items={card.items} // Pass items
+                        />
+                    ))}
                 </div>
             )}
         </div>

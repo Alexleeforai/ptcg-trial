@@ -19,6 +19,7 @@ const CardSchema = new mongoose.Schema({
 
     set: String,
     setId: String, // e.g., "pokemon-base-set"
+    setCode: String, // Official set code (e.g., m1L, CLB, s8a) - manually populated
     number: String, // Card number, e.g., "#4"
     cardType: String, // 'single', 'box'
     releaseDate: String,

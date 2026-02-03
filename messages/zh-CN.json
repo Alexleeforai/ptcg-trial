@@ -22,11 +22,11 @@
         "resultsFor": "搜索结果：",
         "noResults": "未找到：",
         "suggestion": "尝试搜索 '奇树', '喷火龙', 或者 'SAR'。",
-        "basePrice": "日版基准"
+        "basePrice": "基准价"
     },
     "CardDetail": {
         "notFound": "未找到该卡片",
-        "benchmark": "日本 SNKRDUNK 基准价",
+        "benchmark": "PriceCharting 国际基准价",
         "disclaimer": "* 基准价仅供参考。实际本地价格见下表。",
         "buyFromShops": "卡铺现货 (购买)",
         "sellToShops": "卡铺回收 (出售)",

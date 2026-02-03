@@ -22,11 +22,11 @@
         "resultsFor": "Search Results for",
         "noResults": "No cards found matching",
         "suggestion": "Try searching for 'Iono', 'Charizard', or 'SAR'.",
-        "basePrice": "JP Base"
+        "basePrice": "Benchmark"
     },
     "CardDetail": {
         "notFound": "Card not found",
-        "benchmark": "Japan SNKRDUNK Benchmark",
+        "benchmark": "PriceCharting International Benchmark",
         "disclaimer": "* Benchmark price is for reference only. Actual local prices below.",
         "buyFromShops": "Buy from Shops",
         "sellToShops": "Sell to Shops",

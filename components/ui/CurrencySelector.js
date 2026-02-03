@@ -35,7 +35,6 @@ export default function CurrencySelector() {
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Select currency"
             >
-                <span className={styles.symbol}>{currentCurrency.symbol}</span>
                 <span className={styles.code}>{currentCurrency.code}</span>
             </button>
 
@@ -47,7 +46,6 @@ export default function CurrencySelector() {
                             className={`${styles.option} ${curr.code === currency ? styles.active : ''}`}
                             onClick={() => handleSelect(curr.code)}
                         >
-                            <span className={styles.optionSymbol}>{curr.symbol}</span>
                             <span className={styles.optionName}>{curr.name}</span>
                         </button>
                     ))}

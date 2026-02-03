@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './SortFilter.module.css';
 
 const SORT_OPTIONS = [
+    { value: 'number-asc', label: '編號 (Card Number)' },
     { value: 'price-desc', label: '價格 高→低' },
     { value: 'price-asc', label: '價格 低→高' },
     { value: 'name-asc', label: '名稱 A→Z' },
