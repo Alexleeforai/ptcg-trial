@@ -18,8 +18,10 @@ export default function RecentlyViewedTracker({ card }) {
                 id: card.id,
                 name: card.name,
                 image: card.image,
-                price: card.price || 0, // Use price instead of basePriceJPY
-                path: window.location.pathname // Save the current localized path
+                price: card.price || 0,
+                priceRaw: card.priceRaw,
+                currency: card.currency,
+                path: window.location.pathname
             };
 
             history.unshift(trackedCard);
