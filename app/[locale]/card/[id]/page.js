@@ -5,6 +5,7 @@ import { Link } from '@/lib/navigation';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import styles from './CardDetail.module.css';
+import SmartImage from '@/components/SmartImage';
 import Card from '@/components/ui/Card';
 import TrendChart from '@/components/card/TrendChart';
 import { notFound } from 'next/navigation';
@@ -93,15 +94,21 @@ export default async function CardDetailPage({ params }) {
 
     const sellListings = listings.filter(l => l.type === 'sell');
     const buyListings = listings.filter(l => l.type === 'buy');
-    const displayImage = getHighQualityImage(card.image);
 
     return (
         <div className={`container ${styles.page}`}>
             <div className={styles.topSection}>
                 <div className={styles.imageColumn}>
                     <div className={styles.cardWrapper}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={displayImage} alt={card.name} className={styles.mainImage} />
+                        <SmartImage
+                            src={card.image}
+                            alt={card.name}
+                            className={styles.mainImage}
+                            fill={false}
+                            width={400}
+                            height={560}
+                            priority
+                        />
                     </div>
                 </div>
 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/lib/navigation';
 import Image from 'next/image';
+import SmartImage from '@/components/SmartImage';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './RecentlyViewed.module.css';
 
@@ -62,8 +63,8 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                         >
                             <div className={styles.imageWrapper}>
                                 {card.image ? (
-                                    <Image
-                                        src={getHighQualityImage(card.image)}
+                                    <SmartImage
+                                        src={card.image}
                                         alt={card.name}
                                         className={styles.cardImage}
                                         fill
