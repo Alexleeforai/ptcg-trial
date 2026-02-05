@@ -19,20 +19,29 @@
     border: 1px solid var(--border-highlight);
     border-radius: 12px;
     color: var(--text-primary);
-    padding: 0 12px;
+    padding: 0 32px 0 16px;
+    /* Right padding for arrow */
     font-size: 0.9rem;
     outline: none;
     cursor: pointer;
     transition: all 0.2s;
-    /* Remove default arrow in some browsers for cleaner look, or keep it */
+    /* Custom Arrow */
     appearance: none;
-    text-align: center;
-    min-width: 80px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+
+    text-align: left;
+    /* Align text left */
+    min-width: 110px;
+    /* Increased width */
 }
 
 .filterSelect:focus,
 .filterSelect:hover {
-    background: rgba(30, 30, 35, 0.95);
+    background-color: rgba(30, 30, 35, 0.95);
+    /* Keep background image */
     border-color: var(--accent-primary);
 }
 
