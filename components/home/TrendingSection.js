@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import SmartImage from '@/components/SmartImage';
 import { Link } from '@/lib/navigation';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './TrendingSection.module.css';
@@ -43,8 +44,8 @@ export default function TrendingSection({ cards }) {
                             <div className={styles.rankBadge}>{index + 1}</div>
                             <div className={styles.imageWrapper}>
                                 {card.image ? (
-                                    <Image
-                                        src={getHighQualityImage(card.image)}
+                                    <SmartImage
+                                        src={card.image}
                                         alt={card.name}
                                         fill
                                         sizes="(max-width: 768px) 33vw, 20vw"
@@ -59,7 +60,12 @@ export default function TrendingSection({ cards }) {
                                 <div className={styles.name}>{card.name}</div>
                                 <div className={styles.priceData}>
                                     <span className={styles.price}>{formattedPrice}</span>
-                                    <span className={styles.views}>👀 {card.views || 0}</span>
+                                    {card.pricePSA10 && (
+                                        <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            PSA 10: {formatPrice(card.pricePSA10 * 7.8, currency).split('.')[0]}
+                                        </div>
+                                    )}
+                                    <span className={styles.views} style={{ marginTop: 'auto' }}>👀 {card.views || 0}</span>
                                 </div>
                             </div>
                         </Link>

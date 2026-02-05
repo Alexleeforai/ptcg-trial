@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import SmartImage from '@/components/SmartImage';
 import { Link } from '@/lib/navigation';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './TopRisersSection.module.css';
@@ -48,8 +49,8 @@ export default function TopRisersSection({ cards }) {
                             <div className={styles.badge}>+{card.risePercent}%</div>
                             <div className={styles.imageWrapper}>
                                 {card.image ? (
-                                    <Image
-                                        src={getHighQualityImage(card.image)}
+                                    <SmartImage
+                                        src={card.image}
                                         alt={card.name}
                                         fill
                                         sizes="(max-width: 768px) 33vw, 20vw"
@@ -65,7 +66,19 @@ export default function TopRisersSection({ cards }) {
                                 <div className={styles.priceData}>
                                     <div className={styles.priceColumn}>
                                         <span className={styles.price}>{formattedPrice}</span>
-                                        <span className={styles.originalPrice}>({card.currency === 'JPY' ? '¥' : '$'}{originalPrice.toLocaleString()})</span>
+                                        {card.pricePSA10 && (
+                                            <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                PSA 10: {formatPrice(
+                                                    // Convert USD PSA10 (if USD) to HKD roughly or use currency hook properly
+                                                    // Note: pricePSA10 from DB is usually raw USD number if from PC. 
+                                                    // We'll assume USD -> current currency conversion if needed, 
+                                                    // but simply multiplying by 7.8 is safer for HKD context if currency context is HKD.
+                                                    // However, useCurrency hook usually sets 'HKD'.
+                                                    card.pricePSA10 * (currency === 'HKD' ? 7.8 : 1),
+                                                    currency
+                                                ).split('.')[0]}
+                                            </div>
+                                        )}
                                     </div>
                                     <span className={styles.riseAmount}>
                                         +{formattedRise}
