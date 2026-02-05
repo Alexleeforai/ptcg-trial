@@ -70,6 +70,11 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                                 )}
                                 <div className={styles.priceRow}>
                                     <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
+                                    {product.pricePSA10 && (
+                                        <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            PSA 10: ${Math.round(product.pricePSA10 * 7.8).toLocaleString()}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </Link>
