@@ -1,42 +1,26 @@
 'use client';
 
-import { useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
+import { useCollection } from '@/components/providers/CollectionProvider';
 import styles from './QuickActionBookmark.module.css';
 
 export default function QuickActionBookmark({ cardId }) {
     const { isSignedIn } = useAuth();
-    const [isAdded, setIsAdded] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const { collectionIds, addToCollection, removeFromCollection } = useCollection();
 
+    // Don't render server-side mismatch, waiting for auth is ok
     if (!isSignedIn) return null;
 
-    const handleAdd = async (e) => {
-        e.preventDefault(); // Stop link navigation
-        e.stopPropagation(); // Stop bubbling
+    const isAdded = collectionIds.has(cardId);
 
-        if (isLoading) return;
+    const handleToggle = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-        setIsLoading(true);
-
-        try {
-            // Default to ADD (POST)
-            // If already added, backend handles it gracefully
-            const response = await fetch('/api/collection/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ cardId }),
-            });
-
-            if (response.ok) {
-                setIsAdded(true);
-            }
-        } catch (error) {
-            console.error('Error adding to collection:', error);
-        } finally {
-            setIsLoading(false);
+        if (isAdded) {
+            removeFromCollection(cardId);
+        } else {
+            addToCollection(cardId);
         }
     };
 
@@ -44,8 +28,8 @@ export default function QuickActionBookmark({ cardId }) {
         <button
             onClick={handleToggle}
             className={`${styles.button} ${isAdded ? styles.added : ''}`}
-            aria-label="Add to Collection"
-            title="Add to Collection"
+            aria-label={isAdded ? "Remove from Collection" : "Add to Collection"}
+            title={isAdded ? "Remove from Collection" : "Add to Collection"}
         >
             <span className={styles.icon}>
                 {isAdded ? '❤️' : '🤍'}
