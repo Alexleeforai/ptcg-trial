@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from '@/lib/navigation';
 import Image from 'next/image';
-import Image from 'next/image';
 import SmartImage from '@/components/SmartImage';
 import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import { getHighQualityImage } from '@/lib/imageUtils';
