@@ -70,9 +70,6 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                                 )}
                                 <div className={styles.priceRow}>
                                     <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
-                                    <span style={{ fontSize: '0.8rem', color: '#888', fontWeight: 'normal' }}>
-                                        (¥{jpyPrice.toLocaleString()})
-                                    </span>
                                 </div>
                             </div>
                         </Link>

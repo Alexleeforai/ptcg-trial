@@ -20,6 +20,7 @@ export default function RecentlyViewedTracker({ card }) {
                 image: card.image,
                 price: card.price || 0,
                 priceRaw: card.priceRaw,
+                pricePSA10: card.pricePSA10,
                 currency: card.currency,
                 path: window.location.pathname
             };

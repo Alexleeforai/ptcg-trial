@@ -90,9 +90,11 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                                 <div className={styles.cardName}>{card.name}</div>
                                 <div className={styles.cardPrice}>
                                     HK${hkdPrice.toLocaleString()}
-                                    <span style={{ fontSize: '0.8em', color: '#888', marginLeft: '4px', fontWeight: 'normal' }}>
-                                        (¥{jpyPrice.toLocaleString()})
-                                    </span>
+                                    {card.pricePSA10 && (
+                                        <div style={{ fontSize: '0.75em', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            PSA 10: ${Math.round(card.pricePSA10 * 7.8).toLocaleString()}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
