@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { CollectionProvider } from '@/components/providers/CollectionProvider';
 import "../globals.css";
 
 const geistSans = Geist({
@@ -47,11 +48,13 @@ export default async function LocaleLayout({ children, params }) {
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <ClerkProvider>
                     <NextIntlClientProvider messages={messages} locale={locale}>
-                        <Header />
-                        <main style={{ minHeight: '80vh' }}>
-                            {children}
-                        </main>
-                        <Footer />
+                        <CollectionProvider>
+                            <Header />
+                            <main style={{ minHeight: '80vh' }}>
+                                {children}
+                            </main>
+                            <Footer />
+                        </CollectionProvider>
                     </NextIntlClientProvider>
                 </ClerkProvider>
             </body>

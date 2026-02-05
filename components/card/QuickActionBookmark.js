@@ -42,7 +42,7 @@ export default function QuickActionBookmark({ cardId }) {
 
     return (
         <button
-            onClick={handleAdd}
+            onClick={handleToggle}
             className={`${styles.button} ${isAdded ? styles.added : ''}`}
             aria-label="Add to Collection"
             title="Add to Collection"
