@@ -28,7 +28,11 @@ export function CollectionProvider({ children }) {
                 const res = await fetch('/api/collection/ids');
                 if (res.ok) {
                     const data = await res.json();
-                    setCollectionIds(new Set(data.ids));
+                    if (data && Array.isArray(data.ids)) {
+                        setCollectionIds(new Set(data.ids));
+                    } else {
+                        setCollectionIds(new Set());
+                    }
                 }
             } catch (e) {
                 console.error("Failed to sync collection", e);

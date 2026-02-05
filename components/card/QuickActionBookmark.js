@@ -11,7 +11,7 @@ export default function QuickActionBookmark({ cardId }) {
     // Don't render server-side mismatch, waiting for auth is ok
     if (!isSignedIn) return null;
 
-    const isAdded = collectionIds.has(cardId);
+    const isAdded = collectionIds?.has(cardId) || false;
 
     const handleToggle = async (e) => {
         e.preventDefault();
