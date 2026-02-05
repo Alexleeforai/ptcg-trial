@@ -46,6 +46,7 @@ export default async function SearchPage({ searchParams }) {
     const params = await searchParams;
     const q = params.q || '';
     const sort = params.sort || 'price-desc';
+    const type = params.type || 'all';
 
     const rate = await getJpyToHkdRate();
 
@@ -60,7 +61,7 @@ export default async function SearchPage({ searchParams }) {
         searchQuery = translatedQ;
     }
 
-    let results = await findCards(searchQuery);
+    let results = await findCards(searchQuery, type);
 
     // Apply sorting
     results = sortResults(results, sort);

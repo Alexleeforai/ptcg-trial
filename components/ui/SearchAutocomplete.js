@@ -15,6 +15,7 @@ export default function SearchAutocomplete({
 }) {
     const t = useTranslations('Hero'); // Reuse Hero translations for search
     const [query, setQuery] = useState('');
+    const [searchType, setSearchType] = useState('all');
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -26,9 +27,9 @@ export default function SearchAutocomplete({
         setShowSuggestions(false);
         if (query.trim()) {
             if (onSearchSubmit) {
-                onSearchSubmit(query);
+                onSearchSubmit(query, searchType);
             } else {
-                router.push(`/search?q=${encodeURIComponent(query)}`);
+                router.push(`/search?q=${encodeURIComponent(query)}&type=${searchType}`);
             }
         }
     };
@@ -39,7 +40,7 @@ export default function SearchAutocomplete({
             if (query.trim().length >= 1) {
                 setIsLoading(true);
                 try {
-                    const res = await fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}`);
+                    const res = await fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}&type=${searchType}`);
                     const data = await res.json();
                     if (data.results && data.results.length > 0) {
                         setSuggestions(data.results);
@@ -59,7 +60,7 @@ export default function SearchAutocomplete({
             }
         }, 500); // Increased debounce for scraping
         return () => clearTimeout(timer);
-    }, [query]);
+    }, [query, searchType]);
 
     // Click outside to close
     useEffect(() => {
@@ -80,6 +81,15 @@ export default function SearchAutocomplete({
     return (
         <div className={`${styles.searchContainer} ${className}`} ref={searchRef}>
             <form onSubmit={handleSearch} className={styles.form}>
+                <select
+                    value={searchType}
+                    onChange={(e) => setSearchType(e.target.value)}
+                    className={styles.filterSelect}
+                >
+                    <option value="all">All</option>
+                    <option value="setCode">Set Code</option>
+                    <option value="name">Name</option>
+                </select>
                 <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}

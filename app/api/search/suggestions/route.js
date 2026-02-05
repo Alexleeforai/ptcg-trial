@@ -38,6 +38,7 @@ function translateQuery(query) {
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const q = searchParams.get('q');
+    const type = searchParams.get('type') || 'all';
 
     if (!q || q.length < 1) {
         return NextResponse.json({ results: [] });
@@ -52,17 +53,21 @@ export async function GET(request) {
     }
 
     // 1. Check DB first
-    let dbResults = await findCards(searchQuery);
+    let dbResults = await findCards(searchQuery, type);
 
     // 2. If no results in DB, scrape SNKRDUNK
-    if (dbResults.length === 0) {
+    // Only scrape if type is 'all' or 'name', scraping set code via text search is unreliable on snkrdunk
+    if (dbResults.length === 0 && (type === 'all' || type === 'name')) {
         console.log(`Cache miss for "${searchQuery}". Scraping SNKRDUNK...`);
         try {
             const scrapedResults = await searchSnkrdunk(searchQuery);
             if (scrapedResults.length > 0) {
                 // 3. Save to DB
                 await upsertCards(scrapedResults);
-                dbResults = scrapedResults;
+
+                // Re-fetch with filter to ensure we respect the type 
+                // (though scrape likely returns loose matches, findCards enforces field filter)
+                dbResults = await findCards(searchQuery, type);
             }
         } catch (e) {
             console.error("Scraping error:", e);
