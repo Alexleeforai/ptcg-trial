@@ -34,6 +34,10 @@ export default function SmartImage({ src, alt, ...props }) {
     const [variants, setVariants] = useState([]);
 
     useEffect(() => {
+        if (!src) {
+            setImgSrc('/images/no-image-available.png');
+            return;
+        }
         // When initial src changes, reset everything
         // But first, we want the "Best" initial guess
         const possibleUrls = FALLBACKS(src);
@@ -53,11 +57,14 @@ export default function SmartImage({ src, alt, ...props }) {
         }
     };
 
+    // Prevent rendering NextImage with empty src
+    if (!imgSrc) return null;
+
     return (
         <Image
             {...props}
             src={imgSrc}
-            alt={alt}
+            alt={alt || 'Card Image'}
             onError={handleError}
         />
     );
