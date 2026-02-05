@@ -13,6 +13,7 @@ export default function CollectionCard({
     set,
     priceJpy,
     priceRawUsd,
+    pricePSA10,
     currency,
     rate,
     initialPurchasePrice,
@@ -63,9 +64,21 @@ export default function CollectionCard({
 
             <div className={styles.cardInfo}>
                 <div className={styles.marketPrice}>
-                    <span className={styles.label}>Market Price (Raw)</span>
-                    <div className={styles.priceDisplay}>
-                        HK${currentPriceHkd.toLocaleString()}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        <div>
+                            <span className={styles.label}>Market Price (Raw)</span>
+                            <div className={styles.priceDisplay}>
+                                HK${currentPriceHkd.toLocaleString()}
+                            </div>
+                        </div>
+                        {pricePSA10 && (
+                            <div style={{ textAlign: 'right' }}>
+                                <span className={styles.label}>PSA 10</span>
+                                <div className={styles.priceDisplay} style={{ color: '#888', fontSize: '0.9rem' }}>
+                                    HK${Math.round(pricePSA10 * 7.8).toLocaleString()}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 

@@ -53,6 +53,7 @@ export default async function CollectionPage() {
                             set={card.set}
                             priceJpy={card.price}
                             priceRawUsd={card.priceRaw}
+                            pricePSA10={card.pricePSA10} // Pass PSA10
                             currency={card.currency}
                             rate={rate}
                             initialPurchasePrice={card.purchasePrice}
