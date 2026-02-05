@@ -46,7 +46,7 @@ export default async function LocaleLayout({ children, params }) {
         <html lang={locale} suppressHydrationWarning>
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <ClerkProvider>
-                    <NextIntlClientProvider messages={messages}>
+                    <NextIntlClientProvider messages={messages} locale={locale}>
                         <Header />
                         <main style={{ minHeight: '80vh' }}>
                             {children}
