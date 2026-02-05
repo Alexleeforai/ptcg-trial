@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/lib/navigation';
 import Image from 'next/image';
+import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './LatestSets.module.css';
 
@@ -35,49 +36,52 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                     }
 
                     return (
-                        <Link key={product.id} href={`/card/${product.id}`} className={styles.setCard}>
-                            <div className={styles.imageWrapper}>
-                                {product.image ? (
-                                    <Image
-                                        src={getHighQualityImage(product.image)}
-                                        alt={product.name}
-                                        className={styles.productImage}
-                                        fill
-                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                ) : (
-                                    <div style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        background: '#1a1a1a',
-                                        color: '#666',
-                                        fontSize: '0.8rem'
-                                    }}>
-                                        No Image
-                                    </div>
-                                )}
-                            </div>
-                            <div className={styles.setInfo}>
-                                <h3 className={styles.setName}>{product.name}</h3>
-                                {product.releaseDate && (
-                                    <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '4px' }}>
-                                        {product.releaseDate}
-                                    </div>
-                                )}
-                                <div className={styles.priceRow}>
-                                    <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
-                                    {product.pricePSA10 && (
-                                        <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            PSA 10: ${Math.round(product.pricePSA10 * 7.8).toLocaleString()}
+                        <div key={product.id} className={styles.setCard} style={{ position: 'relative', display: 'block', padding: 0 }}>
+                            <QuickActionBookmark cardId={product.id} />
+                            <Link href={`/card/${product.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                <div className={styles.imageWrapper}>
+                                    {product.image ? (
+                                        <Image
+                                            src={getHighQualityImage(product.image)}
+                                            alt={product.name}
+                                            className={styles.productImage}
+                                            fill
+                                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                    ) : (
+                                        <div style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            background: '#1a1a1a',
+                                            color: '#666',
+                                            fontSize: '0.8rem'
+                                        }}>
+                                            No Image
                                         </div>
                                     )}
                                 </div>
-                            </div>
-                        </Link>
+                                <div className={styles.setInfo}>
+                                    <h3 className={styles.setName}>{product.name}</h3>
+                                    {product.releaseDate && (
+                                        <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: '4px' }}>
+                                            {product.releaseDate}
+                                        </div>
+                                    )}
+                                    <div className={styles.priceRow}>
+                                        <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
+                                        {product.pricePSA10 && (
+                                            <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                PSA 10: ${Math.round(product.pricePSA10 * 7.8).toLocaleString()}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
                     );
                 })}
             </div>

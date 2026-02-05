@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import SmartImage from '@/components/SmartImage';
+import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import { Link } from '@/lib/navigation';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './TrendingSection.module.css';
@@ -40,10 +41,11 @@ export default function TrendingSection({ cards }) {
                     const formattedPrice = formatPrice(displayPrice, currency);
 
                     return (
-                        <Link key={card.id} href={`/card/${card.id}`} className={styles.card}>
-                            <div className={styles.rankBadge}>{index + 1}</div>
-                            <div className={styles.imageWrapper}>
-                                {card.image ? (
+                        <div key={card.id} className={styles.card} style={{ position: 'relative', display: 'block', padding: 0 }}>
+                            <QuickActionBookmark cardId={card.id} />
+                            <Link href={`/card/${card.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                <div className={styles.rankBadge}>{index + 1}</div>
+                                <div className={styles.imageWrapper}>
                                     <SmartImage
                                         src={card.image}
                                         alt={card.name}
@@ -52,25 +54,23 @@ export default function TrendingSection({ cards }) {
                                         style={{ objectFit: 'contain' }}
                                         className={styles.image}
                                     />
-                                ) : (
-                                    <div className={styles.noImage}>No Image</div>
-                                )}
-                            </div>
-                            <div className={styles.info}>
-                                <div className={styles.name}>{card.name}</div>
-                                <div className={styles.priceData}>
-                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <span className={styles.price}>{formattedPrice}</span>
-                                        {card.pricePSA10 && (
-                                            <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>
-                                                PSA 10: {formatPrice(card.pricePSA10 * 7.8, currency).split('.')[0]}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <span className={styles.views} style={{ alignSelf: 'flex-end', marginBottom: '2px' }}>👀 {card.views || 0}</span>
                                 </div>
-                            </div>
-                        </Link>
+                                <div className={styles.info}>
+                                    <div className={styles.name}>{card.name}</div>
+                                    <div className={styles.priceData}>
+                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <span className={styles.price}>{formattedPrice}</span>
+                                            {card.pricePSA10 && (
+                                                <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>
+                                                    PSA 10: {formatPrice(card.pricePSA10 * 7.8, currency).split('.')[0]}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <span className={styles.views} style={{ alignSelf: 'flex-end', marginBottom: '2px' }}>👀 {card.views || 0}</span>
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
                     );
                 })}
             </div>

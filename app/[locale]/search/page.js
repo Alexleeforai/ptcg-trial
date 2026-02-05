@@ -4,6 +4,7 @@ import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import { Link } from '@/lib/navigation';
 import Card from '@/components/ui/Card';
+import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import SortFilter from '@/components/search/SortFilter';
 import styles from './Search.module.css';
 import { getTranslations } from 'next-intl/server';
@@ -82,47 +83,50 @@ export default async function SearchPage({ searchParams }) {
             ) : (
                 <div className={styles.grid}>
                     {results.map((card) => (
-                        <Link key={card.id} href={`/card/${card.id}`} className={styles.linkItem}>
-                            <Card hover className={styles.cardItem}>
-                                <div className={styles.imageWrapper}>
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={getHighQualityImage(card.image)} alt={card.name} className={styles.cardImage} />
-                                </div>
-                                <div className={styles.cardInfo}>
-                                    <div className={styles.cardHeader}>
-                                        <span className={styles.rarity}>{card.rarity || ''}</span>
-                                        <span className={styles.set}>{card.set}</span>
+                        <div key={card.id} className={styles.linkItem} style={{ position: 'relative' }}>
+                            <QuickActionBookmark cardId={card.id} />
+                            <Link href={`/card/${card.id}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+                                <Card hover className={styles.cardItem}>
+                                    <div className={styles.imageWrapper}>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={getHighQualityImage(card.image)} alt={card.name} className={styles.cardImage} />
                                     </div>
-                                    <h3 className={styles.cardName}>{card.name}</h3>
-                                    {(card.nameCN || card.nameEN) && (
-                                        <div className={styles.subNames}>
-                                            {card.nameCN && <span>{card.nameCN}</span>}
-                                            {card.nameCN && card.nameEN && <span className={styles.separator}>/</span>}
-                                            {card.nameEN && <span>{card.nameEN}</span>}
+                                    <div className={styles.cardInfo}>
+                                        <div className={styles.cardHeader}>
+                                            <span className={styles.rarity}>{card.rarity || ''}</span>
+                                            <span className={styles.set}>{card.set}</span>
                                         </div>
-                                    )}
-                                    <div className={styles.priceInfo}>
-                                        <span className={styles.label}>{t('basePrice')}</span>
-                                        <span className={styles.price}>
-                                            {card.priceRaw && card.currency === 'USD' ? (
-                                                <>
-                                                    約 ${Math.round(card.priceRaw * 7.8).toLocaleString('en-US')}
-                                                    {card.pricePSA10 && (
-                                                        <div style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                            PSA 10: ${Math.round(card.pricePSA10 * 7.8).toLocaleString('en-US')}
-                                                        </div>
-                                                    )}
-                                                </>
-                                            ) : (
-                                                <>
-                                                    約 ${convertJpyToHkd(card.price || 0, rate).toLocaleString('en-US')}
-                                                </>
-                                            )}
-                                        </span>
+                                        <h3 className={styles.cardName}>{card.name}</h3>
+                                        {(card.nameCN || card.nameEN) && (
+                                            <div className={styles.subNames}>
+                                                {card.nameCN && <span>{card.nameCN}</span>}
+                                                {card.nameCN && card.nameEN && <span className={styles.separator}>/</span>}
+                                                {card.nameEN && <span>{card.nameEN}</span>}
+                                            </div>
+                                        )}
+                                        <div className={styles.priceInfo}>
+                                            <span className={styles.label}>{t('basePrice')}</span>
+                                            <span className={styles.price}>
+                                                {card.priceRaw && card.currency === 'USD' ? (
+                                                    <>
+                                                        約 ${Math.round(card.priceRaw * 7.8).toLocaleString('en-US')}
+                                                        {card.pricePSA10 && (
+                                                            <div style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                                PSA 10: ${Math.round(card.pricePSA10 * 7.8).toLocaleString('en-US')}
+                                                            </div>
+                                                        )}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        約 ${convertJpyToHkd(card.price || 0, rate).toLocaleString('en-US')}
+                                                    </>
+                                                )}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        </Link>
+                                </Card>
+                            </Link>
+                        </div>
                     ))}
                 </div>
             )}

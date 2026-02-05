@@ -48,6 +48,7 @@
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s;
+    position: relative;
 }
 
 .cardItem:hover {
