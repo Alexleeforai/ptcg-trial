@@ -164,11 +164,9 @@ export default function MerchantProfilePage() {
                         <div className={styles.displayContainer} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'transparent', borderRadius: '8px' }}>
                             <div className={styles.displayText} style={{ fontSize: '1.1rem', color: 'white', flex: 1, marginRight: '16px' }}>{value || <span className={styles.placeholder}>-</span>}</div>
                             {/* Shop Name is immutable/special in this context ? User asked "except shop name" */}
-                            {fieldKey !== 'shopName' && (
-                                <button className={styles.editBtn} onClick={() => handleEdit(fieldKey)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#666', padding: '8px' }}>
-                                    <EditIcon />
-                                </button>
-                            )}
+                            <button className={styles.editBtn} onClick={() => handleEdit(fieldKey)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#666', padding: '8px' }}>
+                                <EditIcon />
+                            </button>
                         </div>
                     )}
                 </div>
