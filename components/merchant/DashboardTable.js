@@ -1,154 +1,150 @@
-'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import Image from 'next/image';
-import styles from '@/app/[locale]/merchant/Merchant.module.css';
-import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
-
-// Mock data specific for the dashboard view
-const INITIAL_INVENTORY = [
-    {
-        id: 'sv4a-350',
-        image: 'https://images.pokemontcg.io/sv4pt5/237_hires.png',
-        name: 'Iono (SAR)',
-        set: 'Shiny Treasure ex',
-        marketBuy: 950,
-        marketSell: 1100,
-        myBuy: 900,
-        mySell: 1200,
-        stock: 2
-    },
-    {
-        id: 'sv3-134',
-        image: 'https://images.pokemontcg.io/sv3/223_hires.png',
-        name: 'Charizard ex (SAR)',
-        set: 'Ruler of the Black Flame',
-        marketBuy: 850,
-        marketSell: 1150,
-        myBuy: '',
-        mySell: '',
-        stock: 0
-    },
-    {
-        id: 'sv2a-151',
-        image: 'https://images.pokemontcg.io/sv3pt5/151_hires.png',
-        name: 'Mew ex (SAR)',
-        set: 'Pokemon 151',
-        marketBuy: 400,
-        marketSell: 550,
-        myBuy: 380,
-        mySell: 580,
-        stock: 1
-    }
-];
+import { useState, useEffect } from 'react';
+import SmartImage from '@/components/SmartImage';
+import styles from './DashboardTable.module.css';
+import AddListingModal from './AddListingModal';
 
 export default function DashboardTable() {
     const t = useTranslations('Merchant');
-    const [items, setItems] = useState(INITIAL_INVENTORY);
-    const [loading, setLoading] = useState(null);
+    const [items, setItems] = useState([]);
+    const [isLoadingData, setIsLoadingData] = useState(true);
 
-    const handleUpdate = (id, field, value) => {
-        setItems(items.map(item =>
-            item.id === id ? { ...item, [field]: value } : item
-        ));
-    };
+    // Modal State for Editing
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingItem, setEditingItem] = useState(null);
 
-    const matchMarket = (id) => {
-        setItems(items.map(item => {
-            if (item.id === id) {
-                return {
-                    ...item,
-                    myBuy: item.marketBuy,
-                    mySell: item.marketSell
-                };
+    // Fetch Listings on Mount
+    useEffect(() => {
+        fetchListings();
+    }, []);
+
+    const fetchListings = async () => {
+        try {
+            const res = await fetch('/api/merchant/listings');
+            if (res.ok) {
+                const data = await res.json();
+                const mappedItems = data.map(item => ({
+                    id: item.cardId,
+                    _id: item._id,
+                    image: item.image,
+                    name: item.name,
+                    set: item.set,
+                    marketBuy: item.marketBuy,
+                    marketSell: item.marketSell,
+                    myBuy: 0,
+                    mySell: item.price,
+                    stock: item.stock,
+                    condition: item.condition
+                }));
+                setItems(mappedItems);
             }
-            return item;
-        }));
+        } catch (error) {
+            console.error('Failed to fetch listings:', error);
+        } finally {
+            setIsLoadingData(false);
+        }
     };
 
-    const handleSave = async (id) => {
-        setLoading(id);
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 800));
-        setLoading(null);
-        alert('Prices updated!');
+    // Open Edit Modal
+    const handleEdit = (item) => {
+        setEditingItem(item);
+        setIsEditModalOpen(true);
     };
+
+    const handleModalClose = () => {
+        setIsEditModalOpen(false);
+        setEditingItem(null);
+    };
+
+    const handleListingUpdated = () => {
+        fetchListings(); // Refresh data
+    };
+
+    if (isLoadingData) {
+        return <div className={styles.loading}>Loading inventory...</div>;
+    }
+
+    if (items.length === 0) {
+        // ... Keep empty state ...
+        return (
+            <div className={styles.emptyState}>
+                <p>You have no active listings.</p>
+                <p style={{ fontSize: '0.9rem', color: '#71717a' }}>Add cards from the search page to start selling!</p>
+            </div>
+        );
+    }
 
     return (
-        <div className={styles.tableContainer}>
-            <div className={styles.tableHeader}>
-                <div>Card</div>
-                <div>Details</div>
-                <div>Market Ref</div>
-                <div>My Buy ($)</div>
-                <div>My Sell ($)</div>
-                <div>Action</div>
+        <>
+            <div className={styles.tableContainer}>
+                <div className={styles.tableHeader}>
+                    <div>Card</div>
+                    <div>Details</div>
+                    <div>Condition</div>
+                    <div>Market Ref</div>
+                    <div>My Sell ($)</div>
+                    <div>Stock</div>
+                    <div style={{ textAlign: 'right' }}>Action</div>
+                </div>
+
+                {items.map(item => (
+                    <div key={item.id} className={styles.tableRow}>
+                        <div className={styles.cardImageContainer}>
+                            <SmartImage
+                                src={item.image}
+                                alt={item.name}
+                                fill
+                                style={{ objectFit: 'contain' }}
+                            />
+                        </div>
+
+                        <div>
+                            <div className={styles.cardName}>{item.name}</div>
+                            <div className={styles.cardMeta}>{item.set}</div>
+                        </div>
+
+                        <div>
+                            <span className={styles.readOnlyText} style={{ fontSize: '0.9rem', color: '#fbbf24' }}>
+                                {item.condition}
+                            </span>
+                        </div>
+
+                        <div>
+                            <div className={styles.marketPrice} style={{ color: '#ef4444' }}>Buy: ${item.marketBuy || '-'}</div>
+                            <div className={styles.marketPrice} style={{ color: '#22c55e' }}>Sell: ${item.marketSell || '-'}</div>
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                            <span className={styles.readOnlyText}>${item.mySell}</span>
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                            <span className={styles.readOnlyText}>{item.stock}</span>
+                        </div>
+
+                        <div className={styles.actionCell}>
+                            <button
+                                className={styles.iconBtn}
+                                onClick={() => handleEdit(item)}
+                                title="Edit"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
 
-            {items.map(item => (
-                <div key={item.id} className={styles.tableRow}>
-                    <Image
-                        src={item.image}
-                        alt={item.name}
-                        className={styles.cardImage}
-                        width={80}
-                        height={112}
-                        style={{ objectFit: 'cover' }}
-                    />
-
-                    <div>
-                        <div className={styles.cardName}>{item.name}</div>
-                        <div className={styles.cardMeta}>{item.set}</div>
-                    </div>
-
-                    <div>
-                        <div style={{ fontSize: '0.85rem' }}>
-                            <div style={{ color: 'var(--accent)' }}>Buy: ${item.marketBuy}</div>
-                            <div style={{ color: 'var(--success)' }}>Sell: ${item.marketSell}</div>
-                        </div>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => matchMarket(item.id)}
-                            style={{ fontSize: '0.7rem', height: '24px', padding: '0 8px', marginTop: '4px' }}
-                        >
-                            {t('matchMarket')}
-                        </Button>
-                    </div>
-
-                    <div className={styles.inputGroup}>
-                        <Input
-                            type="number"
-                            value={item.myBuy}
-                            onChange={(e) => handleUpdate(item.id, 'myBuy', e.target.value)}
-                            placeholder="-"
-                            style={{ width: '80px', height: '36px' }}
-                        />
-                    </div>
-
-                    <div className={styles.inputGroup}>
-                        <Input
-                            type="number"
-                            value={item.mySell}
-                            onChange={(e) => handleUpdate(item.id, 'mySell', e.target.value)}
-                            placeholder="-"
-                            style={{ width: '80px', height: '36px' }}
-                        />
-                    </div>
-
-                    <div className={styles.actionCell}>
-                        <Button
-                            size="sm"
-                            onClick={() => handleSave(item.id)}
-                            disabled={loading === item.id}
-                        >
-                            {loading === item.id ? '...' : t('save')}
-                        </Button>
-                    </div>
-                </div>
-            ))}
-        </div>
+            {/* Reuse AddListingModal for Editing */}
+            {isEditModalOpen && (
+                <AddListingModal
+                    isOpen={isEditModalOpen}
+                    onClose={handleModalClose}
+                    onListingAdded={handleListingUpdated}
+                    initialData={editingItem}
+                />
+            )}
+        </>
     );
 }

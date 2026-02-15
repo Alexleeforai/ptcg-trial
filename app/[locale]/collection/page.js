@@ -39,7 +39,7 @@ export default async function CollectionPage() {
                     <h2>{t('empty')}</h2>
                     <p>{t('emptyHint')}</p>
                     <Link href="/" className={styles.browseButton}>
-                        {t('browsCards')}
+                        {t('browseCards')}
                     </Link>
                 </div>
             ) : (

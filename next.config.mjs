@@ -10,24 +10,15 @@ const nextConfig = {
   // Image optimization configuration
   images: {
     remotePatterns: [
+
       {
         protocol: 'https',
-        hostname: 'snkrdunk.com',
+        hostname: 'images.pokemontcg.io',
         pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'cdn.snkrdunk.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.snkrdunk.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.pokemontcg.io',
         pathname: '/**',
       },
       {

@@ -1,0 +1,187 @@
+/* DashboardTable.module.css - Premium Design */
+
+.loading,
+.emptyState {
+    padding: 60px;
+    text-align: center;
+    color: #a1a1aa;
+    /* Zinc 400 */
+    background: #09090b;
+    /* Zinc 950 */
+    border-radius: 12px;
+    border: 1px solid #27272a;
+    /* Zinc 800 */
+    font-size: 1rem;
+}
+
+.tableContainer {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #27272a;
+    border-radius: 12px;
+    background: #09090b;
+}
+
+.tableHeader {
+    display: grid;
+    /* Card (Image), Details, Condition, Market, Sell, Stock, Action */
+    grid-template-columns: 80px 2fr 0.8fr 1.5fr 1fr 0.8fr 100px;
+    gap: 16px;
+    padding: 16px 24px;
+    background: #18181b;
+    /* Zinc 900 */
+    border-bottom: 1px solid #27272a;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    align-items: center;
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 80px 2fr 0.8fr 1.5fr 1fr 0.8fr 100px;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 1px solid #27272a;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.tableRow:last-child {
+    border-bottom: none;
+}
+
+.tableRow:hover {
+    background: #18181b;
+    /* Zinc 900 hover */
+}
+
+/* Card Info */
+.cardImageContainer {
+    width: 60px;
+    height: 84px;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #3f3f46;
+}
+
+.cardName {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    font-size: 1rem;
+}
+
+.cardMeta {
+    font-size: 0.85rem;
+    color: #71717a;
+    /* Zinc 500 */
+}
+
+/* Inputs */
+.inputGroup {
+    display: flex;
+    align-items: center;
+}
+
+.tableInput {
+    width: 100%;
+    padding: 8px 12px;
+    background: #18181b;
+    border: 1px solid #3f3f46;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.tableInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: #09090b;
+}
+
+.tableInput:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #27272a;
+    border-color: transparent;
+}
+
+/* Read-only Text */
+.readOnlyText {
+    font-size: 1rem;
+    color: #e4e4e7;
+    /* Zinc 200 */
+    font-weight: 500;
+    padding: 8px 0;
+}
+
+/* Buttons */
+.actionCell {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.iconBtn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #a1a1aa;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.iconBtn:hover {
+    background: #27272a;
+    color: #fff;
+}
+
+.saveBtn {
+    background: #3b82f6;
+    /* Blue */
+    color: #fff;
+}
+
+.saveBtn:hover {
+    background: #2563eb;
+}
+
+.cancelBtn:hover {
+    background: #ef4444;
+    /* Red */
+    color: #fff;
+}
+
+/* Market Data */
+.marketPrice {
+    font-size: 0.85rem;
+    color: #a1a1aa;
+    margin-bottom: 2px;
+}
+
+.matchBtn {
+    background: transparent;
+    border: 1px solid #3f3f46;
+    color: #71717a;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 6px;
+}
+
+.matchBtn:hover {
+    border-color: #52525b;
+    color: #fff;
+}

@@ -1,0 +1,128 @@
+/* Shops.module.css - Premium Dark Theme */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 80vh;
+}
+
+.header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(to right, #fff, #a1a1aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: #a1a1aa;
+    font-size: 1.1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.shopCard {
+    background: #09090b;
+    /* Zinc 950 */
+    border: 1px solid #27272a;
+    /* Zinc 800 */
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.shopCard:hover {
+    transform: translateY(-4px);
+    border-color: #3f3f46;
+    /* Zinc 700 */
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    background: #18181b;
+    /* Zinc 900 */
+}
+
+.iconWrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #27272a;
+    border: 2px solid #3f3f46;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shopIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholderIcon {
+    font-size: 2rem;
+}
+
+.shopName {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.shopDesc {
+    font-size: 0.9rem;
+    color: #71717a;
+    /* Zinc 500 */
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+
+.visitBtn {
+    margin-top: auto;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid #3b82f6;
+    color: #3b82f6;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: center;
+}
+
+.shopCard:hover .visitBtn {
+    background: #3b82f6;
+    color: #fff;
+}
+
+.loading {
+    text-align: center;
+    padding: 60px;
+    color: #71717a;
+}

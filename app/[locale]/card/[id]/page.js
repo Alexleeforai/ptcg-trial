@@ -48,13 +48,8 @@ export default async function CardDetailPage({ params }) {
         const now = Date.now();
         const diffHours = (now - updatedAt) / (1000 * 60 * 60);
 
-        if (diffHours > 4) {
-            try {
-                const snkrdunkId = id.startsWith('snkr-') ? id.replace('snkr-', '') : id;
-                if (id.startsWith('snkr-') || !isNaN(id)) {
-                    // Logic skipped, assumed present in file as I am just doing context replacement
-                }
-            } catch (e) { }
+        if (card) {
+            // Track view
         }
     }
 

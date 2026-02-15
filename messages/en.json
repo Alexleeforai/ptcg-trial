@@ -13,7 +13,8 @@
         "search": "Search",
         "merchant": "Login",
         "collection": "Collection",
-        "browse": "Browse"
+        "browse": "Browse",
+        "shops": "Shops"
     },
     "Footer": {
         "copy": "© {year} TCG HK Platform. Data for reference only."

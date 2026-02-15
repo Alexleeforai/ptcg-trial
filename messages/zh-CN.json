@@ -13,7 +13,8 @@
         "search": "搜索",
         "merchant": "登录",
         "collection": "我的收藏",
-        "browse": "所有卡牌"
+        "browse": "所有卡牌",
+        "shops": "店铺"
     },
     "Footer": {
         "copy": "© {year} TCG HK 平台。数据仅供参考。"
