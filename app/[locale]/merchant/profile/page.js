@@ -97,7 +97,8 @@ export default function MerchantProfilePage() {
                 setOriginalData(formData);
                 setEditingField(null);
             } else {
-                alert('Failed to update profile.');
+                const errorText = await res.text();
+                alert(`Failed to update profile: ${errorText}`);
             }
         } catch (error) {
             console.error('Error updating profile:', error);

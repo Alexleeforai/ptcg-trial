@@ -64,6 +64,6 @@ export async function POST(req) {
 
     } catch (error) {
         console.error('[MERCHANT_PROFILE_POST]', error);
-        return new NextResponse('Internal Error', { status: 500 });
+        return new NextResponse(error.message || 'Internal Error', { status: 500 });
     }
 }
