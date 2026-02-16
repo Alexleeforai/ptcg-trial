@@ -31,6 +31,8 @@ export const viewport = {
     maximumScale: 1,
 };
 
+import ChatWidgetWrapper from '@/components/chat/ChatWidgetWrapper';
+
 export default async function LocaleLayout({ children, params }) {
     const { locale } = await params;
 
@@ -54,6 +56,7 @@ export default async function LocaleLayout({ children, params }) {
                                 {children}
                             </main>
                             <Footer />
+                            <ChatWidgetWrapper />
                         </CollectionProvider>
                     </NextIntlClientProvider>
                 </ClerkProvider>

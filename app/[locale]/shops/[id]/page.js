@@ -64,6 +64,37 @@ export default function ShopDetailPage() {
                 </div>
 
                 <p className={styles.shopDesc}>{profile.description}</p>
+
+                {/* Chat with Shop button */}
+                <button
+                    onClick={() => {
+                        if (window.__chatWidget) {
+                            window.__chatWidget.startChat(profile.userId);
+                        } else {
+                            alert('Please sign in to chat with this shop.');
+                        }
+                    }}
+                    style={{
+                        marginTop: '16px',
+                        padding: '10px 24px',
+                        background: 'linear-gradient(135deg, #3b82f6, #6366f1)',
+                        border: 'none',
+                        borderRadius: '24px',
+                        color: 'white',
+                        fontSize: '0.9rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        transition: 'transform 0.2s, box-shadow 0.2s',
+                        boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                >
+                    💬 Chat with Shop
+                </button>
             </header>
 
             {/* Active Listings */}
