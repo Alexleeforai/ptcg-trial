@@ -25,6 +25,12 @@ const ConversationSchema = new mongoose.Schema({
         type: Map,
         of: Number,
         default: {}
+    },
+    // Per-participant display names: { "user_abc": "Alex", "user_xyz": "Card Shop HK" }
+    displayNames: {
+        type: Map,
+        of: String,
+        default: {}
     }
 }, { timestamps: true });
 

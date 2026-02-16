@@ -20,17 +20,25 @@ export async function GET(req) {
             .sort({ lastMessageAt: -1 })
             .lean();
 
-        // Enrich with participant info (shop name, icon)
+        // Enrich with participant info
         const enriched = await Promise.all(
             conversations.map(async (conv) => {
                 const otherUserId = conv.participants.find(p => p !== userId);
+
+                // Try MerchantProfile first (for merchant participants)
                 const profile = await MerchantProfile.findOne({ userId: otherUserId }).lean();
+
+                // Use displayNames from conversation, fallback to MerchantProfile, then "Unknown"
+                const displayNames = conv.displayNames || {};
+                const otherName = displayNames[otherUserId]
+                    || profile?.shopName
+                    || 'Unknown';
 
                 return {
                     ...conv,
                     otherParticipant: {
                         userId: otherUserId,
-                        shopName: profile?.shopName || 'Unknown',
+                        shopName: otherName,
                         shopIcon: profile?.shopIcon || null
                     },
                     myUnreadCount: conv.unreadCount?.get?.(userId) || conv.unreadCount?.[userId] || 0
@@ -53,7 +61,7 @@ export async function POST(req) {
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
-        const { merchantId } = await req.json();
+        const { merchantId, displayName } = await req.json();
 
         if (!merchantId) {
             return new NextResponse('merchantId is required', { status: 400 });
@@ -79,14 +87,27 @@ export async function POST(req) {
         // Sort participants to ensure consistent lookup (prevents duplicate conversations)
         const participants = [userId, merchantId].sort();
 
+        // Build display names map
+        const userDisplayName = (displayName || '').trim().substring(0, 50) || 'Customer';
+
         // Find existing or create new conversation
         let conversation = await Conversation.findOne({ participants });
 
         if (!conversation) {
             conversation = await Conversation.create({
                 participants,
-                unreadCount: new Map([[userId, 0], [merchantId, 0]])
+                unreadCount: new Map([[userId, 0], [merchantId, 0]]),
+                displayNames: new Map([
+                    [userId, userDisplayName],
+                    [merchantId, merchantProfile.shopName]
+                ])
             });
+        } else {
+            // Update user's display name if they provided one
+            if (displayName && displayName.trim()) {
+                conversation.displayNames.set(userId, userDisplayName);
+                await conversation.save();
+            }
         }
 
         return NextResponse.json({

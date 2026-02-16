@@ -13,6 +13,8 @@ export default function ChatWidget({ initialMerchantId = null }) {
     const [inputText, setInputText] = useState('');
     const [sending, setSending] = useState(false);
     const [totalUnread, setTotalUnread] = useState(0);
+    const [namePrompt, setNamePrompt] = useState(null); // { merchantId, shopName } when prompting
+    const [userName, setUserName] = useState('');
 
     const messagesEndRef = useRef(null);
     const pollRef = useRef(null);
@@ -118,19 +120,38 @@ export default function ChatWidget({ initialMerchantId = null }) {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    // ─────────── Start a new chat ───────────
-    const handleStartChat = async (merchantId) => {
+    // ─────────── Start a new chat (show name prompt first) ───────────
+    const handleStartChat = async (merchantId, shopName) => {
+        // Check if we already have a saved name
+        const savedName = typeof window !== 'undefined' ? localStorage.getItem('chatDisplayName') : null;
+        if (savedName) {
+            // Skip prompt, use saved name
+            await createConversation(merchantId, savedName);
+        } else {
+            // Show name prompt
+            setNamePrompt({ merchantId, shopName: shopName || 'this shop' });
+            setUserName('');
+            setIsOpen(true);
+        }
+    };
+
+    const createConversation = async (merchantId, displayName) => {
         try {
             const res = await fetch('/api/chat/conversations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ merchantId })
+                body: JSON.stringify({ merchantId, displayName })
             });
 
             if (res.ok) {
                 const conv = await res.json();
                 setActiveConv(conv);
+                setNamePrompt(null);
                 setIsOpen(true);
+                // Save name for future chats
+                if (displayName && typeof window !== 'undefined') {
+                    localStorage.setItem('chatDisplayName', displayName);
+                }
             } else {
                 const errText = await res.text();
                 console.error('Failed to start chat:', errText);
@@ -138,6 +159,12 @@ export default function ChatWidget({ initialMerchantId = null }) {
         } catch (err) {
             console.error('Error starting chat:', err);
         }
+    };
+
+    const handleNameSubmit = () => {
+        const name = userName.trim();
+        if (!name || !namePrompt) return;
+        createConversation(namePrompt.merchantId, name);
     };
 
     // ─────────── Send message ───────────
@@ -213,20 +240,46 @@ export default function ChatWidget({ initialMerchantId = null }) {
                     {/* Header */}
                     <div className={styles.panelHeader}>
                         <div className={styles.panelTitle}>
-                            {activeConv && (
-                                <button className={styles.backBtn} onClick={() => { setActiveConv(null); fetchConversations(); }}>
+                            {(activeConv || namePrompt) && (
+                                <button className={styles.backBtn} onClick={() => { setActiveConv(null); setNamePrompt(null); fetchConversations(); }}>
                                     ←
                                 </button>
                             )}
-                            {activeConv
-                                ? (activeConv.otherParticipant?.shopName || 'Chat')
-                                : 'Messages'
+                            {namePrompt
+                                ? 'Enter Your Name'
+                                : activeConv
+                                    ? (activeConv.otherParticipant?.shopName || 'Chat')
+                                    : 'Messages'
                             }
                         </div>
-                        <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>✕</button>
+                        <button className={styles.closeBtn} onClick={() => { setIsOpen(false); setNamePrompt(null); }}>✕</button>
                     </div>
 
-                    {activeConv ? (
+                    {namePrompt ? (
+                        /* ─────────── Name Prompt ─────────── */
+                        <div className={styles.namePrompt}>
+                            <div className={styles.namePromptIcon}>👋</div>
+                            <p className={styles.namePromptText}>
+                                Before chatting with <strong>{namePrompt.shopName}</strong>, please enter your name:
+                            </p>
+                            <input
+                                className={styles.namePromptInput}
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === 'Enter') handleNameSubmit(); }}
+                                placeholder="Your name..."
+                                maxLength={50}
+                                autoFocus
+                            />
+                            <button
+                                className={styles.namePromptBtn}
+                                onClick={handleNameSubmit}
+                                disabled={!userName.trim()}
+                            >
+                                Start Chat →
+                            </button>
+                        </div>
+                    ) : activeConv ? (
                         /* ─────────── Active Chat View ─────────── */
                         <>
                             <div className={styles.messagesArea}>

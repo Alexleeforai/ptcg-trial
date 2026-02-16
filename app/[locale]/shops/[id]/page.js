@@ -69,7 +69,7 @@ export default function ShopDetailPage() {
                 <button
                     onClick={() => {
                         if (window.__chatWidget) {
-                            window.__chatWidget.startChat(profile.userId);
+                            window.__chatWidget.startChat(profile.userId, profile.shopName);
                         } else {
                             alert('Please sign in to chat with this shop.');
                         }
