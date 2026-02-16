@@ -46,8 +46,12 @@ export default function ChatWidget({ initialMerchantId = null }) {
                 const data = await res.json();
 
                 if (isPolling && data.length > 0) {
-                    // Append new messages
-                    setMessages(prev => [...prev, ...data]);
+                    // Deduplicate: only append messages not already in state
+                    setMessages(prev => {
+                        const existingIds = new Set(prev.map(m => m._id));
+                        const newOnly = data.filter(m => !existingIds.has(m._id));
+                        return newOnly.length > 0 ? [...prev, ...newOnly] : prev;
+                    });
                 } else if (!isPolling) {
                     setMessages(data);
                 }
