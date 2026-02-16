@@ -180,6 +180,28 @@
     text-overflow: ellipsis;
 }
 
+/* Camera Button */
+.cameraBtn {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(20, 20, 25, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-highlight);
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.cameraBtn:hover {
+    border-color: var(--accent-primary);
+    background: rgba(59, 130, 246, 0.1);
+}
+
 /* Spinner */
 .spinner {
     width: 20px;

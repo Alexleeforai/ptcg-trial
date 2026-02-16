@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from '@/lib/navigation';
 import Image from 'next/image';
 import Input from '@/components/ui/Input';
+import CardScanner from '@/components/search/CardScanner';
 import styles from './SearchAutocomplete.module.css';
 import { useTranslations } from 'next-intl';
 
@@ -21,6 +22,7 @@ export default function SearchAutocomplete({
     const [isLoading, setIsLoading] = useState(false);
     const searchRef = useRef(null);
     const router = useRouter();
+    const [showScanner, setShowScanner] = useState(false);
 
     const handleSearch = (e) => {
         if (e) e.preventDefault();
@@ -104,6 +106,14 @@ export default function SearchAutocomplete({
                     wrapperClassName={styles.innerInputWrapper}
                     autoFocus={autoFocus}
                 />
+                <button
+                    type="button"
+                    className={styles.cameraBtn}
+                    onClick={() => setShowScanner(true)}
+                    title="Scan card image"
+                >
+                    📷
+                </button>
             </form>
 
             {showSuggestions && suggestions.length > 0 && (
@@ -144,6 +154,10 @@ export default function SearchAutocomplete({
                         </div>
                     ))}
                 </div>
+            )}
+
+            {showScanner && (
+                <CardScanner onClose={() => setShowScanner(false)} />
             )}
         </div>
     );
