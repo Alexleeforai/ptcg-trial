@@ -155,10 +155,10 @@ export default function ChatWidget({ initialMerchantId = null }) {
             });
 
             if (res.ok) {
-                const newMsg = await res.json();
-                setMessages(prev => [...prev, newMsg]);
-                lastTimestampRef.current = newMsg.createdAt;
                 setInputText('');
+                // Full refetch to avoid duplicates — no optimistic append
+                lastTimestampRef.current = null;
+                await fetchMessages(activeConv._id, false);
                 // Update conversation list
                 fetchConversations();
             } else {
