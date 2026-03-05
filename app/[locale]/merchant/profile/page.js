@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import styles from '../Merchant.module.css';
 
 // Simple SVG Icons
@@ -37,7 +38,9 @@ export default function MerchantProfilePage() {
         instagram: '',
         shopIcon: '',
         address: '',
-        description: ''
+        description: '',
+        verificationStatus: 'unsubmitted',
+        businessRegistrationImage: ''
     });
     // Backup for cancel
     const [originalData, setOriginalData] = useState({});
@@ -59,7 +62,9 @@ export default function MerchantProfilePage() {
                         instagram: data.instagram || '',
                         shopIcon: data.shopIcon || '',
                         address: data.address || '',
-                        description: data.description || ''
+                        description: data.description || '',
+                        verificationStatus: data.verificationStatus || 'unsubmitted',
+                        businessRegistrationImage: data.businessRegistrationImage || ''
                     };
                     setFormData(cleanData);
                     setOriginalData(cleanData);
@@ -198,10 +203,11 @@ export default function MerchantProfilePage() {
                                 background: '#111',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                position: 'relative'
                             }}>
                                 {formData.shopIcon ? (
-                                    <img src={formData.shopIcon} alt="Shop Icon" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <Image src={formData.shopIcon} alt="Shop Icon" fill style={{ objectFit: 'cover' }} />
                                 ) : (
                                     <span style={{ color: '#444', fontSize: '2rem' }}>🏪</span>
                                 )}
@@ -256,6 +262,87 @@ export default function MerchantProfilePage() {
                 {renderRow('Instagram', 'instagram', 'text')}
                 {renderRow('Address', 'address', 'text', true)}
                 {renderRow('Description', 'description', 'text', true)}
+
+                {/* Verification Section */}
+                <div className={styles.profileRow} style={{ display: 'flex', alignItems: 'flex-start', padding: '24px 0', borderBottom: '1px solid #333' }}>
+                    <div className={styles.rowLabel} style={{ width: '180px', color: '#888', flexShrink: 0 }}>Verification Status</div>
+                    <div className={styles.rowContent} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+                        {/* Status Badge */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            {formData.verificationStatus === 'unsubmitted' && <span style={{ padding: '4px 12px', background: '#333', color: '#ccc', borderRadius: '12px', fontSize: '0.9rem' }}>Unsubmitted</span>}
+                            {formData.verificationStatus === 'pending' && <span style={{ padding: '4px 12px', background: 'rgba(234, 179, 8, 0.2)', color: '#facc15', border: '1px solid rgba(234, 179, 8, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Pending Review ⏳</span>}
+                            {formData.verificationStatus === 'approved' && <span style={{ padding: '4px 12px', background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Verified ✅</span>}
+                            {formData.verificationStatus === 'rejected' && <span style={{ padding: '4px 12px', background: 'rgba(239, 68, 68, 0.2)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Rejected ❌</span>}
+                        </div>
+
+                        {/* Upload BR logic */}
+                        {(formData.verificationStatus === 'unsubmitted' || formData.verificationStatus === 'rejected') && (
+                            <div style={{ background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '12px', padding: '16px' }}>
+                                <h4 style={{ margin: '0 0 8px 0', color: '#60a5fa', fontSize: '1rem' }}>Get Verified</h4>
+                                <p style={{ margin: '0 0 16px 0', color: '#9ca3af', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                                    Upload your Business Registration (BR) certificate to get a Blue Tick next to your shop name. This builds trust with buyers.
+                                </p>
+
+                                {editingField === 'brImage' ? (
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                                        <div style={{ flex: 1 }}>
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                        if (file.size > 5 * 1024 * 1024) {
+                                                            alert('File size must be less than 5MB');
+                                                            return;
+                                                        }
+                                                        const reader = new FileReader();
+                                                        reader.onloadend = () => {
+                                                            setFormData({ ...formData, businessRegistrationImage: reader.result });
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    }
+                                                }}
+                                                style={{ color: '#fff', marginBottom: '8px', display: 'block' }}
+                                            />
+                                            {formData.businessRegistrationImage && (
+                                                <div style={{ position: 'relative', width: '200px', height: '140px', background: '#000', border: '1px solid #333', borderRadius: '8px', overflow: 'hidden' }}>
+                                                    <Image src={formData.businessRegistrationImage} alt="BR Preview" fill style={{ objectFit: 'cover' }} />
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className={styles.editActions} style={{ display: 'flex', gap: '8px' }}>
+                                            <button onClick={() => handleSave('brImage')} disabled={isLoading} style={{ padding: '8px 16px', background: '#3b82f6', border: 'none', color: 'white', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+                                                Submit
+                                            </button>
+                                            <button onClick={handleCancel} disabled={isLoading} style={{ width: '44px', height: '44px', background: '#222', border: '1px solid #444', color: 'white', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                <XIcon />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={() => handleEdit('brImage')}
+                                        style={{ padding: '10px 20px', background: 'transparent', border: '1px solid #3b82f6', color: '#60a5fa', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}
+                                    >
+                                        Upload BR Image
+                                    </button>
+                                )}
+                            </div>
+                        )}
+
+                        {(formData.verificationStatus === 'pending' || formData.verificationStatus === 'approved') && formData.businessRegistrationImage && (
+                            <div style={{ marginTop: '8px' }}>
+                                <p style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: '#666' }}>Submitted Document:</p>
+                                <div style={{ position: 'relative', width: '150px', height: '100px', background: '#000', border: '1px solid #333', borderRadius: '8px', overflow: 'hidden', opacity: 0.7 }}>
+                                    <Image src={formData.businessRegistrationImage} alt="BR Document" fill style={{ objectFit: 'cover' }} />
+                                </div>
+                            </div>
+                        )}
+
+                    </div>
+                </div>
             </div>
         </div>
     );

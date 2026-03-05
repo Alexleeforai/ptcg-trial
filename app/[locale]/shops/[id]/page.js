@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import SmartImage from '@/components/SmartImage';
+import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import styles from './ShopDetail.module.css';
 
 export default function ShopDetailPage() {
@@ -43,12 +45,15 @@ export default function ShopDetailPage() {
             <header className={styles.shopHeader}>
                 <div className={styles.iconWrapper}>
                     {profile.shopIcon ? (
-                        <img src={profile.shopIcon} alt={profile.shopName} className={styles.shopIcon} />
+                        <Image src={profile.shopIcon} alt={profile.shopName} width={100} height={100} className={styles.shopIcon} style={{ objectFit: 'cover' }} />
                     ) : (
                         <span style={{ fontSize: '3rem', lineHeight: '100px', display: 'block', textAlign: 'center' }}>🏪</span>
                     )}
                 </div>
-                <h1 className={styles.shopName}>{profile.shopName}</h1>
+                <h1 className={styles.shopName} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {profile.shopName}
+                    {profile.verificationStatus === 'approved' && <VerifiedBadge />}
+                </h1>
 
                 <div className={styles.shopMeta}>
                     {profile.instagram && (

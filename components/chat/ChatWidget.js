@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
+import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import styles from './ChatWidget.module.css';
 
 const POLL_INTERVAL = 3000; // 3 seconds
@@ -248,7 +250,12 @@ export default function ChatWidget({ initialMerchantId = null }) {
                             {namePrompt
                                 ? 'Enter Your Name'
                                 : activeConv
-                                    ? (activeConv.otherParticipant?.shopName || 'Chat')
+                                    ? (
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            {activeConv.otherParticipant?.shopName || 'Chat'}
+                                            {activeConv.otherParticipant?.verificationStatus === 'approved' && <VerifiedBadge />}
+                                        </div>
+                                    )
                                     : 'Messages'
                             }
                         </div>
@@ -338,14 +345,15 @@ export default function ChatWidget({ initialMerchantId = null }) {
                                     >
                                         <div className={styles.convIcon}>
                                             {conv.otherParticipant?.shopIcon ? (
-                                                <img src={conv.otherParticipant.shopIcon} alt="" />
+                                                <Image src={conv.otherParticipant.shopIcon} alt="" width={40} height={40} className={styles.convIconImage} />
                                             ) : (
                                                 '🏪'
                                             )}
                                         </div>
                                         <div className={styles.convInfo}>
-                                            <div className={styles.convName}>
+                                            <div className={styles.convName} style={{ display: 'flex', alignItems: 'center' }}>
                                                 {conv.otherParticipant?.shopName || 'Unknown'}
+                                                {conv.otherParticipant?.verificationStatus === 'approved' && <VerifiedBadge />}
                                             </div>
                                             <div className={styles.convPreview}>
                                                 {conv.lastMessage || 'No messages yet'}

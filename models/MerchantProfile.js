@@ -25,7 +25,13 @@ const MerchantProfileSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
-    }
+    },
+    verificationStatus: {
+        type: String,
+        enum: ['unsubmitted', 'pending', 'approved', 'rejected'],
+        default: 'unsubmitted'
+    },
+    businessRegistrationImage: String // Base64 data URL for BR doc
 }, { timestamps: true });
 
 export default mongoose.models.MerchantProfile || mongoose.model('MerchantProfile', MerchantProfileSchema);

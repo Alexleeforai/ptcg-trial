@@ -3,6 +3,7 @@ import { translateQuery } from '@/lib/translate';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import { Link } from '@/lib/navigation';
+import Image from 'next/image';
 import Card from '@/components/ui/Card';
 import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import SortFilter from '@/components/search/SortFilter';
@@ -89,8 +90,13 @@ export default async function SearchPage({ searchParams }) {
                             <Link href={`/card/${card.id}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                                 <Card hover className={styles.cardItem}>
                                     <div className={styles.imageWrapper}>
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={getHighQualityImage(card.image)} alt={card.name} className={styles.cardImage} />
+                                        <Image
+                                            src={getHighQualityImage(card.image) || '/placeholder-card.png'}
+                                            alt={card.name || 'Unknown Card'}
+                                            width={240}
+                                            height={336}
+                                            className={styles.cardImage}
+                                        />
                                     </div>
                                     <div className={styles.cardInfo}>
                                         <div className={styles.cardHeader}>

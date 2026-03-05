@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Tesseract from 'tesseract.js';
+import Image from 'next/image';
 import { useRouter } from '@/lib/navigation';
 import styles from './CardScanner.module.css';
 
@@ -13,8 +15,13 @@ export default function CardScanner({ onClose }) {
     const [statusText, setStatusText] = useState('');
     const [ocrResult, setOcrResult] = useState(null);
     const [error, setError] = useState(null);
+    const [mounted, setMounted] = useState(false);
     const fileInputRef = useRef(null);
     const router = useRouter();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // ─────────── Handle image selection ───────────
     const handleImageChange = useCallback((e) => {
@@ -234,7 +241,9 @@ export default function CardScanner({ onClose }) {
         setProgress(0);
     }, []);
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <div className={styles.overlay} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
             <div className={styles.modal}>
                 {/* Header */}
@@ -267,8 +276,7 @@ export default function CardScanner({ onClose }) {
                         /* ─── Preview + Results ─── */
                         <>
                             <div className={styles.previewContainer}>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={preview} alt="Card preview" className={styles.previewImage} />
+                                <Image src={preview} alt="Card preview" width={400} height={400} className={styles.previewImage} style={{ objectFit: 'contain' }} />
 
                                 {scanning && (
                                     <div className={styles.scanOverlay}>
@@ -380,6 +388,7 @@ export default function CardScanner({ onClose }) {
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }

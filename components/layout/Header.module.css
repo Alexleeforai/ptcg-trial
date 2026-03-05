@@ -123,13 +123,8 @@
 
 /* Mobile Responsiveness */
 @media (max-width: 640px) {
-    .navText {
+    .desktopNav {
         display: none;
-    }
-
-    .navLink {
-        padding: 8px;
-        /* Square button on mobile */
     }
 
     .brandName {
@@ -138,10 +133,6 @@
     }
 
     .actions {
-        gap: 12px;
-    }
-
-    .nav {
         gap: 12px;
     }
 }

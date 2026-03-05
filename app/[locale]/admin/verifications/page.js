@@ -1,0 +1,164 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import styles from './AdminVerifications.module.css';
+
+export default function AdminVerificationsPage() {
+    const [applications, setApplications] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [filter, setFilter] = useState('pending'); // 'pending', 'approved', 'rejected', 'all'
+    const [actionLoading, setActionLoading] = useState(null); // merchantId being processed
+    const [expandedImage, setExpandedImage] = useState(null);
+
+    useEffect(() => {
+        fetchApplications();
+    }, [filter]);
+
+    const fetchApplications = async () => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`/api/admin/verifications?status=${filter}`);
+            if (res.ok) {
+                const data = await res.json();
+                setApplications(data);
+            } else {
+                console.error('Failed to fetch applications:', await res.text());
+            }
+        } catch (error) {
+            console.error('Error fetching applications:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleAction = async (merchantId, action) => {
+        if (!confirm(`Are you sure you want to ${action} this verification?`)) return;
+
+        setActionLoading(merchantId);
+        try {
+            const res = await fetch(`/api/admin/verifications/${merchantId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action })
+            });
+
+            if (res.ok) {
+                // Remove from list if we're filtering, or update status if showing all
+                if (filter === 'pending') {
+                    setApplications(apps => apps.filter(a => a._id !== merchantId));
+                } else {
+                    fetchApplications(); // Refresh to catch updated status
+                }
+            } else {
+                alert(`Error: ${await res.text()}`);
+            }
+        } catch (error) {
+            console.error(`Error processing ${action}:`, error);
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
+    return (
+        <div className={`container ${styles.page}`}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Merchant Verifications</h1>
+                <p className={styles.subtitle}>Review Business Registration uploads and assign the Blue Tick.</p>
+            </div>
+
+            <div className={styles.filterTabs}>
+                {['pending', 'approved', 'rejected', 'all'].map(status => (
+                    <button
+                        key={status}
+                        className={`${styles.tabBtn} ${filter === status ? styles.activeTab : ''}`}
+                        onClick={() => setFilter(status)}
+                    >
+                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </button>
+                ))}
+            </div>
+
+            {isLoading ? (
+                <div className={styles.loading}>Loading applications...</div>
+            ) : applications.length === 0 ? (
+                <div className={styles.emptyState}>No {filter} applications found.</div>
+            ) : (
+                <div className={styles.grid}>
+                    {applications.map(app => (
+                        <div key={app._id} className={styles.card}>
+                            <div className={styles.cardHeader}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div className={styles.avatar}>
+                                        {app.shopIcon ? (
+                                            <Image src={app.shopIcon} alt={app.shopName} fill style={{ objectFit: 'cover' }} />
+                                        ) : (
+                                            <span>🏪</span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <h3 className={styles.shopName}>{app.shopName}</h3>
+                                        <p className={styles.shopEmail}>{app.email}</p>
+                                    </div>
+                                </div>
+                                <span className={`${styles.statusBadge} ${styles[app.verificationStatus]}`}>
+                                    {app.verificationStatus}
+                                </span>
+                            </div>
+
+                            <div className={styles.cardBody}>
+                                <h4>Business Registration Document</h4>
+                                {app.businessRegistrationImage ? (
+                                    <div
+                                        className={styles.imageWrapper}
+                                        onClick={() => setExpandedImage(app.businessRegistrationImage)}
+                                    >
+                                        <Image
+                                            src={app.businessRegistrationImage}
+                                            alt={`BR of ${app.shopName}`}
+                                            fill
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                        <div className={styles.expandOverlay}>
+                                            <span>🔍 Click to expand</span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className={styles.noImage}>No document uploaded.</p>
+                                )}
+                            </div>
+
+                            <div className={styles.cardFooter}>
+                                <button
+                                    className={`${styles.actionBtn} ${styles.approveBtn}`}
+                                    onClick={() => handleAction(app._id, 'approve')}
+                                    disabled={actionLoading === app._id || app.verificationStatus === 'approved'}
+                                >
+                                    {actionLoading === app._id ? 'Processing...' : '✅ Approve'}
+                                </button>
+                                <button
+                                    className={`${styles.actionBtn} ${styles.rejectBtn}`}
+                                    onClick={() => handleAction(app._id, 'reject')}
+                                    disabled={actionLoading === app._id || app.verificationStatus === 'rejected'}
+                                >
+                                    {actionLoading === app._id ? 'Processing...' : '❌ Reject'}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Image Modal */}
+            {expandedImage && (
+                <div className={styles.modalOverlay} onClick={() => setExpandedImage(null)}>
+                    <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+                        <button className={styles.closeModal} onClick={() => setExpandedImage(null)}>✕</button>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={expandedImage} alt="Expanded BR" className={styles.fullImage} />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}

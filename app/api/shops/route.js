@@ -8,7 +8,7 @@ export async function GET() {
         await connectToDatabase();
 
         const shops = await MerchantProfile.find({ isActive: true })
-            .select('userId shopName shopIcon description instagram logoUrl')
+            .select('userId shopName shopIcon description instagram logoUrl verificationStatus')
             .lean();
 
         return NextResponse.json(shops);

@@ -48,11 +48,19 @@ export async function POST(req) {
 
         await db();
 
+        // Verification logic
+        let verificationUpdate = {};
+        if (body.businessRegistrationImage) {
+            // If they upload a new BR image, set status back to pending
+            verificationUpdate.verificationStatus = 'pending';
+        }
+
         const profile = await MerchantProfile.findOneAndUpdate(
             { userId },
             {
                 $set: {
                     ...body,
+                    ...verificationUpdate,
                     userId, // Enforce userId
                     updatedAt: new Date()
                 }

@@ -39,7 +39,8 @@ export async function GET(req) {
                     otherParticipant: {
                         userId: otherUserId,
                         shopName: otherName,
-                        shopIcon: profile?.shopIcon || null
+                        shopIcon: profile?.shopIcon || null,
+                        verificationStatus: profile?.verificationStatus || 'unsubmitted'
                     },
                     myUnreadCount: conv.unreadCount?.get?.(userId) || conv.unreadCount?.[userId] || 0
                 };
@@ -115,7 +116,8 @@ export async function POST(req) {
             otherParticipant: {
                 userId: merchantId,
                 shopName: merchantProfile.shopName,
-                shopIcon: merchantProfile.shopIcon || null
+                shopIcon: merchantProfile.shopIcon || null,
+                verificationStatus: merchantProfile.verificationStatus || 'unsubmitted'
             }
         });
 

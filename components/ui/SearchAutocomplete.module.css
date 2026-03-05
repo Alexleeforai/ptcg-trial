@@ -217,3 +217,10 @@
         transform: rotate(360deg);
     }
 }
+
+/* ─────────── Responsive ─────────── */
+@media (max-width: 640px) {
+    .cameraBtn {
+        display: none;
+    }
+}

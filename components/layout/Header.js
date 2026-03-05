@@ -8,6 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import CurrencySelector from '@/components/ui/CurrencySelector';
 import styles from './Header.module.css';
 import SearchAutocomplete from '@/components/ui/SearchAutocomplete';
+import MobileNavDrawer from './MobileNavDrawer';
 
 export default function Header() {
   const t = useTranslations('Header');
@@ -15,6 +16,7 @@ export default function Header() {
   const isHome = pathname === '/';
   const { user } = useUser();
   const isMerchant = user?.publicMetadata?.role === 'merchant';
+  const isAdmin = user?.publicMetadata?.role === 'admin';
 
   return (
     <>
@@ -33,7 +35,10 @@ export default function Header() {
                 />
               </div>
             )}
-            <nav className={styles.nav}>
+            {/* Mobile Drawer (Visible on small screens) */}
+            <MobileNavDrawer />
+
+            <nav className={`${styles.nav} ${styles.desktopNav}`}>
               <SignedOut>
                 <Link href="/browse" className={styles.navLink}>
                   <span className={styles.navIcon}>🔍</span>
@@ -65,9 +70,13 @@ export default function Header() {
                   </Link>
                 )}
 
-                {/* Only Users see Collection (Merchants might want it too? Assuming yes only if they buy? But strictly separated accounts usually implies merchants sell.) */}
-                {/* User requested strict separation. Let's hide Collection for merchants to reduce clutter if they are "Selling Only" */}
-                {/* Actually, merchants might also want to search/browse? Keeping Browse is fine. Collection? maybe not. */}
+                {/* Only Admins see this */}
+                {isAdmin && (
+                  <Link href="/admin/verifications" className={styles.merchantLink}>
+                    <span className={styles.navText} style={{ color: '#4ade80' }}>Admin Panel</span>
+                  </Link>
+                )}
+
                 {!isMerchant && (
                   <Link href="/collection" className={styles.navLink}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.navIcon}>

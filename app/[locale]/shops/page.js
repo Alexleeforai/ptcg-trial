@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import styles from './Shops.module.css';
 
 export default function ShopsPage() {
@@ -41,12 +43,15 @@ export default function ShopsPage() {
                         <Link href={`/shops/${shop.userId}`} key={shop._id} className={styles.shopCard}>
                             <div className={styles.iconWrapper}>
                                 {shop.shopIcon ? (
-                                    <img src={shop.shopIcon} alt={shop.shopName} className={styles.shopIcon} />
+                                    <Image src={shop.shopIcon} alt={shop.shopName} width={80} height={80} className={styles.shopIcon} style={{ objectFit: 'cover' }} />
                                 ) : (
                                     <span className={styles.placeholderIcon}>🏪</span>
                                 )}
                             </div>
-                            <div className={styles.shopName}>{shop.shopName}</div>
+                            <div className={styles.shopName} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {shop.shopName}
+                                {shop.verificationStatus === 'approved' && <VerifiedBadge />}
+                            </div>
                             <div className={styles.shopDesc}>
                                 {shop.description || 'No description available.'}
                             </div>
