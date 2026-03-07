@@ -93,7 +93,7 @@ export default function AdminVerificationsPage() {
                                         {app.shopIcon ? (
                                             <Image src={app.shopIcon} alt={app.shopName} fill style={{ objectFit: 'cover' }} />
                                         ) : (
-                                            <span>🏪</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"></path></svg>
                                         )}
                                     </div>
                                     <div>
@@ -120,7 +120,7 @@ export default function AdminVerificationsPage() {
                                             style={{ objectFit: 'cover' }}
                                         />
                                         <div className={styles.expandOverlay}>
-                                            <span>🔍 Click to expand</span>
+                                            <span>Click to expand</span>
                                         </div>
                                     </div>
                                 ) : (
@@ -134,31 +134,36 @@ export default function AdminVerificationsPage() {
                                     onClick={() => handleAction(app._id, 'approve')}
                                     disabled={actionLoading === app._id || app.verificationStatus === 'approved'}
                                 >
-                                    {actionLoading === app._id ? 'Processing...' : '✅ Approve'}
+                                    {actionLoading === app._id ? 'Processing...' : 'Approve'}
                                 </button>
                                 <button
                                     className={`${styles.actionBtn} ${styles.rejectBtn}`}
                                     onClick={() => handleAction(app._id, 'reject')}
                                     disabled={actionLoading === app._id || app.verificationStatus === 'rejected'}
                                 >
-                                    {actionLoading === app._id ? 'Processing...' : '❌ Reject'}
+                                    {actionLoading === app._id ? 'Processing...' : 'Reject'}
                                 </button>
                             </div>
                         </div>
                     ))}
                 </div>
-            )}
+            )
+            }
 
             {/* Image Modal */}
-            {expandedImage && (
-                <div className={styles.modalOverlay} onClick={() => setExpandedImage(null)}>
-                    <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-                        <button className={styles.closeModal} onClick={() => setExpandedImage(null)}>✕</button>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={expandedImage} alt="Expanded BR" className={styles.fullImage} />
+            {
+                expandedImage && (
+                    <div className={styles.modalOverlay} onClick={() => setExpandedImage(null)}>
+                        <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+                            <button className={styles.closeModal} onClick={() => setExpandedImage(null)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                            </button>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={expandedImage} alt="Expanded BR" className={styles.fullImage} />
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 }

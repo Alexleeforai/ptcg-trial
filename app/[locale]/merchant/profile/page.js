@@ -99,7 +99,9 @@ export default function MerchantProfilePage() {
 
             if (res.ok) {
                 // Success
-                setOriginalData(formData);
+                const updatedProfile = await res.json();
+                setFormData(updatedProfile);
+                setOriginalData(updatedProfile);
                 setEditingField(null);
             } else {
                 const errorText = await res.text();
@@ -271,9 +273,9 @@ export default function MerchantProfilePage() {
                         {/* Status Badge */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             {formData.verificationStatus === 'unsubmitted' && <span style={{ padding: '4px 12px', background: '#333', color: '#ccc', borderRadius: '12px', fontSize: '0.9rem' }}>Unsubmitted</span>}
-                            {formData.verificationStatus === 'pending' && <span style={{ padding: '4px 12px', background: 'rgba(234, 179, 8, 0.2)', color: '#facc15', border: '1px solid rgba(234, 179, 8, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Pending Review ⏳</span>}
-                            {formData.verificationStatus === 'approved' && <span style={{ padding: '4px 12px', background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Verified ✅</span>}
-                            {formData.verificationStatus === 'rejected' && <span style={{ padding: '4px 12px', background: 'rgba(239, 68, 68, 0.2)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Rejected ❌</span>}
+                            {formData.verificationStatus === 'pending' && <span style={{ padding: '4px 12px', background: 'rgba(234, 179, 8, 0.2)', color: '#facc15', border: '1px solid rgba(234, 179, 8, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Pending Review</span>}
+                            {formData.verificationStatus === 'approved' && <span style={{ padding: '4px 12px', background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', border: '1px solid rgba(34, 197, 94, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Verified</span>}
+                            {formData.verificationStatus === 'rejected' && <span style={{ padding: '4px 12px', background: 'rgba(239, 68, 68, 0.2)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.5)', borderRadius: '12px', fontSize: '0.9rem' }}>Rejected</span>}
                         </div>
 
                         {/* Upload BR logic */}

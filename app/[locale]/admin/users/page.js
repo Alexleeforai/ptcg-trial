@@ -8,6 +8,7 @@ export default function AdminUsersPage() {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(null); // userId being processed
+    const [activeTab, setActiveTab] = useState('all'); // 'all', 'admin', 'merchant', 'user'
 
     useEffect(() => {
         fetchUsers();
@@ -59,6 +60,18 @@ export default function AdminUsersPage() {
         }
     };
 
+    const tabs = [
+        { id: 'all', label: 'All Users' },
+        { id: 'admin', label: 'Admins' },
+        { id: 'merchant', label: 'Merchants' },
+        { id: 'user', label: 'Regular Users' }
+    ];
+
+    const filteredUsers = users.filter(user => {
+        if (activeTab === 'all') return true;
+        return user.role === activeTab;
+    });
+
     return (
         <div className={`container ${styles.page}`}>
             <div className={styles.header}>
@@ -66,10 +79,22 @@ export default function AdminUsersPage() {
                 <p className={styles.subtitle}>View registered users and manage their site-wide roles.</p>
             </div>
 
+            <div className={styles.tabsContainer}>
+                {tabs.map(tab => (
+                    <button
+                        key={tab.id}
+                        className={`${styles.tab} ${activeTab === tab.id ? styles.activeTab : ''}`}
+                        onClick={() => setActiveTab(tab.id)}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
             {isLoading ? (
                 <div className={styles.loading}>Loading users...</div>
-            ) : users.length === 0 ? (
-                <div className={styles.emptyState}>No users found.</div>
+            ) : filteredUsers.length === 0 ? (
+                <div className={styles.emptyState}>No users found in this category.</div>
             ) : (
                 <div className={styles.tableContainer}>
                     <table className={styles.table}>
@@ -83,7 +108,7 @@ export default function AdminUsersPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => (
+                            {filteredUsers.map(user => (
                                 <tr key={user.id}>
                                     <td>
                                         <div className={styles.userInfo}>
@@ -91,7 +116,7 @@ export default function AdminUsersPage() {
                                                 {user.imageUrl ? (
                                                     <Image src={user.imageUrl} alt={user.firstName || 'User'} fill style={{ objectFit: 'cover' }} />
                                                 ) : (
-                                                    <span>👤</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                                                 )}
                                             </div>
                                             <div className={styles.userName}>

@@ -48,18 +48,11 @@ export default clerkMiddleware(async (auth, req) => {
             const { sessionClaims } = await auth();
             const role = sessionClaims?.metadata?.role;
 
-            // If not a merchant (including undefined role), redirect to home or show error
-            // Exception: /merchant/onboarding is where they get the role, so allow it if they are authed (which protect() ensures)
-            // But wait, if they are 'user' they shouldn't be in onboarding either? 
-            // Onboarding sets the role. If they are already 'user', onboarding should probably fail or upgrade them?
-            // User requested separate accounts. So if they are 'user', they should be kicked out.
-            // But we can't easily check if they are "intended" to be merchant without the role yet.
-            // The onboarding page itself handles the "set role" logic.
-            // Let's allow onboarding, but protect other merchant routes.
-
-            // if (!req.nextUrl.pathname.includes('/merchant/onboarding') && role !== 'merchant') {
-            //     return NextResponse.redirect(new URL('/', req.url));
-            // }
+            // If not a merchant (including undefined role), redirect to home
+            // Exception: /merchant/onboarding is where they get the role
+            if (!req.nextUrl.pathname.includes('/merchant/onboarding') && role !== 'merchant') {
+                return NextResponse.redirect(new URL('/', req.url));
+            }
         }
     }
 

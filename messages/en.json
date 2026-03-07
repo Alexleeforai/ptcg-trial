@@ -40,7 +40,7 @@
         "bookmarked": "In Collection"
     },
     "Merchant": {
-        "title": "Merchant Dashboard",
+        "title": "My Shop",
         "subtitle": "Manage your prices and inventory. Welcome, {name}.",
         "activeListings": "Active listings",
         "pendingOrders": "Pending Orders",

@@ -40,7 +40,7 @@
         "bookmarked": "已收藏"
     },
     "Merchant": {
-        "title": "商戶後台",
+        "title": "我的店舖",
         "subtitle": "管理價格同庫存。歡迎你， {name}。",
         "activeListings": "活躍刊登",
         "pendingOrders": "待處理訂單",
