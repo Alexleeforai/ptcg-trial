@@ -1,4 +1,4 @@
-import { getListings, getCardById, getUserBookmarks, incrementCardView, getCollectionItem } from '@/lib/db';
+import { getListingsForCard, getCardById, getUserBookmarks, incrementCardView, getCollectionItem } from '@/lib/db';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 import { auth } from '@clerk/nextjs/server';
 import { Link } from '@/lib/navigation';
@@ -16,6 +16,9 @@ import MerchantListingsTable from '@/components/merchant/MerchantListingsTable';
 import AddListingButton from '@/components/merchant/AddListingButton';
 import CollectionPriceTracker from '@/components/card/CollectionPriceTracker'; // Import tracker
 import { getHighQualityImage } from '@/lib/imageUtils';
+import InlineAddListingTrigger from '@/components/card/InlineAddListingTrigger';
+import { clerkClient } from '@clerk/nextjs/server';
+import Button from '@/components/ui/Button';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,10 +38,23 @@ export default async function CardDetailPage({ params }) {
     const { userId } = await auth();
     let collectionItem = null;
     let isBookmarked = false;
+    let isMerchant = false;
 
-    if (userId && card) {
-        collectionItem = await getCollectionItem(userId, id);
-        isBookmarked = !!collectionItem;
+    if (userId) {
+        if (card) {
+            collectionItem = await getCollectionItem(userId, id);
+            isBookmarked = !!collectionItem;
+        }
+
+        try {
+            const client = await clerkClient();
+            const userObj = await client.users.getUser(userId);
+            if (userObj?.publicMetadata?.role === 'merchant') {
+                isMerchant = true;
+            }
+        } catch (error) {
+            console.error('Failed to fetch user role:', error);
+        }
     }
 
     // ... (staleness check omitted for brevity, keeping same logic) ...
@@ -62,7 +78,7 @@ export default async function CardDetailPage({ params }) {
     }
 
     // Calc Price
-    const listings = [];
+    const listings = await getListingsForCard(id);
     const rawHistory = card.priceHistory || [];
     const trendData = rawHistory.map(h => ({
         date: h.date,
@@ -226,7 +242,10 @@ export default async function CardDetailPage({ params }) {
             </div>
 
             <div className={styles.listingsSection}>
-                <h3 className={styles.sectionTitle}>Shop Quotations</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h3 className={styles.sectionTitle} style={{ marginBottom: 0 }}>Shop Quotations</h3>
+                    {isMerchant && <InlineAddListingTrigger card={card} />}
+                </div>
 
                 <div className={styles.tablesGrid}>
                     {/* Selling Listings (Where to Buy) */}

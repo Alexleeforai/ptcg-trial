@@ -38,8 +38,8 @@ export default function AddListingModal({ isOpen, onClose, onListingAdded, initi
         if (initialData) {
             return {
                 condition: initialData.condition || 'Raw',
-                price: initialData.mySell,
-                stock: initialData.stock
+                price: initialData.mySell !== undefined ? initialData.mySell : '',
+                stock: initialData.stock !== undefined ? initialData.stock : '1'
             };
         }
         return {
