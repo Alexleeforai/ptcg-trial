@@ -106,6 +106,20 @@ export default async function CardDetailPage({ params }) {
     const sellListings = listings.filter(l => l.type === 'sell');
     const buyListings = listings.filter(l => l.type === 'buy');
 
+    // Group listings by merchant
+    const groupListings = (list) => {
+        return Object.values(list.reduce((acc, curr) => {
+            if (!acc[curr.merchantId]) {
+                acc[curr.merchantId] = { shop: curr.shop, items: [] };
+            }
+            acc[curr.merchantId].items.push(curr);
+            return acc;
+        }, {}));
+    };
+
+    const groupedSellListings = groupListings(sellListings);
+    const groupedBuyListings = groupListings(buyListings);
+
     return (
         <div className={`container ${styles.page}`}>
             <div className={styles.topSection}>
@@ -257,8 +271,8 @@ export default async function CardDetailPage({ params }) {
                             <p className={styles.empty}>{t('emptyBuy')}</p>
                         ) : (
                             <div className={styles.listingsList}>
-                                {sellListings.map(l => (
-                                    <ListingItem key={l.id} listing={l} t={t} />
+                                {groupedSellListings.map(group => (
+                                    <ListingItem key={group.shop.id} group={group} t={t} />
                                 ))}
                             </div>
                         )}
@@ -273,8 +287,8 @@ export default async function CardDetailPage({ params }) {
                             <p className={styles.empty}>{t('emptySell')}</p>
                         ) : (
                             <div className={styles.listingsList}>
-                                {buyListings.map(l => (
-                                    <ListingItem key={l.id} listing={l} t={t} />
+                                {groupedBuyListings.map(group => (
+                                    <ListingItem key={group.shop.id} group={group} t={t} />
                                 ))}
                             </div>
                         )}
@@ -287,23 +301,31 @@ export default async function CardDetailPage({ params }) {
     );
 }
 
-function ListingItem({ listing, t }) {
-    const { shop, price, condition, updatedAt, type, stock } = listing;
-    const isSell = type === 'sell';
+function ListingItem({ group, t }) {
+    const { shop, items } = group;
+    const isSell = items[0]?.type === 'sell';
 
     return (
-        <div className={styles.listingItem}>
-            <div className={styles.shopInfo}>
-                <div className={styles.shopName}>{shop.name}</div>
-                <div className={styles.shopMeta}>{shop.location} • {condition} Rank</div>
-            </div>
-            <div className={styles.actionColumn}>
-                <div className={`${styles.priceTag} ${isSell ? styles.sellColors : styles.buyColors}`}>
-                    HK${price}
+        <div className={styles.listingItem} style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <div className={styles.shopInfo}>
+                    <div className={styles.shopName}>{shop.name}</div>
+                    <div className={styles.shopMeta}>{shop.location}</div>
                 </div>
                 <Button size="sm" variant={isSell ? 'primary' : 'secondary'}>
                     {isSell ? t('whatsapp') : t('offer')}
                 </Button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '10px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                {items.map(item => (
+                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.9rem', color: '#a1a1aa' }}>{item.condition} Rank</span>
+                        <div className={`${styles.priceTag} ${isSell ? styles.sellColors : styles.buyColors}`} style={{ padding: '2px 8px', fontSize: '0.9rem', minWidth: '70px', textAlign: 'center' }}>
+                            HK${item.price}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
