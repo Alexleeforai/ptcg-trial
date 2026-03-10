@@ -39,6 +39,26 @@ export default function ShopDetailPage() {
 
     const { profile, listings } = shopData;
 
+    // Group listings by cardId
+    const groupedListings = Object.values(listings.reduce((acc, current) => {
+        if (!acc[current.cardId]) {
+            acc[current.cardId] = {
+                cardId: current.cardId,
+                name: current.name,
+                set: current.set,
+                image: current.image,
+                quotes: []
+            };
+        }
+        acc[current.cardId].quotes.push({
+            id: current._id,
+            condition: current.condition,
+            price: current.price,
+            stock: current.stock
+        });
+        return acc;
+    }, {}));
+
     return (
         <div className={styles.container}>
             {/* Shop Header */}
@@ -104,34 +124,44 @@ export default function ShopDetailPage() {
 
             {/* Active Listings */}
             <section>
-                <h2 className={styles.listingsTitle}>Active Listings ({listings.length})</h2>
+                <h2 className={styles.listingsTitle}>Card Listings ({groupedListings.length})</h2>
 
-                {listings.length === 0 ? (
+                {groupedListings.length === 0 ? (
                     <p style={{ textAlign: 'center', color: '#555', padding: '40px' }}>This shop has no active listings.</p>
                 ) : (
                     <div className={styles.listingsGrid}>
-                        {listings.map(item => (
-                            <div key={item._id} className={styles.cardItem}>
-                                <div className={styles.imageContainer}>
-                                    <SmartImage
-                                        src={item.image}
-                                        alt={item.name}
-                                        fill
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                </div>
-                                <div className={styles.cardInfo}>
-                                    <h3 className={styles.cardName}>{item.name}</h3>
-                                    <p className={styles.cardSet}>{item.set}</p>
+                        {groupedListings.map(cardGroup => (
+                            <div key={cardGroup.cardId} className={styles.cardItem} style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
-                                    <div className={styles.cardFooter}>
-                                        <span className={styles.conditionBadge}>{item.condition}</span>
-                                        <span className={styles.price}>${item.price.toLocaleString()}</span>
+                                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                                    <div className={styles.imageContainer} style={{ width: '80px', height: '112px', flexShrink: 0, position: 'relative' }}>
+                                        <SmartImage
+                                            src={cardGroup.image}
+                                            alt={cardGroup.name}
+                                            fill
+                                            style={{ objectFit: 'contain' }}
+                                        />
                                     </div>
-                                    <div style={{ marginTop: '8px', fontSize: '0.75rem', color: '#555', textAlign: 'right' }}>
-                                        Stock: {item.stock}
+                                    <div style={{ flex: 1 }}>
+                                        <h3 className={styles.cardName} style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold' }}>{cardGroup.name}</h3>
+                                        <p className={styles.cardSet} style={{ margin: '4px 0 0', fontSize: '0.85rem', color: '#a1a1aa' }}>{cardGroup.set}</p>
                                     </div>
                                 </div>
+
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: 'auto', background: 'rgba(255,255,255,0.03)', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                    {cardGroup.quotes.map(quote => (
+                                        <div key={quote.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span style={{ fontSize: '0.85rem', color: '#a1a1aa', display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                                                <span>{quote.condition}</span>
+                                                <span style={{ fontSize: '0.7rem', color: '#555' }}>(x{quote.stock})</span>
+                                            </span>
+                                            <span style={{ fontWeight: 600, color: '#22c55e', fontSize: '0.95rem' }}>
+                                                ${quote.price.toLocaleString()}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+
                             </div>
                         ))}
                     </div>
