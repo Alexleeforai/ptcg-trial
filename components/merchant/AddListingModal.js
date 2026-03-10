@@ -107,7 +107,8 @@ export default function AddListingModal({ isOpen, onClose, onListingAdded, initi
                     cardId: selectedCard.id,
                     condition: listingDetails.condition,
                     price: parseFloat(listingDetails.price),
-                    stock: parseInt(listingDetails.stock)
+                    stock: parseInt(listingDetails.stock),
+                    listingId: isEditMode ? initialData._id : undefined
                 })
             });
 

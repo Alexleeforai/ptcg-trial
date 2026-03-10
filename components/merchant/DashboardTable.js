@@ -25,7 +25,8 @@ export default function DashboardTable() {
             if (res.ok) {
                 const data = await res.json();
                 const mappedItems = data.map(item => ({
-                    id: item.cardId,
+                    id: item._id || item.cardId + item.condition, // Ensure unique key for React
+                    cardId: item.cardId,
                     _id: item._id,
                     image: item.image,
                     name: item.name,

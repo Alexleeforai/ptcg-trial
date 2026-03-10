@@ -75,7 +75,7 @@ export async function POST(req) {
         }
 
         const body = await req.json();
-        const { cardId, price, stock, condition } = body;
+        const { cardId, price, stock, condition, listingId } = body;
 
         if (!cardId) {
             return new NextResponse('Missing cardId', { status: 400 });
@@ -83,14 +83,19 @@ export async function POST(req) {
 
         await db();
 
-        // Upsert listing ensuring merchantId is strictly the authenticated user
+        // If editing an existing listing, lookup by its _id. Otherwise lookup by card + condition to prevent duplicates.
+        const query = listingId
+            ? { merchantId: userId, _id: listingId }
+            : { merchantId: userId, cardId, condition: condition || 'Raw' };
+
         const listing = await Listing.findOneAndUpdate(
-            { merchantId: userId, cardId },
+            query,
             {
                 $set: {
+                    cardId, // required for new inserts
                     price: parseFloat(price) || 0,
                     stock: parseInt(stock) || 0,
-                    condition: condition || 'NM',
+                    condition: condition || 'Raw',
                     updatedAt: new Date()
                 }
             },
