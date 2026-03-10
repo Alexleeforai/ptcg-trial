@@ -163,6 +163,18 @@
 .shopName {
     font-weight: 600;
     margin-bottom: 4px;
+    display: inline-block;
+}
+
+.shopNameLink {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.shopNameLink:hover {
+    color: var(--primary);
+    text-decoration: underline;
 }
 
 .shopMeta {

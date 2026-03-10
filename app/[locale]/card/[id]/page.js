@@ -309,7 +309,9 @@ function ListingItem({ group, t }) {
         <div className={styles.listingItem} style={{ flexDirection: 'column', alignItems: 'stretch' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <div className={styles.shopInfo}>
-                    <div className={styles.shopName}>{shop.name}</div>
+                    <Link href={`/shops/${shop.id}`} className={styles.shopNameLink}>
+                        <div className={styles.shopName}>{shop.name}</div>
+                    </Link>
                     <div className={styles.shopMeta}>{shop.location}</div>
                 </div>
                 <Button size="sm" variant={isSell ? 'primary' : 'secondary'}>
