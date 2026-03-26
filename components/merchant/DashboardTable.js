@@ -123,7 +123,7 @@ export default function DashboardTable() {
 
                         {/* Right side spans the remaining columns */}
                         <div style={{ gridColumn: '3 / span 5', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            {group.listings.map(item => (
+                            {(group.listings || []).map(item => (
                                 <div key={item.id} style={{ display: 'grid', gridTemplateColumns: 'minmax(80px, 1fr) minmax(100px, 1.2fr) minmax(100px, 1fr) minmax(60px, 1fr) 50px', gap: '16px', alignItems: 'center', padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
 
                                     <div>

@@ -61,17 +61,13 @@ export async function GET(request) {
                                 priceRaw: card.priceRaw,
                                 priceGrade9: card.priceGrade9,
                                 pricePSA10: card.pricePSA10,
+                                image: card.image, // Refresh image URL/ID in case it changed
                                 updatedAt: new Date(),
-                                // Don't overwrite existing name/image if not necessary to preserve edits? 
-                                // Actually, refresh usually implies trusting source.
-                                // But let's be safe and update price mainly.
-                                // If we want to find "New cards", we should upsert everything.
                             },
                             $setOnInsert: {
                                 name: card.name,
                                 set: card.set,
                                 setId: card.setId,
-                                image: card.image, // likely null from list view
                                 currency: card.currency,
                                 sourceUrl: card.sourceUrl,
                                 createdAt: new Date()
