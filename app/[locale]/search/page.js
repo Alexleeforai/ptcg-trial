@@ -116,16 +116,16 @@ export default async function SearchPage({ searchParams }) {
                                             <span className={styles.price}>
                                                 {card.priceRaw && card.currency === 'USD' ? (
                                                     <>
-                                                        約 ${Math.round(card.priceRaw * 7.8).toLocaleString('en-US')}
-                                                        {card.pricePSA10 && (
+                                                        約 ${Math.round(parseFloat(card.priceRaw) * 7.8).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                                                        {card.pricePSA10 > 0 && (
                                                             <div style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                                PSA 10: ${Math.round(card.pricePSA10 * 7.8).toLocaleString('en-US')}
+                                                                PSA 10: ${Math.round(parseFloat(card.pricePSA10) * 7.8).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                                                             </div>
                                                         )}
                                                     </>
                                                 ) : (
                                                     <>
-                                                        約 ${convertJpyToHkd(card.price || 0, rate).toLocaleString('en-US')}
+                                                        約 ${Math.round(convertJpyToHkd(parseFloat(card.price) || 0, rate)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                                                     </>
                                                 )}
                                             </span>

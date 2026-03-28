@@ -19,8 +19,8 @@ export async function GET(req) {
 
         await db();
 
-        // Fetch listings for this merchant
-        const listings = await Listing.find({ merchantId: userId }).lean();
+        // Fetch listings for this merchant (exclude sold/delisted stock=0)
+        const listings = await Listing.find({ merchantId: userId, stock: { $gt: 0 } }).lean();
 
         // Enrich with card details
         // Optimization: Get all unique cardIds and fetch Cards in one go
@@ -31,8 +31,7 @@ export async function GET(req) {
         const enrichedListings = listings.map(l => {
             const card = cardMap.get(l.cardId) || {};
 
-            // Determine market price based on condition
-            let marketConf = card.priceRaw || 0; // Default to Raw
+            let marketConf = card.priceRaw || 0;
             if (l.condition === 'PSA 10') {
                 marketConf = card.pricePSA10 || card.priceRaw || 0;
             } else if (l.condition === 'PSA 9') {
@@ -41,16 +40,12 @@ export async function GET(req) {
                 marketConf = card.priceRaw || card.price || 0;
             }
 
-            // marketBuy = approximate buy price (e.g. what shops pay)
-            // marketSell = approximate retail price (what shops sell for)
-            // For now, let's treat the PriceCharting price as "Retail Market Value" (Sell)
-            // And Buy as ~70% of that.
             const sellRef = marketConf;
             const buyRef = Math.round(sellRef * 0.7);
 
             return {
                 ...l,
-                // Add card details for UI
+                _id: l._id.toString(), // always a clean string for the frontend
                 image: card.image || '',
                 name: card.name || 'Unknown Card',
                 set: card.set || '',

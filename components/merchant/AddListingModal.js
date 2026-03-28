@@ -25,7 +25,7 @@ export default function AddListingModal({ isOpen, onClose, onListingAdded, initi
     const [selectedCard, setSelectedCard] = useState(() => {
         if (initialData) {
             return {
-                id: initialData.id,
+                id: initialData.cardId,      // must be cardId (the DB card reference), not the listing id
                 name: initialData.name,
                 number: initialData.number || '',
                 image: initialData.image

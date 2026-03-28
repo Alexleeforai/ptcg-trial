@@ -27,6 +27,19 @@ const ListingSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now
+    },
+    soldPrice: {
+        type: Number,
+        default: null
+    },
+    soldChannel: {
+        type: String,
+        enum: ['platform', 'other', null],
+        default: null
+    },
+    soldAt: {
+        type: Date,
+        default: null
     }
 }, { timestamps: true });
 

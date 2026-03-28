@@ -7,6 +7,117 @@ import SmartImage from '@/components/SmartImage';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import styles from './ShopDetail.module.css';
 
+// Admin-only panel showing profile status and completeness
+function AdminPanel({ profile }) {
+    const fieldStatus = [
+        { label: '店舖名稱', value: profile.shopName, required: true },
+        { label: '電郵', value: profile.email, required: true },
+        { label: '電話', value: profile.phone },
+        { label: '地址', value: profile.address },
+        { label: '店舖描述', value: profile.description },
+        { label: 'Instagram', value: profile.instagram },
+        { label: '店舖圖示', value: profile.shopIcon },
+        { label: '商業登記文件', value: profile.businessRegistrationImage },
+    ];
+
+    const missingFields = fieldStatus.filter(f => !f.value);
+    const completedCount = fieldStatus.filter(f => f.value).length;
+    const completionPct = Math.round((completedCount / fieldStatus.length) * 100);
+
+    const verificationLabel = {
+        unsubmitted: '未提交認證',
+        pending: '認證申請審核中',
+        approved: '已認證',
+        rejected: '認證被拒',
+    };
+
+    const verificationColor = {
+        unsubmitted: '#6b7280',
+        pending: '#f59e0b',
+        approved: '#22c55e',
+        rejected: '#ef4444',
+    };
+
+    return (
+        <div style={{
+            background: 'rgba(99,102,241,0.08)',
+            border: '1px solid rgba(99,102,241,0.3)',
+            borderRadius: '12px',
+            padding: '20px 24px',
+            marginBottom: '28px',
+            fontSize: '0.88rem',
+        }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                <span style={{ fontWeight: 700, color: '#a5b4fc', fontSize: '0.95rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    Admin — 店舖資料一覽
+                </span>
+                <span style={{ color: '#6b7280', fontSize: '0.78rem' }}>
+                    User ID: {profile.userId}
+                </span>
+            </div>
+
+            {/* Key status row */}
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
+                <StatusBadge
+                    label="可見度"
+                    value={profile.isActive ? '公開中' : '已隱藏'}
+                    color={profile.isActive ? '#22c55e' : '#ef4444'}
+                />
+                <StatusBadge
+                    label="認證狀態"
+                    value={verificationLabel[profile.verificationStatus] || profile.verificationStatus}
+                    color={verificationColor[profile.verificationStatus] || '#6b7280'}
+                />
+                <StatusBadge
+                    label="資料完整度"
+                    value={`${completionPct}% (${completedCount}/${fieldStatus.length})`}
+                    color={completionPct === 100 ? '#22c55e' : completionPct >= 60 ? '#f59e0b' : '#ef4444'}
+                />
+            </div>
+
+            <div style={{ height: '1px', background: 'rgba(99,102,241,0.2)', margin: '14px 0' }} />
+
+            {/* Field table */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px 24px' }}>
+                {fieldStatus.map(f => (
+                    <div key={f.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                        <span style={{ color: '#9ca3af', fontWeight: f.required ? 600 : 400 }}>
+                            {f.label}{f.required ? ' *' : ''}
+                        </span>
+                        {f.value ? (
+                            f.label === '店舖圖示' || f.label === '商業登記文件'
+                                ? <span style={{ color: '#22c55e' }}>已上傳</span>
+                                : <span style={{ color: '#d1d5db', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    {String(f.value).substring(0, 40)}{String(f.value).length > 40 ? '...' : ''}
+                                </span>
+                        ) : (
+                            <span style={{ color: f.required ? '#ef4444' : '#6b7280' }}>
+                                {f.required ? '未填寫 (必填)' : '未填寫'}
+                            </span>
+                        )}
+                    </div>
+                ))}
+            </div>
+
+            {/* Timestamps */}
+            <div style={{ height: '1px', background: 'rgba(99,102,241,0.2)', margin: '14px 0' }} />
+            <div style={{ display: 'flex', gap: '24px', color: '#6b7280', fontSize: '0.78rem' }}>
+                <span>建立: {profile.createdAt ? new Date(profile.createdAt).toLocaleString('zh-HK') : 'N/A'}</span>
+                <span>最後更新: {profile.updatedAt ? new Date(profile.updatedAt).toLocaleString('zh-HK') : 'N/A'}</span>
+            </div>
+        </div>
+    );
+}
+
+function StatusBadge({ label, value, color }) {
+    return (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '5px 12px' }}>
+            <span style={{ color: '#9ca3af', fontSize: '0.78rem' }}>{label}:</span>
+            <span style={{ color, fontWeight: 600, fontSize: '0.82rem' }}>{value}</span>
+        </div>
+    );
+}
+
 export default function ShopDetailPage() {
     const params = useParams();
     const { id } = params;
@@ -15,18 +126,13 @@ export default function ShopDetailPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (id) {
-            fetchShopDetails();
-        }
+        if (id) fetchShopDetails();
     }, [id]);
 
     const fetchShopDetails = async () => {
         try {
             const res = await fetch(`/api/shops/${id}`);
-            if (res.ok) {
-                const data = await res.json();
-                setShopData(data);
-            }
+            if (res.ok) setShopData(await res.json());
         } catch (error) {
             console.error('Error fetching shop details:', error);
         } finally {
@@ -37,30 +143,23 @@ export default function ShopDetailPage() {
     if (loading) return <div className={styles.loading}>Loading shop...</div>;
     if (!shopData) return <div className={styles.loading}>Shop not found.</div>;
 
-    const { profile, listings } = shopData;
+    const { profile, listings, isAdmin } = shopData;
 
     // Group listings by cardId
     const groupedListings = Object.values(listings.reduce((acc, current) => {
         if (!acc[current.cardId]) {
-            acc[current.cardId] = {
-                cardId: current.cardId,
-                name: current.name,
-                set: current.set,
-                image: current.image,
-                quotes: []
-            };
+            acc[current.cardId] = { cardId: current.cardId, name: current.name, set: current.set, image: current.image, quotes: [] };
         }
-        acc[current.cardId].quotes.push({
-            id: current._id,
-            condition: current.condition,
-            price: current.price,
-            stock: current.stock
-        });
+        acc[current.cardId].quotes.push({ id: current._id, condition: current.condition, price: current.price, stock: current.stock });
         return acc;
     }, {}));
 
     return (
         <div className={styles.container}>
+
+            {/* Admin Panel */}
+            {isAdmin && <AdminPanel profile={profile} />}
+
             {/* Shop Header */}
             <header className={styles.shopHeader}>
                 <div className={styles.iconWrapper}>
@@ -78,19 +177,18 @@ export default function ShopDetailPage() {
                 <div className={styles.shopMeta}>
                     {profile.instagram && (
                         <div className={styles.metaItem}>
-                            <span>📸</span>
                             <a href={`https://instagram.com/${profile.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'underline' }}>
                                 {profile.instagram}
                             </a>
                         </div>
                     )}
-                    {profile.email && <div className={styles.metaItem}>📧 {profile.email}</div>}
-                    {profile.phone && <div className={styles.metaItem}>📞 {profile.phone}</div>}
+                    {profile.email && <div className={styles.metaItem}>{profile.email}</div>}
+                    {profile.phone && <div className={styles.metaItem}>{profile.phone}</div>}
                 </div>
 
                 <p className={styles.shopDesc}>{profile.description}</p>
 
-                {/* Chat with Shop button */}
+                {/* Chat button */}
                 <button
                     onClick={() => {
                         if (window.__chatWidget) {
@@ -100,25 +198,18 @@ export default function ShopDetailPage() {
                         }
                     }}
                     style={{
-                        marginTop: '16px',
-                        padding: '10px 24px',
+                        marginTop: '16px', padding: '10px 24px',
                         background: 'linear-gradient(135deg, #3b82f6, #6366f1)',
-                        border: 'none',
-                        borderRadius: '24px',
-                        color: 'white',
-                        fontSize: '0.9rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
+                        border: 'none', borderRadius: '24px', color: 'white',
+                        fontSize: '0.9rem', fontWeight: 600, cursor: 'pointer',
+                        display: 'inline-flex', alignItems: 'center', gap: '8px',
                         transition: 'transform 0.2s, box-shadow 0.2s',
                         boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
                     }}
                     onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
                     onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
                 >
-                    💬 Chat with Shop
+                    Chat with Shop
                 </button>
             </header>
 
@@ -132,15 +223,9 @@ export default function ShopDetailPage() {
                     <div className={styles.listingsGrid}>
                         {groupedListings.map(cardGroup => (
                             <div key={cardGroup.cardId} className={styles.cardItem} style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
                                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                                     <div className={styles.imageContainer} style={{ width: '80px', height: '112px', flexShrink: 0, position: 'relative' }}>
-                                        <SmartImage
-                                            src={cardGroup.image}
-                                            alt={cardGroup.name}
-                                            fill
-                                            style={{ objectFit: 'contain' }}
-                                        />
+                                        <SmartImage src={cardGroup.image} alt={cardGroup.name} fill style={{ objectFit: 'contain' }} />
                                     </div>
                                     <div style={{ flex: 1 }}>
                                         <h3 className={styles.cardName} style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold' }}>{cardGroup.name}</h3>
@@ -161,7 +246,6 @@ export default function ShopDetailPage() {
                                         </div>
                                     ))}
                                 </div>
-
                             </div>
                         ))}
                     </div>

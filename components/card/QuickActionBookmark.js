@@ -1,15 +1,19 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useCollection } from '@/components/providers/CollectionProvider';
 import styles from './QuickActionBookmark.module.css';
 
 export default function QuickActionBookmark({ cardId }) {
-    const { isSignedIn } = useAuth();
+    const { isLoaded, isSignedIn } = useAuth();
     const { collectionIds, addToCollection, removeFromCollection } = useCollection();
+    const [mounted, setMounted] = useState(false);
 
-    // Don't render server-side mismatch, waiting for auth is ok
-    if (!isSignedIn) return null;
+    useEffect(() => setMounted(true), []);
+
+    // Prevent hydration mismatch by waiting for client mount and loaded auth state
+    if (!mounted || !isLoaded || !isSignedIn) return null;
 
     const isAdded = collectionIds?.has(cardId) || false;
 
