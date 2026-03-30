@@ -67,7 +67,7 @@ export async function PUT(req) {
     await SetMetadata.findOneAndUpdate(
         { setId },
         { $set: { language, releaseDate: releaseDate || null, coverImage: coverImage || '', coverImagePosition: coverImagePosition || '50% 50%', updatedAt: new Date() } },
-        { upsert: true }
+        { upsert: true, strict: false }
     );
 
     return NextResponse.json({ success: true });
