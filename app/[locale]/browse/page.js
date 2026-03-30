@@ -64,7 +64,7 @@ export default async function BrowsePage({ searchParams }) {
             </div>
 
             {/* Horizontal scrolling row of sets */}
-            <div className={styles.setsRow}>
+            <div className={styles.setsRow} suppressHydrationWarning>
                 {sets.map((set) => (
                     <Link
                         href={`/browse/${encodeURIComponent(set.id)}`}
