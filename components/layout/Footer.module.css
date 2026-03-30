@@ -11,13 +11,29 @@
     font-size: 0.85rem;
 }
 
-.disclaimerLink {
+.legalLinks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.legalLink {
     color: var(--text-muted);
     text-decoration: none;
+    font-size: 0.8rem;
     transition: color 0.15s;
 }
 
-.disclaimerLink:hover {
+.legalLink:hover {
     color: var(--text-secondary);
     text-decoration: underline;
+}
+
+.dot {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    opacity: 0.5;
 }
