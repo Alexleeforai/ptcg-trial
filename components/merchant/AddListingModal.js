@@ -9,9 +9,9 @@ import SmartImage from '@/components/SmartImage';
 const CONDITIONS = ['Raw', 'PSA 10', 'PSA 9'];
 
 export default function AddListingModal({ isOpen, onClose, onListingAdded, initialData = null }) {
-    const isEditMode = !!initialData; // Derived immediately
+    const isEditMode = !!(initialData?._id); // true only when editing an existing listing (has _id)
 
-    const [step, setStep] = useState(isEditMode ? 3 : 1);
+    const [step, setStep] = useState(initialData ? 3 : 1); // skip to step 3 if card is pre-selected
     const [sets, setSets] = useState([]);
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ export default function AddListingModal({ isOpen, onClose, onListingAdded, initi
     const [selectedCard, setSelectedCard] = useState(() => {
         if (initialData) {
             return {
-                id: initialData.cardId,      // must be cardId (the DB card reference), not the listing id
+                id: initialData.cardId || initialData.id, // cardId for edit mode, id for card-page pre-fill
                 name: initialData.name,
                 number: initialData.number || '',
                 image: initialData.image
