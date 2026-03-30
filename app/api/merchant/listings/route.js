@@ -72,14 +72,10 @@ export async function POST(req) {
         const body = await req.json();
         const { cardId, price, stock, condition, listingId } = body;
 
-        if (!cardId) {
-            return new NextResponse('Missing cardId', { status: 400 });
-        }
-
         await db();
 
         if (listingId) {
-            // ── Edit existing listing ──
+            // ── Edit existing listing ── (cardId not needed, already in DB)
             const result = await Listing.findOneAndUpdate(
                 { _id: listingId, merchantId: userId },
                 {
@@ -99,7 +95,11 @@ export async function POST(req) {
             return NextResponse.json(result);
         }
 
-        // ── New listing (upsert by card + condition) ──
+        // ── New listing ──
+        if (!cardId) {
+            return new NextResponse('Missing cardId', { status: 400 });
+        }
+
         const listing = await Listing.findOneAndUpdate(
             { merchantId: userId, cardId, condition: condition || 'Raw' },
             {
