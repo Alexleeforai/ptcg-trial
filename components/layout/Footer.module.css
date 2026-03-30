@@ -10,3 +10,14 @@
     color: var(--text-muted);
     font-size: 0.85rem;
 }
+
+.disclaimerLink {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.disclaimerLink:hover {
+    color: var(--text-secondary);
+    text-decoration: underline;
+}

@@ -1,33 +1,76 @@
-.header {
-    height: 70px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(10, 10, 12, 0.8);
-    backdrop-filter: blur(12px);
-    position: sticky;
+/* ─── Hamburger trigger strip ─────────────────────────────── */
+.hamburgerTrigger {
+    position: fixed;
+    left: 0;
     top: 0;
-    z-index: 100;
+    height: 56px;
+    width: 48px;
+    z-index: 201;
     display: flex;
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #0a0a0e;
+    border-bottom: 1px solid var(--border);
 }
 
-.inner {
+.hamburgerIcon {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
 }
 
+.hamburgerIcon span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #9ca3af;
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.hamburgerTrigger:hover .hamburgerIcon span {
+    background: #fff;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────── */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 220px;
+    background: #0a0a0e;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0 24px;
+    transform: translateX(-100%);
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 32px rgba(0,0,0,0.5);
+}
+
+.sidebarOpen {
+    transform: translateX(0);
+}
+
+/* ─── Brand ─────────────────────────────────────────────────── */
 .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    padding: 0 20px 0 20px;
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+    text-decoration: none;
+    margin-bottom: 4px;
 }
 
 .logoIcon {
-    font-size: 1.5rem;
     filter: drop-shadow(0 0 8px var(--primary-glow));
+    flex-shrink: 0;
 }
 
 .brandName {
@@ -37,102 +80,135 @@
     color: transparent;
 }
 
-.actions {
+/* ─── Divider ───────────────────────────────────────────────── */
+.sidebarDivider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 14px 16px;
+}
+
+/* ─── Nav list ──────────────────────────────────────────────── */
+.sidebarNav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 10px;
+    overflow-y: auto;
+}
+
+.sideLink {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 9px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: #9ca3af;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+
+.sideLink:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+}
+
+.sideLinkHighlight {
+    color: #e2e8f0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.sideLinkHighlight:hover {
+    background: rgba(99,102,241,0.12);
+    border-color: rgba(99,102,241,0.3);
+    color: #a5b4fc;
+}
+
+.sideLinkAdmin {
+    color: #4ade80 !important;
+}
+
+.sideLinkAdmin:hover {
+    background: rgba(74,222,128,0.08) !important;
+}
+
+/* ─── User row ──────────────────────────────────────────────── */
+.userRow {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+}
+
+/* ─── Bottom section (currency + language) ─────────────────── */
+.sidebarBottom {
+    padding: 0 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ─── Overlay backdrop ──────────────────────────────────────── */
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: rgba(0,0,0,0.35);
+}
+
+/* ─── Slim top header (search only) ────────────────────────── */
+.header {
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    background: #0a0a0e;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    padding-left: 48px;
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+}
+
+.leftSpacer {
+    /* keeps search centred-ish */
+    width: 0;
 }
 
 .headerSearch {
-    width: 320px;
-    position: relative;
+    flex: 1;
+    max-width: 640px;
 }
 
-
-
-.nav {
+.headerRight {
     display: flex;
-    gap: 24px;
     align-items: center;
+    gap: 8px;
+    margin-left: auto;
 }
 
-.headerSearch {
-    display: none;
-}
-
+/* ─── Mobile search bar ─────────────────────────────────────── */
 .mobileSearchBar {
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border);
     padding: 12px 0;
 }
 
-.navLink {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    transition: all 0.2s;
-}
-
-.navLink:hover {
-    color: var(--text-primary);
-}
-
-.merchantLink {
-    padding: 8px 16px;
-    background: var(--surface-highlight);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text-primary);
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-}
-
-.merchantLink:hover {
-    border-color: var(--primary);
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--primary);
-}
-
-.navLink {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-    text-decoration: none;
-}
-
-.navLink:hover {
-    border-color: var(--accent);
-    background: var(--surface-hover);
-    transform: translateY(-1px);
-}
-
-.navIcon {
-    width: 20px;
-    height: 20px;
-    color: var(--primary);
-    /* Use primary color or inherit */
-}
-
-/* Mobile Responsiveness */
+/* ─── Mobile: hide sidebar trigger ─────────────────────────── */
 @media (max-width: 640px) {
-    .desktopNav {
+    .hamburgerTrigger {
         display: none;
     }
 
-    .brandName {
-        display: none;
-        /* Optional: hide brand name if space is very tight */
-    }
-
-    .actions {
-        gap: 12px;
+    .header {
+        padding-left: 0;
     }
 }

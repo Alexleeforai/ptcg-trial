@@ -16,7 +16,7 @@ export default function SearchAutocomplete({
 }) {
     const t = useTranslations('Hero'); // Reuse Hero translations for search
     const [query, setQuery] = useState('');
-    const [searchType, setSearchType] = useState('all');
+    const [searchType, setSearchType] = useState('setCode');
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -88,9 +88,9 @@ export default function SearchAutocomplete({
                     onChange={(e) => setSearchType(e.target.value)}
                     className={styles.filterSelect}
                 >
-                    <option value="all">All</option>
                     <option value="setCode">Set Code</option>
                     <option value="name">Name</option>
+                    <option value="all">All</option>
                 </select>
                 <Input
                     value={query}
@@ -106,14 +106,7 @@ export default function SearchAutocomplete({
                     wrapperClassName={styles.innerInputWrapper}
                     autoFocus={autoFocus}
                 />
-                <button
-                    type="button"
-                    className={styles.cameraBtn}
-                    onClick={() => setShowScanner(true)}
-                    title="Scan card image"
-                >
-                    📷
-                </button>
+
             </form>
 
             {showSuggestions && suggestions.length > 0 && (

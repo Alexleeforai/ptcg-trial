@@ -148,8 +148,8 @@ export default function AddListingModal({ isOpen, onClose, onListingAdded, initi
                 <div className={styles.modalBody}>
                     <div className={styles.formPanel}>
 
-                        {/* Steps 1 & 2 only in Add Mode */}
-                        {!isEditMode && (
+                        {/* Steps 1 & 2 only when no card is pre-selected */}
+                        {!initialData && (
                             <>
                                 {/* Step 1: Select Set */}
                                 <div className={styles.formGroup}>
