@@ -56,7 +56,7 @@ function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onCl
                         onMouseDown={onMouseDown}
                         onMouseMove={onMouseMove}
                         style={{
-                            flex: 2, aspectRatio: '3/4', position: 'relative', overflow: 'hidden',
+                            flex: 2, aspectRatio: '1/1', position: 'relative', overflow: 'hidden',
                             borderRadius: 10, cursor: 'crosshair', border: '2px solid #6366f1',
                             userSelect: 'none'
                         }}
@@ -74,7 +74,7 @@ function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onCl
                     {/* Browse card preview */}
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, justifyContent: 'flex-start' }}>
                         <p style={{ color: '#6b7280', fontSize: '0.72rem', margin: 0 }}>Browse 預覽</p>
-                        <div style={{ width: '100%', aspectRatio: '3/4', borderRadius: 8, overflow: 'hidden', border: '1px solid #3f3f46' }}>
+                        <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 8, overflow: 'hidden', border: '1px solid #3f3f46' }}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={imageUrl} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: posStr, display: 'block' }} />
                         </div>
@@ -95,6 +95,9 @@ function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onCl
                     </div>
                 </div>
 
+                <div style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 8, padding: '8px 12px', marginBottom: 16, fontSize: '0.78rem', color: '#fbbf24' }}>
+                    ⚠️ 套用後記得回到表格按 <strong>Save</strong> 才會真正儲存到資料庫。
+                </div>
                 <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
                     <button onClick={onClose} style={{ padding: '8px 20px', borderRadius: 8, border: '1px solid #3f3f46', background: 'transparent', color: '#9ca3af', cursor: 'pointer' }}>
                         取消
