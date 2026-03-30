@@ -41,6 +41,11 @@ const nextConfig = {
         hostname: 'storage.googleapis.com',
         pathname: '/images.pricecharting.com/**',
       },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+        pathname: '/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
