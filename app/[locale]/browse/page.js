@@ -80,6 +80,7 @@ export default async function BrowsePage({ searchParams }) {
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     quality={95}
                                     className={styles.setImage}
+                                    style={{ objectPosition: set.coverImagePosition || '50% 50%' }}
                                 />
                             ) : (
                                 <div className={styles.placeholder}>No Image</div>

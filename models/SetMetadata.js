@@ -6,6 +6,7 @@ const SetMetadataSchema = new mongoose.Schema({
     language:    { type: String, enum: ['english', 'japanese', 'chinese', ''], default: '' }, // '' = auto-detect
     releaseDate: { type: Date, default: null },
     coverImage:  { type: String, default: '' },         // custom cover URL, falls back to card image if empty
+    coverImagePosition: { type: String, default: '50% 50%' }, // CSS object-position for focal point
     updatedAt:   { type: Date, default: Date.now }
 });
 
