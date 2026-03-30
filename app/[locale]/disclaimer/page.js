@@ -8,7 +8,7 @@ export default function DisclaimerPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('/api/disclaimer')
+        fetch('/api/legal?key=disclaimer')
             .then(r => r.json())
             .then(d => { setContent(d.content || ''); setLoading(false); })
             .catch(() => setLoading(false));
