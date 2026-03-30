@@ -16,6 +16,7 @@
     "@clerk/nextjs": "^6.36.9",
     "@google-cloud/vision": "^5.3.4",
     "@sparticuz/chromium": "^143.0.4",
+    "@vercel/blob": "^2.3.2",
     "cheerio": "^1.2.0",
     "dotenv": "^17.2.3",
     "googleapis": "^171.0.0",

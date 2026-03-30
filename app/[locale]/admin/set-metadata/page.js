@@ -15,6 +15,7 @@ export default function AdminSetMetadataPage() {
     const [syncing, setSyncing] = useState(false);
     const [syncResult, setSyncResult] = useState(null);
     const [saving, setSaving] = useState(null);
+    const [uploading, setUploading] = useState(null); // setId being uploaded
     const [edits, setEdits] = useState({});
     const [search, setSearch] = useState('');
     const [filterLang, setFilterLang] = useState('');
@@ -42,6 +43,20 @@ export default function AdminSetMetadataPage() {
 
     const handleEdit = (setId, field, value) => {
         setEdits(prev => ({ ...prev, [setId]: { ...(prev[setId] || {}), [field]: value } }));
+    };
+
+    const handleUpload = async (setId, file) => {
+        if (!file) return;
+        setUploading(setId);
+        try {
+            const form = new FormData();
+            form.append('file', file);
+            const res = await fetch('/api/admin/upload-image', { method: 'POST', body: form });
+            if (!res.ok) throw new Error(await res.text());
+            const { url } = await res.json();
+            handleEdit(setId, 'coverImage', url);
+        } catch (e) { alert('Upload failed: ' + e.message); }
+        setUploading(null);
     };
 
     const handleSave = async (s) => {
@@ -125,7 +140,7 @@ export default function AdminSetMetadataPage() {
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ background: '#18181b' }}>
-                                {['系列名稱', 'Set ID', 'Cards', '語言', '發售日期', '封面圖 URL', ''].map(h => (
+                                {['系列名稱', 'Set ID', 'Cards', '語言', '發售日期', '封面', ''].map(h => (
                                     <th key={h} style={{ ...cell, color: '#9ca3af', fontWeight: 600, textAlign: 'left', fontSize: '0.75rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{h}</th>
                                 ))}
                             </tr>
@@ -151,8 +166,22 @@ export default function AdminSetMetadataPage() {
                                         <td style={{ ...cell, minWidth: 130 }}>
                                             <input type="date" value={date} onChange={e => handleEdit(s.setId, 'releaseDate', e.target.value)} style={inputStyle} />
                                         </td>
-                                        <td style={{ ...cell, minWidth: 200 }}>
-                                            <input type="text" value={cover} onChange={e => handleEdit(s.setId, 'coverImage', e.target.value)} placeholder="https://..." style={inputStyle} />
+                                        <td style={{ ...cell, minWidth: 120 }}>
+                                            {/* Thumbnail + upload */}
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                {cover && (
+                                                    // eslint-disable-next-line @next/next/no-img-element
+                                                    <img src={cover} alt="cover" style={{ width: 36, height: 50, objectFit: 'cover', borderRadius: 4, border: '1px solid #3f3f46', flexShrink: 0 }} />
+                                                )}
+                                                <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, background: '#3f3f46', borderRadius: 6, padding: '4px 10px', fontSize: '0.75rem', color: '#e2e8f0', whiteSpace: 'nowrap' }}>
+                                                    {uploading === s.setId ? '上傳中...' : (cover ? '換圖' : '📷 上傳')}
+                                                    <input
+                                                        type="file" accept="image/*" style={{ display: 'none' }}
+                                                        onChange={e => handleUpload(s.setId, e.target.files[0])}
+                                                        disabled={uploading === s.setId}
+                                                    />
+                                                </label>
+                                            </div>
                                         </td>
                                         <td style={{ ...cell }}>
                                             <button
