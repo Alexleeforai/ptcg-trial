@@ -116,7 +116,8 @@ export default function AddListingModal({ isOpen, onClose, onListingAdded, initi
                 onListingAdded();
                 handleClose();
             } else {
-                alert('Failed to save listing');
+                const errText = await res.text().catch(() => '');
+                alert(`Failed to save listing (${res.status})${errText ? ': ' + errText : ''}`);
             }
         } catch (error) {
             console.error('Error saving listing:', error);

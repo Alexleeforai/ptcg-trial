@@ -78,16 +78,33 @@ export async function POST(req) {
 
         await db();
 
-        // If editing an existing listing, lookup by its _id. Otherwise lookup by card + condition to prevent duplicates.
-        const query = listingId
-            ? { merchantId: userId, _id: listingId }
-            : { merchantId: userId, cardId, condition: condition || 'Raw' };
+        if (listingId) {
+            // ── Edit existing listing ──
+            const result = await Listing.findOneAndUpdate(
+                { _id: listingId, merchantId: userId },
+                {
+                    $set: {
+                        price: parseFloat(price) || 0,
+                        stock: parseInt(stock) || 0,
+                        condition: condition || 'Raw',
+                        updatedAt: new Date()
+                    }
+                },
+                { new: true }
+            );
+            if (!result) {
+                console.error('[MERCHANT_LISTINGS_POST] Edit: listing not found', { listingId, userId });
+                return new NextResponse('Listing not found', { status: 404 });
+            }
+            return NextResponse.json(result);
+        }
 
+        // ── New listing (upsert by card + condition) ──
         const listing = await Listing.findOneAndUpdate(
-            query,
+            { merchantId: userId, cardId, condition: condition || 'Raw' },
             {
                 $set: {
-                    cardId, // required for new inserts
+                    cardId,
                     price: parseFloat(price) || 0,
                     stock: parseInt(stock) || 0,
                     condition: condition || 'Raw',
@@ -100,8 +117,8 @@ export async function POST(req) {
         return NextResponse.json(listing);
 
     } catch (error) {
-        console.error('[MERCHANT_LISTINGS_POST]', error);
-        return new NextResponse('Internal Error', { status: 500 });
+        console.error('[MERCHANT_LISTINGS_POST]', error.message, error.code);
+        return new NextResponse(error.message || 'Internal Error', { status: 500 });
     }
 }
 
