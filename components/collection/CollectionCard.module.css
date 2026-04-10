@@ -133,3 +133,57 @@
 .manageBtn:hover {
     background: var(--bg-surface-highlight);
 }
+
+/* ── Per-grade breakdown ── */
+.gradeBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.gradeBlock:last-of-type {
+    border-bottom: none;
+    margin-bottom: 4px;
+}
+
+.gradeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.gradeName {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.gradeCount {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--surface-highlight);
+    padding: 1px 7px;
+    border-radius: 10px;
+}
+
+.plBadge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+}
+
+.plGain {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.12);
+}
+
+.plLoss {
+    color: #f87171;
+    background: rgba(248, 113, 113, 0.12);
+}

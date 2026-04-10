@@ -42,7 +42,38 @@ export default function CollectionCard({
     // Or just "Manage" button.
 
     const totalCost = displayItems.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-    const avgCost = copyCount > 0 ? Math.round(totalCost / copyCount) : 0;
+
+    // Market price per grade
+    const marketByGrade = {
+        RAW:    currentPriceHkd,
+        PSA10:  pricePSA10 ? Math.round(pricePSA10 * 7.8) : 0,
+        GRADE9: 0, // grade9 not passed yet — extend if needed
+    };
+
+    // Group items by grade, compute avg cost + P/L% per grade
+    const gradeGroups = {};
+    displayItems.forEach(item => {
+        const g = item.grade || 'RAW';
+        if (!gradeGroups[g]) gradeGroups[g] = { items: [], label: g };
+        gradeGroups[g].items.push(item);
+    });
+
+    const gradeOrder = ['RAW', 'PSA10', 'GRADE9'];
+    const gradeLabel  = { RAW: 'Raw', PSA10: 'PSA 10', GRADE9: 'Grade 9' };
+
+    const gradeSummaries = gradeOrder
+        .filter(g => gradeGroups[g])
+        .map(g => {
+            const gItems   = gradeGroups[g].items;
+            const count    = gItems.length;
+            const total    = gItems.reduce((s, i) => s + (parseFloat(i.price) || 0), 0);
+            const avg      = count > 0 ? Math.round(total / count) : 0;
+            const market   = marketByGrade[g] || 0;
+            const plPct    = avg > 0 && market > 0
+                ? ((market - avg) / avg) * 100
+                : null;
+            return { g, label: gradeLabel[g], count, total, avg, market, plPct };
+        });
 
     return (
         <Card className={styles.cardContainer} hover>
@@ -90,14 +121,31 @@ export default function CollectionCard({
                         </div>
                     ) : (
                         <div className={styles.summaryState}>
-                            <div className={styles.summaryRow}>
-                                <span className={styles.label}>Owned</span>
-                                <span className={styles.value}>{copyCount}</span>
-                            </div>
-                            <div className={styles.summaryRow}>
-                                <span className={styles.label}>Total Cost</span>
-                                <span className={styles.value}>HK${totalCost.toLocaleString()}</span>
-                            </div>
+                            {/* Per-grade breakdown */}
+                            {gradeSummaries.map(({ g, label, count, total, avg, market, plPct }) => (
+                                <div key={g} className={styles.gradeBlock}>
+                                    <div className={styles.gradeHeader}>
+                                        <span className={styles.gradeName}>{label}</span>
+                                        <span className={styles.gradeCount}>{count} {count === 1 ? 'copy' : 'copies'}</span>
+                                    </div>
+                                    <div className={styles.summaryRow}>
+                                        <span className={styles.label}>Avg Cost</span>
+                                        <span className={styles.value}>HK${avg.toLocaleString()}</span>
+                                    </div>
+                                    <div className={styles.summaryRow}>
+                                        <span className={styles.label}>Total Cost</span>
+                                        <span className={styles.value}>HK${total.toLocaleString()}</span>
+                                    </div>
+                                    {plPct !== null && (
+                                        <div className={styles.summaryRow}>
+                                            <span className={styles.label}>vs Market</span>
+                                            <span className={`${styles.plBadge} ${plPct >= 0 ? styles.plGain : styles.plLoss}`}>
+                                                {plPct >= 0 ? '▲' : '▼'} {Math.abs(plPct).toFixed(1)}%
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                             <Link href={`/card/${cardId}`} className={styles.manageBtn}>
                                 Manage Collection
                             </Link>
