@@ -17,7 +17,8 @@ export default function CollectionCard({
     currency,
     rate,
     initialPurchasePrice,
-    items = []
+    items = [],
+    cardType
 }) {
     // Calculate current market price reference (HKD)
     let currentPriceHkd = 0;
@@ -90,7 +91,10 @@ export default function CollectionCard({
                     )}
                 </div>
                 <h3 className={styles.cardName}>{name}</h3>
-                <p className={styles.cardSet}>{set}</p>
+                <div className={styles.setRow}>
+                    <p className={styles.cardSet}>{set}</p>
+                    {cardType && <span className={styles.typeBadge}>{cardType}</span>}
+                </div>
             </Link>
 
             <div className={styles.cardInfo}>

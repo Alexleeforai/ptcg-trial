@@ -82,6 +82,7 @@ export default function CollectionView({ collection, rate, metaMap = {} }) {
                             rate={rate}
                             initialPurchasePrice={card.purchasePrice}
                             items={card.items}
+                            cardType={card.cardType}
                         />
                     ))}
                 </div>
