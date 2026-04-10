@@ -126,7 +126,7 @@ export default function CollectionCard({
                                 <div key={g} className={styles.gradeBlock}>
                                     <div className={styles.gradeHeader}>
                                         <span className={styles.gradeName}>{label}</span>
-                                        <span className={styles.gradeCount}>{count} {count === 1 ? 'copy' : 'copies'}</span>
+                                        <span className={styles.gradeCount}>{count} owned</span>
                                     </div>
                                     <div className={styles.summaryRow}>
                                         <span className={styles.label}>Avg Cost</span>
