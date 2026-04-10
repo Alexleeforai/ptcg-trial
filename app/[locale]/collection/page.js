@@ -1,11 +1,13 @@
 import { auth } from '@clerk/nextjs/server';
 import { getUserCollection } from '@/lib/db';
+import SetMetadata from '@/models/SetMetadata';
+import connectToDatabase from '@/lib/mongodb';
 import { getTranslations } from 'next-intl/server';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import { Link } from '@/lib/navigation';
 import styles from './Collection.module.css';
-import CollectionCard from '@/components/collection/CollectionCard';
+import CollectionView from '@/components/collection/CollectionView';
 
 // Collection is personal user data — must never be cached across users
 export const dynamic = 'force-dynamic';
@@ -24,7 +26,17 @@ export default async function CollectionPage() {
         );
     }
 
-    const collection = await getUserCollection(userId);
+    // Fetch both collection and metadata
+    await connectToDatabase();
+    const [collection, metaDocs] = await Promise.all([
+        getUserCollection(userId),
+        SetMetadata.find({}).lean()
+    ]);
+
+    const metaMap = {};
+    metaDocs.forEach(m => {
+        metaMap[m.setId] = m;
+    });
 
     return (
         <div className={`container ${styles.page}`}>
@@ -43,24 +55,11 @@ export default async function CollectionPage() {
                     </Link>
                 </div>
             ) : (
-                <div className={styles.grid}>
-                    {collection.map((card) => (
-                        <CollectionCard
-                            key={card.id}
-                            cardId={card.id}
-                            name={card.name}
-                            image={card.image}
-                            set={card.set}
-                            priceJpy={card.price}
-                            priceRawUsd={card.priceRaw}
-                            pricePSA10={card.pricePSA10} // Pass PSA10
-                            currency={card.currency}
-                            rate={rate}
-                            initialPurchasePrice={card.purchasePrice}
-                            items={card.items} // Pass items
-                        />
-                    ))}
-                </div>
+                <CollectionView 
+                    collection={collection} 
+                    rate={rate} 
+                    metaMap={metaMap} 
+                />
             )}
         </div>
     );
