@@ -101,7 +101,10 @@ export default async function SearchPage({ searchParams }) {
                                     <div className={styles.cardInfo}>
                                         <div className={styles.cardHeader}>
                                             <span className={styles.rarity}>{card.rarity || ''}</span>
-                                            <span className={styles.set}>{card.set}</span>
+                                            <div>
+                                                <span className={styles.set}>{card.set}</span>
+                                                {card.cardType && <span className={styles.typeBadge}>{card.cardType}</span>}
+                                            </div>
                                         </div>
                                         <h3 className={styles.cardName}>{card.name}</h3>
                                         {(card.nameCN || card.nameEN) && (
