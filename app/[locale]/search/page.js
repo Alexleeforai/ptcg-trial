@@ -1,4 +1,5 @@
 import { findCards } from '@/lib/db';
+import SetMetadata from '@/models/SetMetadata';
 import { translateQuery } from '@/lib/translate';
 import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
 import { getHighQualityImage } from '@/lib/imageUtils';
@@ -48,26 +49,60 @@ export default async function SearchPage({ searchParams }) {
     const q = params.q || '';
     const sort = params.sort || 'price-desc';
     const type = params.type || 'all';
-
-    const rate = await getJpyToHkdRate();
+    const langParam = params.lang || 'all';
+    const cardTypeParam = params.cardType || 'all';
 
     // Translate Chinese query to English if needed
     const translatedQ = translateQuery(q);
 
     let searchQuery;
-    // If it contains | (Charizard|Flareon), treat as Regex
     if (translatedQ.includes('|')) {
         searchQuery = new RegExp(translatedQ, 'i');
     } else {
         searchQuery = translatedQ;
     }
 
-    let results = await findCards(searchQuery, type);
+    const [rate, t, rawResults, metaDocs] = await Promise.all([
+        getJpyToHkdRate(),
+        getTranslations('Search'),
+        findCards(searchQuery, type),
+        SetMetadata.find({}).lean().catch(() => [])
+    ]);
+
+    const metaMap = {};
+    metaDocs.forEach(m => {
+        metaMap[m.setId] = m;
+    });
+
+    function resolveLanguage(setId, setName) {
+        const meta = metaMap[setId];
+        if (meta && meta.language) return meta.language;
+        const n = setName || '';
+        if (/japanese/i.test(n)) return 'japanese';
+        if (/chinese|traditional|simplified/i.test(n)) return 'chinese';
+        if (/korean/i.test(n)) return 'korean';
+        return 'english';
+    }
+
+    let results = rawResults.filter(card => {
+        if (langParam !== 'all') {
+            const cardLang = resolveLanguage(card.setId || card.set, card.set);
+            if (cardLang !== langParam) return false;
+        }
+
+        if (cardTypeParam !== 'all') {
+            const ct = (card.cardType || 'single').toLowerCase();
+            if (cardTypeParam === 'single') {
+                if (ct !== 'single' && ct !== 'single card') return false;
+            } else if (cardTypeParam === 'box') {
+                if (!ct.includes('box') && !ct.includes('pack') && !ct.includes('set') && !ct.includes('sealed')) return false;
+            }
+        }
+        return true;
+    });
 
     // Apply sorting
     results = sortResults(results, sort);
-
-    const t = await getTranslations('Search');
 
     return (
         <div className="container" style={{ padding: '40px 1rem' }}>
