@@ -11,7 +11,8 @@ const intlMiddleware = createMiddleware({
 // Only localized /merchant and /collection routes require authentication
 const isProtectedRoute = createRouteMatcher([
     '/(.*)/merchant(.*)',
-    '/(.*)/collection(.*)'
+    '/(.*)/collection(.*)',
+    '/(.*)/admin(.*)'
 ]);
 
 // API routes should NOT be localized
@@ -62,6 +63,27 @@ export default clerkMiddleware(async (auth, req) => {
             // If not a merchant (including undefined role), redirect to home
             // Exception: /merchant/onboarding is where they get the role
             if (!req.nextUrl.pathname.includes('/merchant/onboarding') && role !== 'merchant') {
+                return NextResponse.redirect(new URL('/', req.url));
+            }
+        }
+
+        // Admin Route Protection
+        if (req.nextUrl.pathname.includes('/admin')) {
+            const { sessionClaims, userId } = await auth();
+            let role = sessionClaims?.metadata?.role || sessionClaims?.publicMetadata?.role;
+
+            if (!role && userId) {
+                try {
+                    const { clerkClient } = await import('@clerk/nextjs/server');
+                    const client = await clerkClient();
+                    const user = await client.users.getUser(userId);
+                    role = user?.publicMetadata?.role;
+                } catch (error) {
+                    console.error("Error fetching admin role in middleware:", error);
+                }
+            }
+
+            if (role !== 'admin') {
                 return NextResponse.redirect(new URL('/', req.url));
             }
         }

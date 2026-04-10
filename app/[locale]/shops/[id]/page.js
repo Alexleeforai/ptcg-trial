@@ -241,7 +241,7 @@ export default function ShopDetailPage() {
                                                 <span style={{ fontSize: '0.7rem', color: '#555' }}>(x{quote.stock})</span>
                                             </span>
                                             <span style={{ fontWeight: 600, color: '#22c55e', fontSize: '0.95rem' }}>
-                                                ${quote.price.toLocaleString()}
+                                                HK${quote.price.toLocaleString()}
                                             </span>
                                         </div>
                                     ))}

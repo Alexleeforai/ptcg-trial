@@ -59,18 +59,6 @@ export default async function CardDetailPage({ params }) {
 
     // ... (staleness check omitted for brevity, keeping same logic) ...
 
-    if (card) {
-        const updatedAt = new Date(card.updatedAt || 0).getTime();
-        const now = Date.now();
-        const diffHours = (now - updatedAt) / (1000 * 60 * 60);
-
-        if (card) {
-            // Track view
-        }
-    }
-
-    // ... (rest of fetch logic) ...
-
     if (!card) {
         return (
             <div className="container" style={{ padding: '80px' }}>{t('notFound')}</div>
@@ -85,11 +73,19 @@ export default async function CardDetailPage({ params }) {
         price: convertJpyToHkd(h.price, rate)
     }));
 
-    if (trendData.length === 0 && card.price) {
-        trendData.push({
-            date: new Date().toISOString().split('T')[0],
-            price: convertJpyToHkd(card.price, rate)
-        });
+    // Bug fix: for USD cards (PriceCharting), use priceRaw * HKD rate as fallback data point
+    if (trendData.length === 0) {
+        if (card.priceRaw && card.currency === 'USD') {
+            trendData.push({
+                date: new Date().toISOString().split('T')[0],
+                price: Math.round(card.priceRaw * 7.8)
+            });
+        } else if (card.price) {
+            trendData.push({
+                date: new Date().toISOString().split('T')[0],
+                price: convertJpyToHkd(card.price, rate)
+            });
+        }
     }
 
     let price = 0;

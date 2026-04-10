@@ -130,16 +130,22 @@ export async function DELETE(req) {
         }
 
         const url = new URL(req.url);
-        const cardId = url.searchParams.get('cardId');
+        const listingId = url.searchParams.get('listingId');
+        const cardId = url.searchParams.get('cardId'); // Legacy fallback
 
-        if (!cardId) {
-            return new NextResponse('Missing cardId', { status: 400 });
+        if (!listingId && !cardId) {
+            return new NextResponse('Missing listingId or cardId', { status: 400 });
         }
 
         await db();
 
-        // Delete only if it matches merchantId
-        await Listing.deleteOne({ merchantId: userId, cardId });
+        if (listingId) {
+            // Preferred: delete by specific listing _id (safe for multi-condition cards)
+            await Listing.deleteOne({ _id: listingId, merchantId: userId });
+        } else {
+            // Legacy fallback: delete by cardId (deletes first match only)
+            await Listing.deleteOne({ merchantId: userId, cardId });
+        }
 
         return new NextResponse('Deleted', { status: 200 });
 

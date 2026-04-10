@@ -7,8 +7,8 @@ import { Link } from '@/lib/navigation';
 import styles from './Collection.module.css';
 import CollectionCard from '@/components/collection/CollectionCard';
 
-// Revalidate every 5 minutes
-export const revalidate = 300;
+// Collection is personal user data — must never be cached across users
+export const dynamic = 'force-dynamic';
 
 export default async function CollectionPage() {
     const { userId } = await auth();

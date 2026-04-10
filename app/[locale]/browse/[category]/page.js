@@ -17,7 +17,7 @@ export default async function BrowseCategoryPage({ params, searchParams }) {
     if (category === 'trainers') query = 'Trainer';
     if (category === 'items') query = 'Item';
 
-    let cards = await findCards(decodedCategory);
+    let cards = await findCards(query);
     const rate = await getJpyToHkdRate();
 
     // Sorting Logic

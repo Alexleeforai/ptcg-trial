@@ -30,9 +30,9 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                         hkdPrice = Math.round(usdPrice * 7.8); // USD to HKD
                         jpyPrice = Math.round(usdPrice * 150); // USD to JPY
                     } else if (product.price) {
-                        // Old format (JPY) - fixed conversion rates
+                        // Old format (JPY) - use live rate prop
                         jpyPrice = product.price;
-                        hkdPrice = Math.round(product.price * 0.052); // JPY to HKD (fixed rate)
+                        hkdPrice = Math.round(product.price * (rate || 0.052)); // Use live rate
                     }
 
                     return (
