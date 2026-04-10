@@ -110,7 +110,7 @@ export default async function SearchPage({ searchParams }) {
                 {t('resultsFor')} <span className="text-gradient">"{q}"</span>
             </h1>
 
-            {results.length > 0 && <SortFilter />}
+            {rawResults.length > 0 && <SortFilter />}
 
             {results.length === 0 ? (
                 <div className={styles.noResults}>
