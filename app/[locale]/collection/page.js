@@ -35,7 +35,10 @@ export default async function CollectionPage() {
 
     const metaMap = {};
     metaDocs.forEach(m => {
-        metaMap[m.setId] = m;
+        metaMap[m.setId] = {
+            setId: m.setId,
+            language: m.language || ''
+        };
     });
 
     return (
