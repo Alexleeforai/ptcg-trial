@@ -20,7 +20,7 @@ export default async function BrowsePage({ searchParams }) {
     const sets = await getBrowseSets(sort, language);
 
     return (
-        <div key={`browse-${language}-${sort}`} className={`container ${styles.container}`}>
+        <div className={`container ${styles.container}`}>
             <div className={styles.headerRow}>
                 <h1 className={styles.title}>Browse Sets 🗂️</h1>
 
