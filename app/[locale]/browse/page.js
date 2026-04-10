@@ -12,6 +12,11 @@ export default async function BrowsePage({ searchParams }) {
     const resolvedParams = await searchParams; // Await params in Next.js 15+
     const sort = resolvedParams?.sort || 'name'; // Default to name
     const language = resolvedParams?.language || 'all'; // Default to all
+
+    // Toggle logic for sort buttons
+    const nextNameSort = sort === 'name' ? 'name_desc' : 'name';
+    const nextDateSort = sort === 'date' ? 'date_asc' : 'date';
+    const nextCountSort = sort === 'count' ? 'count_asc' : 'count';
     const sets = await getBrowseSets(sort, language);
 
     return (
@@ -29,16 +34,16 @@ export default async function BrowsePage({ searchParams }) {
                             All
                         </Link>
                         <Link
-                            href={`/browse?language=english&sort=${sort}`}
-                            className={`${styles.filterBtn} ${language === 'english' ? styles.active : ''}`}
-                        >
-                            English
-                        </Link>
-                        <Link
                             href={`/browse?language=japanese&sort=${sort}`}
                             className={`${styles.filterBtn} ${language === 'japanese' ? styles.active : ''}`}
                         >
                             Japanese
+                        </Link>
+                        <Link
+                            href={`/browse?language=english&sort=${sort}`}
+                            className={`${styles.filterBtn} ${language === 'english' ? styles.active : ''}`}
+                        >
+                            English
                         </Link>
                         <Link
                             href={`/browse?language=chinese&sort=${sort}`}
@@ -46,18 +51,33 @@ export default async function BrowsePage({ searchParams }) {
                         >
                             Chinese
                         </Link>
+                        <Link
+                            href={`/browse?language=korean&sort=${sort}`}
+                            className={`${styles.filterBtn} ${language === 'korean' ? styles.active : ''}`}
+                        >
+                            Korean
+                        </Link>
                     </div>
 
-                    {/* Sort Options */}
+                    {/* Sort Options — click again to toggle direction */}
                     <div className={styles.sortOptions}>
-                        <Link href={`/browse?language=${language}&sort=name`} className={`${styles.sortBtn} ${sort === 'name' ? styles.active : ''}`}>
-                            A-Z
+                        <Link
+                            href={`/browse?language=${language}&sort=${nextNameSort}`}
+                            className={`${styles.sortBtn} ${sort === 'name' || sort === 'name_desc' ? styles.active : ''}`}
+                        >
+                            {sort === 'name_desc' ? 'Z-A' : 'A-Z'}
                         </Link>
-                        <Link href={`/browse?language=${language}&sort=date`} className={`${styles.sortBtn} ${sort === 'date' ? styles.active : ''}`}>
-                            Newest
+                        <Link
+                            href={`/browse?language=${language}&sort=${nextDateSort}`}
+                            className={`${styles.sortBtn} ${sort === 'date' || sort === 'date_asc' ? styles.active : ''}`}
+                        >
+                            {sort === 'date_asc' ? 'Oldest' : 'Newest'}
                         </Link>
-                        <Link href={`/browse?language=${language}&sort=count`} className={`${styles.sortBtn} ${sort === 'count' ? styles.active : ''}`}>
-                            Most Cards
+                        <Link
+                            href={`/browse?language=${language}&sort=${nextCountSort}`}
+                            className={`${styles.sortBtn} ${sort === 'count' || sort === 'count_asc' ? styles.active : ''}`}
+                        >
+                            {sort === 'count_asc' ? 'Fewest Cards' : 'Most Cards'}
                         </Link>
                     </div>
                 </div>
