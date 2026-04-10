@@ -101,37 +101,29 @@ export default async function SearchPage({ searchParams }) {
                                     <div className={styles.cardInfo}>
                                         <div className={styles.cardHeader}>
                                             <span className={styles.rarity}>{card.rarity || ''}</span>
-                                            <div>
-                                                <span className={styles.set}>{card.set}</span>
-                                                {card.cardType && <span className={styles.typeBadge}>{card.cardType}</span>}
-                                            </div>
                                         </div>
                                         <h3 className={styles.cardName}>{card.name}</h3>
-                                        {(card.nameCN || card.nameEN) && (
-                                            <div className={styles.subNames}>
-                                                {card.nameCN && <span>{card.nameCN}</span>}
-                                                {card.nameCN && card.nameEN && <span className={styles.separator}>/</span>}
-                                                {card.nameEN && <span>{card.nameEN}</span>}
-                                            </div>
+                                        <div className={styles.setRow}>{card.set}</div>
+                                        {card.cardType && (
+                                            <div className={styles.typeBlock}>({card.cardType.toLowerCase()})</div>
                                         )}
                                         <div className={styles.priceInfo}>
-                                            <span className={styles.label}>{t('basePrice')}</span>
-                                            <span className={styles.price}>
-                                                {card.priceRaw && card.currency === 'USD' ? (
-                                                    <>
-                                                        約 ${Math.round(parseFloat(card.priceRaw) * 7.8).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                                                        {card.pricePSA10 > 0 && (
-                                                            <div style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                                PSA 10: ${Math.round(parseFloat(card.pricePSA10) * 7.8).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                                                            </div>
-                                                        )}
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        約 ${Math.round(convertJpyToHkd(parseFloat(card.price) || 0, rate)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                                                    </>
-                                                )}
-                                            </span>
+                                            <div className={styles.priceRow}>
+                                                <span className={styles.priceLabel}>Raw</span>
+                                                <span className={styles.price}>
+                                                    HK${card.priceRaw && card.currency === 'USD' 
+                                                        ? Math.round(parseFloat(card.priceRaw) * 7.8).toLocaleString() 
+                                                        : Math.round(convertJpyToHkd(parseFloat(card.price) || 0, rate)).toLocaleString()}
+                                                </span>
+                                            </div>
+                                            {card.pricePSA10 > 0 && (
+                                                <div className={styles.priceRow}>
+                                                    <span className={styles.priceLabel}>PSA 10</span>
+                                                    <span className={styles.price}>
+                                                        HK${Math.round(parseFloat(card.pricePSA10) * 7.8).toLocaleString()}
+                                                    </span>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </Card>
