@@ -30,6 +30,7 @@ const CardSchema = new mongoose.Schema({
     // SNKRDUNK (optional cross-reference — set by admin/CLI; price filled by cron)
     snkrdunkProductId: Number, // e.g. 780928 from https://snkrdunk.com/en/trading-cards/{id}
     snkrdunkUpdatedAt: Date, // last successful quote fetch
+    snkrdunkAutoMatched: { type: Boolean, default: false }, // true = 批次自動配對，請喺 admin 再確認
 
     // Statistics
     views: { type: Number, default: 0 },

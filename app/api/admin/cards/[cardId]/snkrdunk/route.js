@@ -29,7 +29,10 @@ export async function PATCH(req, { params }) {
         if (snkrdunkProductId === null || snkrdunkProductId === '') {
             await Card.updateOne(
                 { id: cardId },
-                { $unset: { snkrdunkProductId: '', snkrdunkUpdatedAt: '' } }
+                {
+                    $unset: { snkrdunkProductId: '', snkrdunkUpdatedAt: '' },
+                    $set: { snkrdunkAutoMatched: false }
+                }
             );
             return NextResponse.json({ success: true, cleared: true });
         }
@@ -39,7 +42,7 @@ export async function PATCH(req, { params }) {
             return NextResponse.json({ success: false, error: 'Invalid snkrdunkProductId' }, { status: 400 });
         }
 
-        const update = { $set: { snkrdunkProductId: pid } };
+        const update = { $set: { snkrdunkProductId: pid, snkrdunkAutoMatched: false } };
         let quote = null;
 
         if (fetchNow) {

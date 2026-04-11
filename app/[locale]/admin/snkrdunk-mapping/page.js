@@ -18,8 +18,12 @@ export default function AdminSnkrdunkMappingPage() {
     const [saving, setSaving] = useState(false);
     const [msg, setMsg] = useState(null);
     const [err, setErr] = useState(null);
+    const [autoBusy, setAutoBusy] = useState(false);
+    const [autoDryRun, setAutoDryRun] = useState(true);
+    const [autoReplace, setAutoReplace] = useState(false);
 
     const canSearch = q.trim().length >= 2 || setIdFilter.trim().length >= 3;
+    const canAutoMatch = setIdFilter.trim().length >= 3;
 
     const search = async () => {
         if (!canSearch) return;
@@ -93,6 +97,7 @@ export default function AdminSnkrdunkMappingPage() {
                         ? {
                               ...r,
                               snkrdunkProductId: data.cleared ? null : body.snkrdunkProductId,
+                              snkrdunkAutoMatched: false,
                               snkrdunkUpdatedAt: data.quote ? new Date().toISOString() : r.snkrdunkUpdatedAt
                           }
                         : r
@@ -102,7 +107,8 @@ export default function AdminSnkrdunkMappingPage() {
                 prev
                     ? {
                           ...prev,
-                          snkrdunkProductId: data.cleared ? null : body.snkrdunkProductId
+                          snkrdunkProductId: data.cleared ? null : body.snkrdunkProductId,
+                          snkrdunkAutoMatched: false
                       }
                     : null
             );
@@ -137,6 +143,45 @@ export default function AdminSnkrdunkMappingPage() {
         patch({ snkrdunkProductId: null });
     };
 
+    const runAutoMatch = async () => {
+        if (!canAutoMatch) {
+            setErr('自動配對要填 setId（至少 3 字），同你搜尋用嘅第二格一樣。');
+            return;
+        }
+        const ok = autoDryRun
+            ? window.confirm(
+                  `試跑自動配對（唔寫入 DB）？\nsetId: ${setIdFilter.trim()}\n會用 SNKRDUNK API 逐張搜（約 0.5s/張），最多 50 張。`
+              )
+            : window.confirm(
+                  `確定寫入自動配對？\n只會填「未對應」嘅卡；人手已儲存過嘅唔會改。\n勾咗「重跑自動」會連舊嘅「自動」一齊重估。\nsetId: ${setIdFilter.trim()}`
+              );
+        if (!ok) return;
+        setAutoBusy(true);
+        setErr(null);
+        setMsg(null);
+        try {
+            const res = await fetch('/api/admin/snkrdunk-auto-match', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    setId: setIdFilter.trim(),
+                    maxCards: 50,
+                    dryRun: autoDryRun,
+                    replaceAuto: autoReplace
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || res.statusText);
+            const s = `自動配對完成（${autoDryRun ? '試跑' : '已寫入'}）：掃 ${data.scanned} 張，成功 ${data.matched}，略過 ${data.skipped}，失敗 ${data.failed}。`;
+            setMsg(s + (data.samples?.length ? ` 範例：${data.samples.map((x) => x.name.slice(0, 16)).join(' | ')}` : ''));
+            if (!autoDryRun) await search();
+        } catch (e) {
+            setErr(e.message);
+        } finally {
+            setAutoBusy(false);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.card}>
@@ -147,6 +192,10 @@ export default function AdminSnkrdunkMappingPage() {
                     ，最多 200 張。可勾「只顯示未對應」專執未有 SNKRDUNK ID 嘅卡。
                     <br />
                     搜尋後會<strong>自動揀第一張</strong>，下面輸入框就會出現；亦可撳列表其他行切換。SNKRDUNK 網址最尾數字即商品 ID。
+                    <br />
+                    <strong>批次自動配對：</strong>填好 setId 後可「試跑／寫入」——用卡名搜 SNKRDUNK，再用{' '}
+                    <code>[setCode 049/193]</code> 同你張卡嘅 <code>setCode</code> + 卡號對；<span style={{ color: '#fbbf24' }}>無 setCode 或一對多會略過</span>
+                    。寫入後列表會顯示「自動」標籤，請你喺呢頁逐張確認／改錯。
                 </p>
 
                 <div className={styles.filtersBlock}>
@@ -179,6 +228,31 @@ export default function AdminSnkrdunkMappingPage() {
                     </label>
                 </div>
 
+                <div className={styles.autoPanel}>
+                    <h3 className={styles.autoTitle}>批次自動配對（同一 setId）</h3>
+                    <p className={styles.autoHint}>
+                        先用上面 setId 搜一次確認 list 啱。自動配對會 call SNKRDUNK API，每張約 0.55 秒，每次最多 50 張。
+                    </p>
+                    <div className={styles.autoRow}>
+                        <label className={styles.checkLabel}>
+                            <input type="checkbox" checked={autoDryRun} onChange={(e) => setAutoDryRun(e.target.checked)} />
+                            試跑（唔寫入 DB，只睇結果）
+                        </label>
+                        <label className={styles.checkLabel}>
+                            <input type="checkbox" checked={autoReplace} onChange={(e) => setAutoReplace(e.target.checked)} />
+                            重跑舊嘅「自動」對應（唔會改人手已儲存嘅）
+                        </label>
+                    </div>
+                    <button
+                        type="button"
+                        className={styles.btn}
+                        disabled={autoBusy || !canAutoMatch}
+                        onClick={runAutoMatch}
+                    >
+                        {autoBusy ? '執行緊…' : autoDryRun ? '試跑自動配對' : '寫入自動配對'}
+                    </button>
+                </div>
+
                 {err && <p className={styles.error}>{err}</p>}
                 {msg && <p className={styles.success}>{msg}</p>}
 
@@ -187,9 +261,13 @@ export default function AdminSnkrdunkMappingPage() {
                         <h2>編輯對應</h2>
                         <p style={{ color: '#aaa', fontSize: '0.88rem', marginBottom: '12px' }}>
                             {selected.name}
+                            {selected.snkrdunkAutoMatched ? (
+                                <span className={styles.badgeAuto}>自動—請確認</span>
+                            ) : null}
                             {selected.setId ? (
                                 <span style={{ color: '#666', display: 'block', marginTop: '4px', fontSize: '0.8rem' }}>
                                     setId: {selected.setId}
+                                    {selected.setCode ? ` · setCode: ${selected.setCode}` : ''}
                                 </span>
                             ) : null}
                         </p>
@@ -266,9 +344,15 @@ export default function AdminSnkrdunkMappingPage() {
                                             )}
                                         </div>
                                         <div>
-                                            <div>{c.name}</div>
+                                            <div>
+                                                {c.name}
+                                                {c.snkrdunkAutoMatched ? (
+                                                    <span className={styles.badgeAuto}>自動</span>
+                                                ) : null}
+                                            </div>
                                             <div className={styles.meta}>
                                                 {c.set} {c.number ? `• ${c.number}` : ''}
+                                                {c.setCode ? ` • ${c.setCode}` : ''}
                                                 {c.snkrdunkProductId ? ` • SNKRDUNK #${c.snkrdunkProductId}` : ' • 未對應'}
                                             </div>
                                         </div>

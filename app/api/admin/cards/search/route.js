@@ -22,6 +22,7 @@ function mapCard(c) {
         setId: c.setId || '',
         setCode: c.setCode || '',
         snkrdunkProductId: c.snkrdunkProductId ?? null,
+        snkrdunkAutoMatched: !!c.snkrdunkAutoMatched,
         snkrdunkUpdatedAt: c.snkrdunkUpdatedAt || null,
         price: c.price,
         priceRaw: c.priceRaw,
