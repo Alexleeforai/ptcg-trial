@@ -27,6 +27,10 @@ const CardSchema = new mongoose.Schema({
     sourceUrl: String, // Source URL (PriceCharting, SNKRDUNK, etc.)
     tcgPlayerId: String, // Optional: TCGPlayer/Pokemon TCG API ID
 
+    // SNKRDUNK (optional cross-reference — set by admin/CLI; price filled by cron)
+    snkrdunkProductId: Number, // e.g. 780928 from https://snkrdunk.com/en/trading-cards/{id}
+    snkrdunkUpdatedAt: Date, // last successful quote fetch
+
     // Statistics
     views: { type: Number, default: 0 },
     lastViewedAt: Date,

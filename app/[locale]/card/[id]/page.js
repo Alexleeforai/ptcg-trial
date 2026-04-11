@@ -73,9 +73,17 @@ export default async function CardDetailPage({ params }) {
         price: convertJpyToHkd(h.price, rate)
     }));
 
-    // Bug fix: for USD cards (PriceCharting), use priceRaw * HKD rate as fallback data point
+    const hasSnkrdunkQuote =
+        card.snkrdunkProductId != null && Number(card.snkrdunkProductId) > 0;
+
+    // Trend fallback: prefer SNKRDUNK JPY when mapped, else PriceCharting USD heuristic, else legacy JPY
     if (trendData.length === 0) {
-        if (card.priceRaw && card.currency === 'USD') {
+        if (hasSnkrdunkQuote && card.price != null) {
+            trendData.push({
+                date: new Date().toISOString().split('T')[0],
+                price: convertJpyToHkd(card.price, rate)
+            });
+        } else if (card.priceRaw && card.currency === 'USD') {
             trendData.push({
                 date: new Date().toISOString().split('T')[0],
                 price: Math.round(card.priceRaw * 7.8)
@@ -91,7 +99,10 @@ export default async function CardDetailPage({ params }) {
     let price = 0;
     let hkdBenchmark = 0;
 
-    if (card.priceRaw && card.currency === 'USD') {
+    if (hasSnkrdunkQuote && card.price != null) {
+        price = card.price;
+        hkdBenchmark = convertJpyToHkd(price, rate);
+    } else if (card.priceRaw && card.currency === 'USD') {
         price = Math.round(card.priceRaw * 150);
         hkdBenchmark = Math.round(card.priceRaw * 7.8);
     } else if (card.price) {
@@ -161,6 +172,33 @@ export default async function CardDetailPage({ params }) {
 
                     <Card className={styles.benchmarkCard}>
                         {/* <div className={styles.benchmarkLabel}>{t('benchmark')}</div> */}
+
+                        {hasSnkrdunkQuote ? (
+                            <div style={{ marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--border, #eee)' }}>
+                                <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '6px' }}>
+                                    SNKRDUNK 參考（已按牌面貨幣換算日圓）
+                                </div>
+                                <div className={styles.benchmarkPrice}>
+                                    <span className={styles.priceValue}>
+                                        約 HK${hkdBenchmark.toLocaleString()}
+                                        <span className={styles.priceOriginal}>(¥{price.toLocaleString()})</span>
+                                    </span>
+                                </div>
+                                <a
+                                    href={`https://snkrdunk.com/en/trading-cards/${card.snkrdunkProductId}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{ fontSize: '0.85rem', marginTop: '8px', display: 'inline-block' }}
+                                >
+                                    在 SNKRDUNK 查看 →
+                                </a>
+                                {card.snkrdunkUpdatedAt && (
+                                    <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '6px' }}>
+                                        上次更新：{new Date(card.snkrdunkUpdatedAt).toLocaleString()}
+                                    </div>
+                                )}
+                            </div>
+                        ) : null}
 
                         {/* Display graded prices for PriceCharting cards */}
                         {card.priceRaw && card.currency === 'USD' ? (
@@ -238,7 +276,9 @@ export default async function CardDetailPage({ params }) {
                             initialItems={collectionItem?.items}
                             initialPurchasePrice={collectionItem?.purchasePrice}
                             prices={{
-                                raw: Math.round((card.priceRaw ? card.priceRaw * 7.8 : convertJpyToHkd(card.price || 0, rate))),
+                                raw: hasSnkrdunkQuote && card.price != null
+                                    ? convertJpyToHkd(card.price, rate)
+                                    : Math.round((card.priceRaw ? card.priceRaw * 7.8 : convertJpyToHkd(card.price || 0, rate))),
                                 psa10: card.pricePSA10 ? Math.round(card.pricePSA10 * 7.8) : 0,
                                 grade9: card.priceGrade9 ? Math.round(card.priceGrade9 * 7.8) : 0
                             }}
