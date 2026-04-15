@@ -1,7 +1,7 @@
 import { findCards } from '@/lib/db';
 import SetMetadata from '@/models/SetMetadata';
 import { translateQuery } from '@/lib/translate';
-import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
+import { getJpyToHkdRate, convertJpyToHkd, snkrdunkToHkd } from '@/lib/currency';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import { Link } from '@/lib/navigation';
 import Image from 'next/image';
@@ -18,12 +18,12 @@ export const revalidate = 60;
 function sortResults(results, sortBy) {
     const sorted = [...results];
 
-    // Helper to get comparable price (convert USD to HKD for fair comparison)
+    // Only SNKRDUNK-matched cards have a real price; unmatched cards sort to the bottom
     const getPrice = (card) => {
-        if (card.priceRaw && card.currency === 'USD') {
-            return card.priceRaw * 7.8; // USD to HKD
+        if (card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0) {
+            return card.price; // JPY — consistent basis for sorting
         }
-        return card.price || 0;
+        return 0;
     };
 
     switch (sortBy) {
@@ -143,20 +143,26 @@ export default async function SearchPage({ searchParams }) {
                                             <div className={styles.typeBlock}>({card.cardType.toLowerCase()})</div>
                                         )}
                                         <div className={styles.priceInfo}>
-                                            <div className={styles.priceRow}>
-                                                <span className={styles.priceLabel}>Raw</span>
-                                                <span className={styles.price}>
-                                                    HK${card.priceRaw && card.currency === 'USD' 
-                                                        ? Math.round(parseFloat(card.priceRaw) * 7.8).toLocaleString() 
-                                                        : Math.round(convertJpyToHkd(parseFloat(card.price) || 0, rate)).toLocaleString()}
-                                                </span>
-                                            </div>
-                                            {card.pricePSA10 > 0 && (
+                                            {card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0 ? (
+                                                <>
+                                                    <div className={styles.priceRow}>
+                                                        <span className={styles.priceLabel}>Raw</span>
+                                                        <span className={styles.price}>
+                                                            HK${snkrdunkToHkd(card.snkrdunkPriceUsd, card.price, rate).toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                    {card.snkrdunkPricePSA10 > 0 && (
+                                                        <div className={styles.priceRow}>
+                                                            <span className={styles.priceLabel}>PSA 10</span>
+                                                            <span className={styles.price}>
+                                                                HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate).toLocaleString()}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                </>
+                                            ) : (
                                                 <div className={styles.priceRow}>
-                                                    <span className={styles.priceLabel}>PSA 10</span>
-                                                    <span className={styles.price}>
-                                                        HK${Math.round(parseFloat(card.pricePSA10) * 7.8).toLocaleString()}
-                                                    </span>
+                                                    <span className={styles.price} style={{ color: '#555', fontSize: '0.85em' }}>未配對</span>
                                                 </div>
                                             )}
                                         </div>

@@ -56,24 +56,28 @@ export async function GET(request) {
 
     console.log(`Cache hit for "${searchQuery}". Found ${dbResults.length} in DB.`);
 
-    // Sort by Price High -> Low
+    // Sort: SNKRDUNK-matched cards first (by price desc), unmatched last
     dbResults.sort((a, b) => {
-        return b.price - a.price;
+        const aHasSnk = a.snkrdunkProductId > 0 && a.currency !== 'USD' && a.price > 0;
+        const bHasSnk = b.snkrdunkProductId > 0 && b.currency !== 'USD' && b.price > 0;
+        if (aHasSnk && !bHasSnk) return -1;
+        if (!aHasSnk && bHasSnk) return 1;
+        return (b.price || 0) - (a.price || 0);
     });
 
     const suggestions = dbResults.slice(0, 8).map(card => ({
         id: card.id,
         name: card.name,
-        // Snkrdunk doesn't distinguish EN/CN/JP names clearly in list, so just reuse name
         nameJP: card.nameJP || card.name,
         nameCN: card.nameCN || '',
         nameEN: card.nameEN || '',
         image: card.image,
         set: card.set,
         number: card.number || '',
-        price: card.price, // JPY
-        priceRaw: card.priceRaw, // USD (PriceCharting)
-        priceGrade9: card.priceGrade9, // USD
+        price: card.price, // JPY (SNKRDUNK)
+        currency: card.currency,
+        snkrdunkProductId: card.snkrdunkProductId || null,
+        snkrdunkPriceUsd: card.snkrdunkPriceUsd || null,
         link: card.link
     }));
 

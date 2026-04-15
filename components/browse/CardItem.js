@@ -4,19 +4,20 @@ import { Link } from '@/lib/navigation';
 import Image from 'next/image';
 import styles from '@/components/home/TrendingSection.module.css';
 import { useCurrency } from '@/hooks/useCurrency';
-import { convertPrice, formatPrice } from '@/lib/currency';
+import { snkrdunkConvertPrice, formatPrice } from '@/lib/currency';
+
+function snkHasPrice(card) {
+    return card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
+}
 
 export default function CardItem({ card }) {
     const currency = useCurrency();
 
-    // Safety check
     if (!card) return null;
 
-    const originalPrice = card.price || 0;
-    const cardCurrency = card.currency || 'JPY';
-
-    const displayPrice = convertPrice(originalPrice, cardCurrency, currency);
-    const formattedPrice = formatPrice(displayPrice, currency);
+    const hasPrice = snkHasPrice(card);
+    const displayPrice = hasPrice ? snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency) : null;
+    const formattedPrice = hasPrice ? formatPrice(displayPrice, currency) : null;
 
     return (
         <Link href={`/card/${card.id}`} className={styles.card}>
@@ -37,7 +38,9 @@ export default function CardItem({ card }) {
             <div className={styles.info}>
                 <div className={styles.name}>{card.name}</div>
                 <div className={styles.priceData}>
-                    <span className={styles.price}>{formattedPrice}</span>
+                    <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.8em' } : {}}>
+                        {hasPrice ? formattedPrice : '未配對'}
+                    </span>
                     <span className={styles.views} style={{ fontSize: '0.8rem', color: '#888' }}>
                         {card.set}
                     </span>

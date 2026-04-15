@@ -3,46 +3,42 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
-// PriceCharting image fallback chain
+const PLACEHOLDER = '/images/no-image-available.svg';
+
+// PriceCharting image fallback chain — try best available resolution
 const FALLBACKS = (url) => {
-    // Return empty if no url
     if (!url) return [];
 
-    // Pattern to identify resolution part
-    // Matches /60.jpg, /240.jpg, /1600.jpg etc.
+    // PriceCharting URLs have a resolution suffix: /60.jpg /240.jpg /1600.jpg etc.
     const pattern = /\/(60|240|1200|1600|original)\.(jpg|png)/;
     const match = url.match(pattern);
 
     if (!match) return [url];
-
-    const base = url;
     const ext = match[2];
 
-    // Priority order: 1600 -> 1200 -> original -> 240
-    // We construct these variants replacing whatever current size is there
+    // Try best quality first, fall back progressively
     return [
-        base.replace(pattern, `/1600.${ext}`),
-        base.replace(pattern, `/1200.${ext}`),
-        base.replace(pattern, `/original.${ext}`),
-        base.replace(pattern, `/240.${ext}`)
+        url.replace(pattern, `/1600.${ext}`),
+        url.replace(pattern, `/240.${ext}`),
+        url.replace(pattern, `/60.${ext}`),
     ];
 };
 
+function initFromSrc(src) {
+    if (!src || src === '/images/no-image-available.png') return { imgSrc: PLACEHOLDER, variants: [] };
+    const possibleUrls = FALLBACKS(src);
+    return { imgSrc: possibleUrls[0] || src, variants: possibleUrls };
+}
+
 export default function SmartImage({ src, alt, ...props }) {
-    const [imgSrc, setImgSrc] = useState(src);
+    const [imgSrc, setImgSrc] = useState(() => initFromSrc(src).imgSrc);
     const [attempts, setAttempts] = useState(0);
-    const [variants, setVariants] = useState([]);
+    const [variants, setVariants] = useState(() => initFromSrc(src).variants);
 
     useEffect(() => {
-        if (!src) {
-            setImgSrc('/images/no-image-available.png');
-            return;
-        }
-        // When initial src changes, reset everything
-        // But first, we want the "Best" initial guess
-        const possibleUrls = FALLBACKS(src);
-        setVariants(possibleUrls);
-        setImgSrc(possibleUrls[0] || src);
+        const init = initFromSrc(src);
+        setVariants(init.variants);
+        setImgSrc(init.imgSrc);
         setAttempts(0);
     }, [src]);
 
@@ -52,8 +48,7 @@ export default function SmartImage({ src, alt, ...props }) {
             setAttempts(nextAttempt);
             setImgSrc(variants[nextAttempt]);
         } else {
-            // All failed - fallback to placeholder
-            setImgSrc('/images/no-image-available.png');
+            setImgSrc(PLACEHOLDER);
         }
     };
 

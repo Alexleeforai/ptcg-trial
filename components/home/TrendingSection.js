@@ -9,7 +9,7 @@ import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './TrendingSection.module.css';
 
 import { useCurrency } from '@/hooks/useCurrency';
-import { convertPrice, formatPrice } from '@/lib/currency';
+import { snkrdunkConvertPrice, formatPrice } from '@/lib/currency';
 
 export default function TrendingSection({ cards }) {
     const currency = useCurrency();
@@ -23,22 +23,14 @@ export default function TrendingSection({ cards }) {
             </div>
             <div className={styles.grid}>
                 {cards.map((card, index) => {
-                    // Support both formats: priceRaw (USD) or price (JPY)
-                    let originalPrice = 0;
-                    let cardCurrency = 'JPY';
-
-                    if (card.priceRaw && card.currency === 'USD') {
-                        // PriceCharting data
-                        originalPrice = card.priceRaw;
-                        cardCurrency = 'USD';
-                    } else if (card.price) {
-                        // SNKRDUNK data
-                        originalPrice = card.price;
-                        cardCurrency = card.currency || 'JPY';
-                    }
-
-                    const displayPrice = convertPrice(originalPrice, cardCurrency, currency);
-                    const formattedPrice = formatPrice(displayPrice, currency);
+                    const hasPrice = card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
+                    const formattedPrice = hasPrice
+                        ? formatPrice(snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency), currency)
+                        : null;
+                    const psa10Jpy = card.snkrdunkPricePSA10 || 0;
+                    const formattedPSA10 = hasPrice && psa10Jpy > 0
+                        ? formatPrice(snkrdunkConvertPrice(card.snkrdunkPricePSA10Usd, psa10Jpy, currency), currency)
+                        : null;
 
                     return (
                         <div key={card.id} className={styles.card} style={{ position: 'relative', display: 'block', padding: 0 }}>
@@ -59,10 +51,12 @@ export default function TrendingSection({ cards }) {
                                     <div className={styles.name}>{card.name}</div>
                                     <div className={styles.priceData}>
                                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                            <span className={styles.price}>{formattedPrice}</span>
-                                            {card.pricePSA10 && (
+                                            <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.8em' } : {}}>
+                                                {hasPrice ? formattedPrice : '未配對'}
+                                            </span>
+                                            {formattedPSA10 && (
                                                 <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>
-                                                    PSA 10: {formatPrice(card.pricePSA10 * 7.8, currency).split('.')[0]}
+                                                    PSA 10: {formattedPSA10.split('.')[0]}
                                                 </div>
                                             )}
                                         </div>

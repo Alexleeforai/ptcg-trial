@@ -19,9 +19,9 @@ export default function RecentlyViewedTracker({ card }) {
                 name: card.name,
                 image: card.image,
                 price: card.price || 0,
-                priceRaw: card.priceRaw,
-                pricePSA10: card.pricePSA10,
                 currency: card.currency,
+                snkrdunkProductId: card.snkrdunkProductId ?? null,
+                snkrdunkPricePSA10: card.snkrdunkPricePSA10 ?? null,
                 path: window.location.pathname
             };
 

@@ -9,7 +9,7 @@ import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './TopRisersSection.module.css';
 
 import { useCurrency } from '@/hooks/useCurrency';
-import { convertPrice, formatPrice } from '@/lib/currency';
+import { snkrdunkConvertPrice, formatPrice } from '@/lib/currency';
 
 export default function TopRisersSection({ cards }) {
     const currency = useCurrency();
@@ -23,27 +23,14 @@ export default function TopRisersSection({ cards }) {
             </div>
             <div className={styles.grid}>
                 {cards.map((card, index) => {
-                    // Support both formats: priceRaw (USD) or price (JPY)
-                    let originalPrice = 0;
-                    let cardCurrency = 'JPY';
-
-                    if (card.priceRaw && card.currency === 'USD') {
-                        // PriceCharting data
-                        originalPrice = card.priceRaw;
-                        cardCurrency = 'USD';
-                    } else if (card.price) {
-                        // SNKRDUNK data
-                        originalPrice = card.price;
-                        cardCurrency = card.currency || 'JPY';
-                    }
-
-                    const displayPrice = convertPrice(originalPrice, cardCurrency, currency);
-                    const formattedPrice = formatPrice(displayPrice, currency);
-
-                    // Convert rise amount too
+                    const hasPrice = card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
+                    const formattedPrice = hasPrice
+                        ? formatPrice(snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency), currency)
+                        : null;
                     const riseAmount = card.riseAmount || 0;
-                    const displayRise = convertPrice(riseAmount, cardCurrency, currency);
-                    const formattedRise = formatPrice(displayRise, currency);
+                    const formattedRise = hasPrice
+                        ? formatPrice(snkrdunkConvertPrice(null, riseAmount, currency), currency)
+                        : null;
 
                     return (
                         <div key={card.id} className={styles.card} style={{ position: 'relative', display: 'block', padding: 0 }}>
@@ -68,20 +55,18 @@ export default function TopRisersSection({ cards }) {
                                     <div className={styles.name}>{card.name}</div>
                                     <div className={styles.priceData}>
                                         <div className={styles.priceColumn}>
-                                            <span className={styles.price}>{formattedPrice}</span>
-                                            {card.pricePSA10 && (
+                                            <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.8em' } : {}}>
+                                                {hasPrice ? formattedPrice : '未配對'}
+                                            </span>
+                                            {hasPrice && card.snkrdunkPricePSA10 > 0 && (
                                                 <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                    PSA 10: {formatPrice(
-                                                        // Convert USD PSA10 (if USD) to HKD roughly or use currency hook properly
-                                                        card.pricePSA10 * (currency === 'HKD' ? 7.8 : 1),
-                                                        currency
-                                                    ).split('.')[0]}
+                                                    PSA 10: {formatPrice(snkrdunkConvertPrice(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, currency), currency).split('.')[0]}
                                                 </div>
                                             )}
                                         </div>
-                                        <span className={styles.riseAmount}>
-                                            +{formattedRise}
-                                        </span>
+                                        {hasPrice && formattedRise && (
+                                            <span className={styles.riseAmount}>+{formattedRise}</span>
+                                        )}
                                     </div>
                                 </div>
                             </Link>

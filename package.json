@@ -25,6 +25,7 @@
     "mongoose": "^9.1.5",
     "next": "16.1.4",
     "next-intl": "^4.7.0",
+    "playwright-core": "^1.59.1",
     "puppeteer": "^24.35.0",
     "puppeteer-core": "^24.35.0",
     "react": "19.2.3",

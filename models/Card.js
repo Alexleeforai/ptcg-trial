@@ -29,8 +29,14 @@ const CardSchema = new mongoose.Schema({
 
     // SNKRDUNK (optional cross-reference — set by admin/CLI; price filled by cron)
     snkrdunkProductId: Number, // e.g. 780928 from https://snkrdunk.com/en/trading-cards/{id}
+    snkrdunkName: { type: String, default: '' }, // SNKRDUNK product name at time of match
     snkrdunkUpdatedAt: Date, // last successful quote fetch
     snkrdunkAutoMatched: { type: Boolean, default: false }, // true = 批次自動配對，請喺 admin 再確認
+    snkrdunkPricePSA10: Number, // JPY — cheapest PSA 10 listing on SNKRDUNK
+    snkrdunkPricePSA9: Number, // JPY — cheapest PSA 9 listing on SNKRDUNK
+    snkrdunkPriceUsd: Number,      // USD — raw price from EN API (before JPY conversion)
+    snkrdunkPricePSA10Usd: Number, // USD — cheapest PSA 10 from EN API
+    snkrdunkPricePSA9Usd: Number,  // USD — cheapest PSA 9 from EN API
 
     // Statistics
     views: { type: Number, default: 0 },

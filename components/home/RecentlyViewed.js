@@ -7,21 +7,63 @@ import SmartImage from '@/components/SmartImage';
 import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './RecentlyViewed.module.css';
+import { snkrdunkToHkd } from '@/lib/currency';
 
 export default function RecentlyViewed({ rate = 0.052 }) {
     const [cards, setCards] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
-        // ... (existing helper logic)
-        try {
-            const stored = localStorage.getItem('ptcg_recently_viewed');
-            if (stored) {
-                setCards(JSON.parse(stored));
+        async function load() {
+            try {
+                const stored = localStorage.getItem('ptcg_recently_viewed');
+                if (!stored) return;
+                let history = JSON.parse(stored);
+
+                // Find stale entries missing snkrdunkProductId or snkrdunkPriceUsd (new field)
+                const staleIds = history
+                    .filter(c => !('snkrdunkProductId' in c) || !('snkrdunkPriceUsd' in c))
+                    .map(c => c.id);
+
+                if (staleIds.length > 0) {
+                    // Batch fetch fresh data for stale cards
+                    const freshArr = await fetch(`/api/cards?ids=${staleIds.map(encodeURIComponent).join(',')}`)
+                        .then(r => r.ok ? r.json() : [])
+                        .catch(() => []);
+                    const freshMap = {};
+                    freshArr.forEach(f => { if (f?.id) freshMap[f.id] = f; });
+
+                    history = history.map(c => {
+                        const isStale = !('snkrdunkProductId' in c) || !('snkrdunkPriceUsd' in c);
+                        if (isStale && freshMap[c.id]) {
+                            const f = freshMap[c.id];
+                            return {
+                                ...c,
+                                price: f.price || c.price,
+                                currency: f.currency || c.currency,
+                                snkrdunkProductId: f.snkrdunkProductId ?? null,
+                                snkrdunkPricePSA10: f.snkrdunkPricePSA10 ?? null,
+                                snkrdunkPriceUsd: f.snkrdunkPriceUsd ?? null,
+                                snkrdunkPricePSA10Usd: f.snkrdunkPricePSA10Usd ?? null,
+                            };
+                        }
+                        // Mark as resolved even if not found, to avoid re-fetching every render
+                        if (isStale) {
+                            return { ...c, snkrdunkProductId: c.snkrdunkProductId ?? null, snkrdunkPriceUsd: null };
+                        }
+                        return c;
+                    });
+
+                    // Persist updated entries
+                    localStorage.setItem('ptcg_recently_viewed', JSON.stringify(history));
+                }
+
+                setCards(history);
+            } catch (e) {
+                console.error("Failed to load history", e);
             }
-        } catch (e) {
-            console.error("Failed to load history", e);
         }
+        load();
     }, []);
 
     if (cards.length === 0) return null;
@@ -42,20 +84,10 @@ export default function RecentlyViewed({ rate = 0.052 }) {
             </div>
             <div className={styles.grid}>
                 {cards.map(card => {
-                    // Support both formats: priceRaw (USD) or price (JPY)
-                    let hkdPrice = 0;
-                    let jpyPrice = 0;
-
-                    if (card.priceRaw && card.currency === 'USD') {
-                        // PriceCharting data
-                        hkdPrice = Math.round(card.priceRaw * 7.8);
-                        jpyPrice = Math.round(card.priceRaw * 150);
-                    } else {
-                        // SNKRDUNK data
-                        const price = card.price || card.basePriceJPY || 0;
-                        hkdPrice = Math.round(price * rate);
-                        jpyPrice = price;
-                    }
+                    const hasPrice = card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
+                    const hkdPrice = hasPrice ? snkrdunkToHkd(card.snkrdunkPriceUsd, card.price, rate) : 0;
+                    const psa10Hkd = hasPrice && card.snkrdunkPricePSA10 > 0
+                        ? snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate) : 0;
 
                     return (
                         <div key={card.id} className={styles.cardItem}
@@ -90,11 +122,11 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                             </div>
                             <div className={styles.cardInfo}>
                                 <div className={styles.cardName}>{card.name}</div>
-                                <div className={styles.cardPrice}>
-                                    HK${hkdPrice.toLocaleString()}
-                                    {card.pricePSA10 && (
+                                <div className={styles.cardPrice} style={!hasPrice ? { color: '#555', fontSize: '0.85em' } : {}}>
+                                    {hasPrice ? `HK$${hkdPrice.toLocaleString()}` : '未配對'}
+                                    {psa10Hkd > 0 && (
                                         <div style={{ fontSize: '0.75em', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            PSA 10: ${Math.round(card.pricePSA10 * 7.8).toLocaleString()}
+                                            PSA 10: HK${psa10Hkd.toLocaleString()}
                                         </div>
                                     )}
                                 </div>

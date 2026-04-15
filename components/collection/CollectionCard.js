@@ -5,6 +5,7 @@ import Card from '@/components/ui/Card';
 import styles from './CollectionCard.module.css';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import Link from 'next/link';
+import { snkrdunkToHkd } from '@/lib/currency';
 
 export default function CollectionCard({
     cardId,
@@ -12,21 +13,19 @@ export default function CollectionCard({
     image,
     set,
     priceJpy,
-    priceRawUsd,
-    pricePSA10,
+    snkrdunkProductId,
+    snkrdunkPricePSA10,
+    snkrdunkPriceUsd,
+    snkrdunkPricePSA10Usd,
     currency,
     rate,
     initialPurchasePrice,
     items = [],
     cardType
 }) {
-    // Calculate current market price reference (HKD)
-    let currentPriceHkd = 0;
-    if (priceRawUsd && currency === 'USD') {
-        currentPriceHkd = Math.round(priceRawUsd * 7.8);
-    } else {
-        currentPriceHkd = Math.round((priceJpy || 0) * rate);
-    }
+    // Only use SNKRDUNK price — show 未配對 if not matched
+    const hasSnkPrice = snkrdunkProductId > 0 && currency !== 'USD' && priceJpy > 0;
+    const currentPriceHkd = hasSnkPrice ? snkrdunkToHkd(snkrdunkPriceUsd, priceJpy, rate) : 0;
 
     // Determine copies data
     // Fallback to legacy purchasePrice if items is empty but price exists
@@ -44,11 +43,11 @@ export default function CollectionCard({
 
     const totalCost = displayItems.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
 
-    // Market price per grade
+    // Market price per grade — SNKRDUNK only; PSA prices from snkrdunkPricePSA10/9
     const marketByGrade = {
         RAW:    currentPriceHkd,
-        PSA10:  pricePSA10 ? Math.round(pricePSA10 * 7.8) : 0,
-        GRADE9: 0, // grade9 not passed yet — extend if needed
+        PSA10:  hasSnkPrice && snkrdunkPricePSA10 > 0 ? snkrdunkToHkd(snkrdunkPricePSA10Usd, snkrdunkPricePSA10, rate) : 0,
+        GRADE9: 0,
     };
 
     // Group items by grade, compute avg cost + P/L% per grade
@@ -102,15 +101,15 @@ export default function CollectionCard({
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                         <div>
                             <span className={styles.label}>Market Price (Raw)</span>
-                            <div className={styles.priceDisplay}>
-                                HK${currentPriceHkd.toLocaleString()}
+                            <div className={styles.priceDisplay} style={!hasSnkPrice ? { color: '#555', fontSize: '0.85em' } : {}}>
+                                {hasSnkPrice ? `HK$${currentPriceHkd.toLocaleString()}` : '未配對'}
                             </div>
                         </div>
-                        {pricePSA10 && (
+                        {hasSnkPrice && marketByGrade.PSA10 > 0 && (
                             <div style={{ textAlign: 'right' }}>
                                 <span className={styles.label}>PSA 10</span>
                                 <div className={styles.priceDisplay} style={{ color: '#888', fontSize: '0.9rem' }}>
-                                    HK${Math.round(pricePSA10 * 7.8).toLocaleString()}
+                                    HK${marketByGrade.PSA10.toLocaleString()}
                                 </div>
                             </div>
                         )}

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './LatestSets.module.css';
+import { snkrdunkToHkd } from '@/lib/currency';
 
 export default function LatestSets({ sets, rate = 0.052 }) {
     if (!sets || sets.length === 0) return null;
@@ -17,23 +18,10 @@ export default function LatestSets({ sets, rate = 0.052 }) {
             <h2 className={styles.title}>{t('title')}</h2>
             <div className={styles.grid}>
                 {sets.map(product => {
-                    // Support both formats:
-                    // Old format: product.price (JPY)
-                    // PriceCharting format: product.priceRaw (USD)
-                    // Use FIXED rates to avoid hydration mismatch
-                    let hkdPrice = 0;
-                    let jpyPrice = 0;
-
-                    if (product.priceRaw && product.currency === 'USD') {
-                        // PriceCharting data (USD) - fixed conversion rates
-                        const usdPrice = product.priceRaw;
-                        hkdPrice = Math.round(usdPrice * 7.8); // USD to HKD
-                        jpyPrice = Math.round(usdPrice * 150); // USD to JPY
-                    } else if (product.price) {
-                        // Old format (JPY) - use live rate prop
-                        jpyPrice = product.price;
-                        hkdPrice = Math.round(product.price * (rate || 0.052)); // Use live rate
-                    }
+                    const hasPrice = product.snkrdunkProductId > 0 && product.currency !== 'USD' && product.price > 0;
+                    const hkdPrice = hasPrice ? snkrdunkToHkd(product.snkrdunkPriceUsd, product.price, rate) : 0;
+                    const psa10Hkd = hasPrice && product.snkrdunkPricePSA10 > 0
+                        ? snkrdunkToHkd(product.snkrdunkPricePSA10Usd, product.snkrdunkPricePSA10, rate) : 0;
 
                     return (
                         <div key={product.id} className={styles.setCard} style={{ position: 'relative', display: 'block', padding: 0 }}>
@@ -72,10 +60,12 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                                         </div>
                                     )}
                                     <div className={styles.priceRow}>
-                                        <span className={styles.price}>HK${hkdPrice.toLocaleString()}</span>
-                                        {product.pricePSA10 && (
+                                        <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.85em' } : {}}>
+                                            {hasPrice ? `HK$${hkdPrice.toLocaleString()}` : '未配對'}
+                                        </span>
+                                        {psa10Hkd > 0 && (
                                             <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                PSA 10: ${Math.round(product.pricePSA10 * 7.8).toLocaleString()}
+                                                PSA 10: HK${psa10Hkd.toLocaleString()}
                                             </div>
                                         )}
                                     </div>

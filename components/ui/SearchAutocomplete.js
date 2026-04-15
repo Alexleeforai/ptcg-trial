@@ -7,6 +7,7 @@ import Input from '@/components/ui/Input';
 import CardScanner from '@/components/search/CardScanner';
 import styles from './SearchAutocomplete.module.css';
 import { useTranslations } from 'next-intl';
+import { snkrdunkToHkd, SNKRDUNK_USD_TO_HKD } from '@/lib/currency';
 
 export default function SearchAutocomplete({
     placeholder,
@@ -128,12 +129,10 @@ export default function SearchAutocomplete({
                             <div className={styles.suggestionInfo}>
                                 <div className={styles.suggestionHeader}>
                                     <span className={styles.suggestionName}>{s.name}</span>
-                                    <span className={`${styles.suggestionPrice} ${s.price > 0 || s.priceRaw > 0 ? '' : styles.noPrice}`}>
-                                        {s.price > 0
-                                            ? `HK$${Math.round(s.price * 0.055).toLocaleString()}`
-                                            : s.priceRaw > 0
-                                                ? `HK$${Math.round(s.priceRaw * 7.8).toLocaleString()}`
-                                                : 'HK$ ---'
+                                    <span className={`${styles.suggestionPrice} ${s.snkrdunkProductId > 0 && s.currency !== 'USD' && s.price > 0 ? '' : styles.noPrice}`}>
+                                        {s.snkrdunkProductId > 0 && s.currency !== 'USD' && s.price > 0
+                                            ? `HK$${snkrdunkToHkd(s.snkrdunkPriceUsd, s.price, 0.049).toLocaleString()}`
+                                            : '未配對'
                                         }
                                     </span>
                                 </div>

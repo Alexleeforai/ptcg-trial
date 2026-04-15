@@ -1,5 +1,5 @@
 import { getListingsForCard, getCardById, getUserBookmarks, incrementCardView, getCollectionItem } from '@/lib/db';
-import { getJpyToHkdRate, convertJpyToHkd } from '@/lib/currency';
+import { getJpyToHkdRate, convertJpyToHkd, snkrdunkToHkd } from '@/lib/currency';
 import { auth } from '@clerk/nextjs/server';
 import { Link } from '@/lib/navigation';
 import { getTranslations } from 'next-intl/server';
@@ -73,12 +73,19 @@ export default async function CardDetailPage({ params }) {
         price: convertJpyToHkd(h.price, rate)
     }));
 
-    const hasSnkrdunkQuote =
+    const hasSnkrdunkMapping =
         card.snkrdunkProductId != null && Number(card.snkrdunkProductId) > 0;
+    // 以 SNKRDUNK 為主：要有成功拎過價嘅記錄，避免有 ID 但 price 仍係 PC 時誤顯 SNK 區塊用錯數字
+    const hasSnkrdunkPrice =
+        hasSnkrdunkMapping &&
+        card.snkrdunkUpdatedAt != null &&
+        card.price != null &&
+        Number(card.price) > 0 &&
+        card.currency !== 'USD';
 
     // Trend fallback: prefer SNKRDUNK JPY when mapped, else PriceCharting USD heuristic, else legacy JPY
     if (trendData.length === 0) {
-        if (hasSnkrdunkQuote && card.price != null) {
+        if (hasSnkrdunkPrice) {
             trendData.push({
                 date: new Date().toISOString().split('T')[0],
                 price: convertJpyToHkd(card.price, rate)
@@ -99,9 +106,9 @@ export default async function CardDetailPage({ params }) {
     let price = 0;
     let hkdBenchmark = 0;
 
-    if (hasSnkrdunkQuote && card.price != null) {
+    if (hasSnkrdunkPrice) {
         price = card.price;
-        hkdBenchmark = convertJpyToHkd(price, rate);
+        hkdBenchmark = snkrdunkToHkd(card.snkrdunkPriceUsd, price, rate);
     } else if (card.priceRaw && card.currency === 'USD') {
         price = Math.round(card.priceRaw * 150);
         hkdBenchmark = Math.round(card.priceRaw * 7.8);
@@ -173,17 +180,55 @@ export default async function CardDetailPage({ params }) {
                     <Card className={styles.benchmarkCard}>
                         {/* <div className={styles.benchmarkLabel}>{t('benchmark')}</div> */}
 
-                        {hasSnkrdunkQuote ? (
-                            <div style={{ marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--border, #eee)' }}>
-                                <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '6px' }}>
-                                    SNKRDUNK 參考（已按牌面貨幣換算日圓）
-                                </div>
-                                <div className={styles.benchmarkPrice}>
-                                    <span className={styles.priceValue}>
-                                        約 HK${hkdBenchmark.toLocaleString()}
-                                        <span className={styles.priceOriginal}>(¥{price.toLocaleString()})</span>
-                                    </span>
-                                </div>
+                        {hasSnkrdunkMapping ? (
+                            <div
+                                style={{
+                                    marginBottom: '16px',
+                                    paddingBottom: '12px',
+                                    borderBottom: '1px solid var(--border, #eee)'
+                                }}
+                            >
+                                {hasSnkrdunkPrice ? (
+                                    <>
+                                        <div style={{ fontSize: '0.85rem', color: '#888', marginBottom: '6px' }}>
+                                            SNKRDUNK 參考（已按牌面貨幣換算日圓）
+                                        </div>
+                                        <div className={styles.benchmarkPrice}>
+                                            <span className={styles.priceValue}>
+                                                約 HK${hkdBenchmark.toLocaleString()}
+                                                <span className={styles.priceOriginal}>(¥{price.toLocaleString()})</span>
+                                            </span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div style={{ fontSize: '0.88rem', color: '#666', lineHeight: 1.5 }}>
+                                        已連結 SNKRDUNK 商品，暫時未能顯示參考價（或仍同步緊）。你可稍後再開頁面，或喺 Admin「SNKRDUNK
+                                        對應」用「儲存並即時拎價」。
+                                    </div>
+                                )}
+                                {/* PSA graded prices from SNKRDUNK */}
+                                {(card.snkrdunkPricePSA10 || card.snkrdunkPricePSA9) && (
+                                    <div style={{ display: 'flex', gap: '12px', marginTop: '10px', flexWrap: 'wrap' }}>
+                                        {card.snkrdunkPricePSA10 > 0 && (
+                                            <div style={{ fontSize: '0.82rem' }}>
+                                                <span style={{ color: '#9ca3af' }}>PSA 10：</span>
+                                                <span style={{ color: '#e5e7eb', fontWeight: 600 }}>
+                                                    約 HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate).toLocaleString()}
+                                                </span>
+                                                <span style={{ color: '#6b7280', fontSize: '0.75rem' }}> (¥{card.snkrdunkPricePSA10.toLocaleString()})</span>
+                                            </div>
+                                        )}
+                                        {card.snkrdunkPricePSA9 > 0 && (
+                                            <div style={{ fontSize: '0.82rem' }}>
+                                                <span style={{ color: '#9ca3af' }}>PSA 9：</span>
+                                                <span style={{ color: '#e5e7eb', fontWeight: 600 }}>
+                                                    約 HK${snkrdunkToHkd(card.snkrdunkPricePSA9Usd, card.snkrdunkPricePSA9, rate).toLocaleString()}
+                                                </span>
+                                                <span style={{ color: '#6b7280', fontSize: '0.75rem' }}> (¥{card.snkrdunkPricePSA9.toLocaleString()})</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                                 <a
                                     href={`https://snkrdunk.com/en/trading-cards/${card.snkrdunkProductId}`}
                                     target="_blank"
@@ -200,8 +245,8 @@ export default async function CardDetailPage({ params }) {
                             </div>
                         ) : null}
 
-                        {/* Display graded prices for PriceCharting cards */}
-                        {card.priceRaw && card.currency === 'USD' ? (
+                        {/* Display graded prices for PriceCharting cards（有 SNK 有效參考價時唔再當主參考顯示 PC Raw） */}
+                        {card.priceRaw && card.currency === 'USD' && !hasSnkrdunkPrice ? (
                             <>
                                 <div style={{ display: 'flex', gap: '16px', marginTop: '16px', flexWrap: 'wrap' }}>
                                     {/* Raw Price */}
@@ -248,7 +293,7 @@ export default async function CardDetailPage({ params }) {
                                     )}
                                 </div>
                             </>
-                        ) : (
+                        ) : !hasSnkrdunkPrice ? (
                             <div className={styles.benchmarkPrice}>
                                 <span className={styles.priceValue}>
                                     約 ${hkdBenchmark.toLocaleString()}
@@ -257,7 +302,7 @@ export default async function CardDetailPage({ params }) {
                                     </span>
                                 </span>
                             </div>
-                        )}
+                        ) : null}
 
                         <div className={styles.trendRow}>
                             <TrendChart data={trendData} />
@@ -276,7 +321,7 @@ export default async function CardDetailPage({ params }) {
                             initialItems={collectionItem?.items}
                             initialPurchasePrice={collectionItem?.purchasePrice}
                             prices={{
-                                raw: hasSnkrdunkQuote && card.price != null
+                                raw: hasSnkrdunkPrice
                                     ? convertJpyToHkd(card.price, rate)
                                     : Math.round((card.priceRaw ? card.priceRaw * 7.8 : convertJpyToHkd(card.price || 0, rate))),
                                 psa10: card.pricePSA10 ? Math.round(card.pricePSA10 * 7.8) : 0,

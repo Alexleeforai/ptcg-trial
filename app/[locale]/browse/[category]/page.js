@@ -20,12 +20,12 @@ export default async function BrowseCategoryPage({ params, searchParams }) {
     let cards = await findCards(query);
     const rate = await getJpyToHkdRate();
 
-    // Sorting Logic
+    // Sorting Logic — SNKRDUNK only; unmatched cards get price 0 (sort to bottom)
     const getPrice = (card) => {
-        if (card.priceRaw && card.currency === 'USD') {
-            return card.priceRaw * 7.8;
+        if (card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0) {
+            return card.price; // JPY — consistent for sorting
         }
-        return (card.price || 0) * 0.055; // Approx JPY to HKD
+        return 0;
     };
 
     const getNumber = (card) => {
