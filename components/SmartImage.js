@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const PLACEHOLDER = '/images/no-image-available.svg';
 
@@ -9,14 +9,11 @@ const PLACEHOLDER = '/images/no-image-available.svg';
 const FALLBACKS = (url) => {
     if (!url) return [];
 
-    // PriceCharting URLs have a resolution suffix: /60.jpg /240.jpg /1600.jpg etc.
     const pattern = /\/(60|240|1200|1600|original)\.(jpg|png)/;
     const match = url.match(pattern);
-
     if (!match) return [url];
     const ext = match[2];
 
-    // Try best quality first, fall back progressively
     return [
         url.replace(pattern, `/1600.${ext}`),
         url.replace(pattern, `/240.${ext}`),
@@ -30,36 +27,61 @@ function initFromSrc(src) {
     return { imgSrc: possibleUrls[0] || src, variants: possibleUrls };
 }
 
-export default function SmartImage({ src, alt, ...props }) {
+const isExternal = (url) => url?.startsWith('http');
+
+export default function SmartImage({ src, alt, fill, width, height, style, className, sizes, priority }) {
     const [imgSrc, setImgSrc] = useState(() => initFromSrc(src).imgSrc);
-    const [attempts, setAttempts] = useState(0);
-    const [variants, setVariants] = useState(() => initFromSrc(src).variants);
+    const variantsRef = useRef(initFromSrc(src).variants);
+    const attemptsRef = useRef(0);
 
     useEffect(() => {
         const init = initFromSrc(src);
-        setVariants(init.variants);
+        variantsRef.current = init.variants;
+        attemptsRef.current = 0;
         setImgSrc(init.imgSrc);
-        setAttempts(0);
     }, [src]);
 
     const handleError = () => {
-        const nextAttempt = attempts + 1;
-        if (nextAttempt < variants.length) {
-            setAttempts(nextAttempt);
-            setImgSrc(variants[nextAttempt]);
+        const next = attemptsRef.current + 1;
+        if (next < variantsRef.current.length) {
+            attemptsRef.current = next;
+            setImgSrc(variantsRef.current[next]);
         } else {
             setImgSrc(PLACEHOLDER);
         }
     };
 
-    // Prevent rendering NextImage with empty src
     if (!imgSrc) return null;
 
+    // External images: bypass Next.js image optimiser so onError fires reliably in browser
+    if (isExternal(imgSrc)) {
+        const imgStyle = fill
+            ? { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', ...style }
+            : style;
+        return (
+            <img
+                src={imgSrc}
+                alt={alt || 'Card Image'}
+                style={imgStyle}
+                className={className}
+                onError={handleError}
+                loading={priority ? 'eager' : 'lazy'}
+            />
+        );
+    }
+
+    // Local images (placeholder SVG etc.): use next/image normally
     return (
         <Image
-            {...props}
             src={imgSrc}
             alt={alt || 'Card Image'}
+            fill={fill}
+            width={!fill ? (width || 240) : undefined}
+            height={!fill ? (height || 340) : undefined}
+            style={style}
+            className={className}
+            sizes={sizes}
+            priority={priority}
             onError={handleError}
         />
     );
