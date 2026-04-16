@@ -47,6 +47,7 @@ export async function GET(req) {
             releaseDate: meta.releaseDate ? meta.releaseDate.toISOString().split('T')[0] : '',
             coverImage: meta.coverImage || '',
             coverImagePosition: meta.coverImagePosition || '50% 50%',
+            coverImageZoom: meta.coverImageZoom || 1,
             hasMetadata: !!metaMap.get(s._id)
         };
     });
@@ -59,14 +60,14 @@ export async function PUT(req) {
     const adminId = await requireAdmin();
     if (!adminId) return new NextResponse('Forbidden', { status: 403 });
 
-    const { setId, language, releaseDate, coverImage, coverImagePosition } = await req.json();
+    const { setId, language, releaseDate, coverImage, coverImagePosition, coverImageZoom } = await req.json();
     if (!setId) return new NextResponse('Missing setId', { status: 400 });
 
     await connectToDatabase();
 
     await SetMetadata.findOneAndUpdate(
         { setId },
-        { $set: { language, releaseDate: releaseDate || null, coverImage: coverImage || '', coverImagePosition: coverImagePosition || '50% 50%', updatedAt: new Date() } },
+        { $set: { language, releaseDate: releaseDate || null, coverImage: coverImage || '', coverImagePosition: coverImagePosition || '50% 50%', coverImageZoom: coverImageZoom || 1, updatedAt: new Date() } },
         { upsert: true, strict: false }
     );
 

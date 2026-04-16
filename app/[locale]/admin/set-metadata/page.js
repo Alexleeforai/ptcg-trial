@@ -10,13 +10,14 @@ const LANGUAGE_OPTIONS = [
 ];
 
 // ─── Focal Point Picker Modal ────────────────────────────────────────────────
-function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onClose }) {
+function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', initialZoom = 1, onApply, onClose }) {
     const parsePos = (pos) => {
         const [x, y] = (pos || '50% 50%').replace(/%/g, '').split(' ').map(Number);
         return { x: isNaN(x) ? 50 : x, y: isNaN(y) ? 50 : y };
     };
 
     const [pos, setPos] = useState(() => parsePos(initialPosition));
+    const [zoom, setZoom] = useState(() => Number(initialZoom) || 1);
     const containerRef = useRef(null);
 
     const handleClick = (e) => {
@@ -27,7 +28,6 @@ function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onCl
         setPos({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
     };
 
-    // Drag support
     const dragging = useRef(false);
     const onMouseDown = (e) => { dragging.current = true; handleClick(e); };
     const onMouseMove = (e) => { if (dragging.current) handleClick(e); };
@@ -39,31 +39,26 @@ function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onCl
     }, []);
 
     const posStr = `${pos.x}% ${pos.y}%`;
+    const imgStyle = { width: '100%', height: '100%', objectFit: 'cover', objectPosition: posStr, transform: `scale(${zoom})`, transformOrigin: 'center center', pointerEvents: 'none', display: 'block' };
 
     return (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ background: '#18181b', borderRadius: 16, padding: 28, width: 480, border: '1px solid #3f3f46' }}>
-                <h3 style={{ color: '#fff', margin: '0 0 8px', fontSize: '1.1rem', fontWeight: 700 }}>封面焦點設定</h3>
+            <div style={{ background: '#18181b', borderRadius: 16, padding: 28, width: 520, border: '1px solid #3f3f46' }}>
+                <h3 style={{ color: '#fff', margin: '0 0 8px', fontSize: '1.1rem', fontWeight: 700 }}>封面焦點 & 縮放設定</h3>
                 <p style={{ color: '#9ca3af', fontSize: '0.8rem', marginBottom: 20 }}>
-                    點擊或拖曳圖片，選擇你想要顯示的焦點位置。十字代表目前焦點。
+                    點擊或拖曳左圖選擇焦點，用下方滑桿調整縮放及位置。
                 </p>
 
-                {/* Preview: matches Browse card aspect ratio */}
+                {/* Previews */}
                 <div style={{ display: 'flex', gap: 20, marginBottom: 20 }}>
-                    {/* Full image with crosshair */}
                     <div
                         ref={containerRef}
                         onMouseDown={onMouseDown}
                         onMouseMove={onMouseMove}
-                        style={{
-                            flex: 2, aspectRatio: '1/1', position: 'relative', overflow: 'hidden',
-                            borderRadius: 10, cursor: 'crosshair', border: '2px solid #6366f1',
-                            userSelect: 'none'
-                        }}
+                        style={{ flex: 2, aspectRatio: '1/1', position: 'relative', overflow: 'hidden', borderRadius: 10, cursor: 'crosshair', border: '2px solid #6366f1', userSelect: 'none' }}
                     >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={imageUrl} alt="cover" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: posStr, pointerEvents: 'none', display: 'block' }} />
-                        {/* Crosshair */}
+                        <img src={imageUrl} alt="cover" style={imgStyle} />
                         <div style={{ position: 'absolute', left: `${pos.x}%`, top: `${pos.y}%`, transform: 'translate(-50%,-50%)', pointerEvents: 'none' }}>
                             <div style={{ width: 20, height: 2, background: '#fff', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
                             <div style={{ width: 2, height: 20, background: '#fff', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
@@ -71,28 +66,32 @@ function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onCl
                         </div>
                     </div>
 
-                    {/* Browse card preview */}
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, justifyContent: 'flex-start' }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
                         <p style={{ color: '#6b7280', fontSize: '0.72rem', margin: 0 }}>Browse 預覽</p>
                         <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 8, overflow: 'hidden', border: '1px solid #3f3f46' }}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={imageUrl} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: posStr, display: 'block' }} />
+                            <img src={imageUrl} alt="preview" style={{ ...imgStyle, pointerEvents: undefined }} />
                         </div>
                     </div>
                 </div>
 
-                {/* Position display */}
-                <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
+                {/* Sliders */}
+                <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
                     <div style={{ flex: 1 }}>
                         <label style={{ color: '#9ca3af', fontSize: '0.75rem', display: 'block', marginBottom: 4 }}>X 位置: {pos.x}%</label>
-                        <input type="range" min="0" max="100" value={pos.x} onChange={e => setPos(p => ({ ...p, x: +e.target.value }))}
-                            style={{ width: '100%', accentColor: '#6366f1' }} />
+                        <input type="range" min="0" max="100" value={pos.x} onChange={e => setPos(p => ({ ...p, x: +e.target.value }))} style={{ width: '100%', accentColor: '#6366f1' }} />
                     </div>
                     <div style={{ flex: 1 }}>
                         <label style={{ color: '#9ca3af', fontSize: '0.75rem', display: 'block', marginBottom: 4 }}>Y 位置: {pos.y}%</label>
-                        <input type="range" min="0" max="100" value={pos.y} onChange={e => setPos(p => ({ ...p, y: +e.target.value }))}
-                            style={{ width: '100%', accentColor: '#6366f1' }} />
+                        <input type="range" min="0" max="100" value={pos.y} onChange={e => setPos(p => ({ ...p, y: +e.target.value }))} style={{ width: '100%', accentColor: '#6366f1' }} />
                     </div>
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                    <label style={{ color: '#9ca3af', fontSize: '0.75rem', display: 'block', marginBottom: 4 }}>
+                        縮放: {zoom.toFixed(1)}x
+                        <span style={{ color: '#6b7280', marginLeft: 8 }}>(1x = 原大，3x = 放大 3 倍)</span>
+                    </label>
+                    <input type="range" min="1" max="3" step="0.1" value={zoom} onChange={e => setZoom(+e.target.value)} style={{ width: '100%', accentColor: '#22c55e' }} />
                 </div>
 
                 <div style={{ background: 'rgba(251,191,36,0.1)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: 8, padding: '8px 12px', marginBottom: 16, fontSize: '0.78rem', color: '#fbbf24' }}>
@@ -102,7 +101,7 @@ function FocalPointPicker({ imageUrl, initialPosition = '50% 50%', onApply, onCl
                     <button onClick={onClose} style={{ padding: '8px 20px', borderRadius: 8, border: '1px solid #3f3f46', background: 'transparent', color: '#9ca3af', cursor: 'pointer' }}>
                         取消
                     </button>
-                    <button onClick={() => { onApply(posStr); onClose(); }}
+                    <button onClick={() => { onApply(posStr, zoom); onClose(); }}
                         style={{ padding: '8px 24px', borderRadius: 8, border: 'none', background: '#6366f1', color: '#fff', fontWeight: 600, cursor: 'pointer' }}>
                         套用
                     </button>
@@ -177,6 +176,7 @@ export default function AdminSetMetadataPage() {
                     releaseDate:         patch.releaseDate         !== undefined ? patch.releaseDate         : s.releaseDate,
                     coverImage:          patch.coverImage          !== undefined ? patch.coverImage          : s.coverImage,
                     coverImagePosition:  patch.coverImagePosition  !== undefined ? patch.coverImagePosition  : s.coverImagePosition,
+                    coverImageZoom:      patch.coverImageZoom      !== undefined ? patch.coverImageZoom      : s.coverImageZoom,
                 })
             });
             if (!res.ok) throw new Error(await res.text());
@@ -204,6 +204,10 @@ export default function AdminSetMetadataPage() {
         const patch = edits[s.setId] || {};
         return patch.coverImagePosition !== undefined ? patch.coverImagePosition : (s.coverImagePosition || '50% 50%');
     };
+    const getZoom = (s) => {
+        const patch = edits[s.setId] || {};
+        return patch.coverImageZoom !== undefined ? patch.coverImageZoom : (s.coverImageZoom || 1);
+    };
 
     return (
         <div style={{ maxWidth: 1000 }}>
@@ -212,7 +216,11 @@ export default function AdminSetMetadataPage() {
                 <FocalPointPicker
                     imageUrl={getCover(pickerSet)}
                     initialPosition={getPosition(pickerSet)}
-                    onApply={(pos) => handleEdit(pickerSet.setId, 'coverImagePosition', pos)}
+                    initialZoom={getZoom(pickerSet)}
+                    onApply={(pos, zoom) => {
+                        handleEdit(pickerSet.setId, 'coverImagePosition', pos);
+                        handleEdit(pickerSet.setId, 'coverImageZoom', zoom);
+                    }}
                     onClose={() => setPickerSet(null)}
                 />
             )}
@@ -269,6 +277,7 @@ export default function AdminSetMetadataPage() {
                                 const date = patch.releaseDate !== undefined ? patch.releaseDate : s.releaseDate;
                                 const cover = getCover(s);
                                 const position = getPosition(s);
+                                const zoom = getZoom(s);
 
                                 return (
                                     <tr key={s.setId} style={{ background: isDirty ? 'rgba(99,102,241,0.06)' : 'transparent' }}>
@@ -292,8 +301,8 @@ export default function AdminSetMetadataPage() {
                                                         title="點擊調整焦點"
                                                         style={{ width: 30, height: 42, borderRadius: 4, overflow: 'hidden', border: '1px solid #6366f1', cursor: 'pointer', flexShrink: 0, position: 'relative' }}
                                                     >
-                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                        <img src={cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: position }} />
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: position, transform: zoom !== 1 ? `scale(${zoom})` : undefined, transformOrigin: 'center center' }} />
                                                     </div>
                                                 ) : null}
                                                 <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, background: '#3f3f46', borderRadius: 6, padding: '4px 10px', fontSize: '0.75rem', color: '#e2e8f0', whiteSpace: 'nowrap' }}>

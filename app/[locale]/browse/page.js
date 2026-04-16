@@ -97,7 +97,12 @@ export default async function BrowsePage({ searchParams }) {
                                 fill
                                 sizes="(max-width: 768px) 50vw, 25vw"
                                 className={styles.setImage}
-                                style={{ objectFit: 'cover', objectPosition: set.coverImagePosition || '50% 50%' }}
+                                style={{
+                                    objectFit: 'cover',
+                                    objectPosition: set.coverImagePosition || '50% 50%',
+                                    transform: set.coverImageZoom && set.coverImageZoom !== 1 ? `scale(${set.coverImageZoom})` : undefined,
+                                    transformOrigin: 'center center',
+                                }}
                             />
                         </div>
                         <div className={styles.setInfo}>
