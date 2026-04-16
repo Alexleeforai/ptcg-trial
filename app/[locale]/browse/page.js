@@ -1,7 +1,6 @@
 import { getBrowseSets } from '@/lib/db';
 import { Link } from '@/lib/navigation';
-import Image from 'next/image';
-import { getHighQualityImage } from '@/lib/imageUtils';
+import SmartImage from '@/components/SmartImage';
 import styles from './Browse.module.css';
 
 // export const revalidate = 3600; // Disable static cache for now to debug sorting
@@ -92,19 +91,14 @@ export default async function BrowsePage({ searchParams }) {
                         className={styles.setCard}
                     >
                         <div className={styles.imageContainer}>
-                            {set.image ? (
-                                <Image
-                                    src={getHighQualityImage(set.image)}
-                                    alt={set.name}
-                                    fill
-                                    sizes="(max-width: 768px) 50vw, 25vw"
-                                    quality={95}
-                                    className={styles.setImage}
-                                    style={{ objectFit: 'cover', objectPosition: set.coverImagePosition || '50% 50%' }}
-                                />
-                            ) : (
-                                <div className={styles.placeholder}>No Image</div>
-                            )}
+                            <SmartImage
+                                src={set.image}
+                                alt={set.name}
+                                fill
+                                sizes="(max-width: 768px) 50vw, 25vw"
+                                className={styles.setImage}
+                                style={{ objectFit: 'cover', objectPosition: set.coverImagePosition || '50% 50%' }}
+                            />
                         </div>
                         <div className={styles.setInfo}>
                             <h3 className={styles.setName}>{set.name}</h3>
