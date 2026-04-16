@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@/lib/navigation';
-import Image from 'next/image';
+import SmartImage from '@/components/SmartImage';
 import styles from '@/components/home/TrendingSection.module.css';
 import { useCurrency } from '@/hooks/useCurrency';
 import { snkrdunkConvertPrice, formatPrice } from '@/lib/currency';
@@ -22,18 +22,14 @@ export default function CardItem({ card }) {
     return (
         <Link href={`/card/${card.id}`} className={styles.card}>
             <div className={styles.imageWrapper}>
-                {card.image ? (
-                    <Image
-                        src={card.image}
-                        alt={card.name}
-                        fill
-                        sizes="(max-width: 768px) 33vw, 20vw"
-                        style={{ objectFit: 'contain' }}
-                        className={styles.image}
-                    />
-                ) : (
-                    <div className={styles.noImage}>No Image</div>
-                )}
+                <SmartImage
+                    src={card.image}
+                    alt={card.name}
+                    fill
+                    sizes="(max-width: 768px) 33vw, 20vw"
+                    style={{ objectFit: 'contain' }}
+                    className={styles.image}
+                />
             </div>
             <div className={styles.info}>
                 <div className={styles.name}>{card.name}</div>

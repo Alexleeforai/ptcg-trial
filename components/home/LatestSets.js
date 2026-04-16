@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/lib/navigation';
-import Image from 'next/image';
+import SmartImage from '@/components/SmartImage';
 import QuickActionBookmark from '@/components/card/QuickActionBookmark';
 import { getHighQualityImage } from '@/lib/imageUtils';
 import styles from './LatestSets.module.css';
@@ -28,29 +28,14 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                             <QuickActionBookmark cardId={product.id} />
                             <Link href={`/card/${product.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', height: '100%' }}>
                                 <div className={styles.imageWrapper}>
-                                    {product.image ? (
-                                        <Image
-                                            src={getHighQualityImage(product.image)}
-                                            alt={product.name}
-                                            className={styles.productImage}
-                                            fill
-                                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                                            style={{ objectFit: 'contain' }}
-                                        />
-                                    ) : (
-                                        <div style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            background: '#1a1a1a',
-                                            color: '#666',
-                                            fontSize: '0.8rem'
-                                        }}>
-                                            No Image
-                                        </div>
-                                    )}
+                                    <SmartImage
+                                        src={product.image}
+                                        alt={product.name}
+                                        className={styles.productImage}
+                                        fill
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                        style={{ objectFit: 'contain' }}
+                                    />
                                 </div>
                                 <div className={styles.setInfo}>
                                     <h3 className={styles.setName}>{product.name}</h3>

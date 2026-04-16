@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from '@/lib/navigation';
-import Image from 'next/image';
+import SmartImage from '@/components/SmartImage';
 import Input from '@/components/ui/Input';
 import CardScanner from '@/components/search/CardScanner';
 import styles from './SearchAutocomplete.module.css';
@@ -118,7 +118,7 @@ export default function SearchAutocomplete({
                             className={styles.suggestionItem}
                             onClick={() => handleSelectSuggestion(s.id)}
                         >
-                            <Image
+                            <SmartImage
                                 src={s.image}
                                 alt={s.name}
                                 className={styles.suggestionImage}
