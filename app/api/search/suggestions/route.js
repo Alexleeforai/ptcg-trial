@@ -56,7 +56,8 @@ export async function GET(request) {
 
     console.log(`Cache hit for "${searchQuery}". Found ${dbResults.length} in DB.`);
 
-    // Sort: SNKRDUNK-matched cards first (by price desc), unmatched last
+    // findCards already returns relevance-sorted results.
+    // Secondary sort: SNKRDUNK-matched cards rise above unmatched within same relevance tier.
     dbResults.sort((a, b) => {
         const aHasSnk = a.snkrdunkProductId > 0 && a.currency !== 'USD' && a.price > 0;
         const bHasSnk = b.snkrdunkProductId > 0 && b.currency !== 'USD' && b.price > 0;
@@ -65,7 +66,7 @@ export async function GET(request) {
         return (b.price || 0) - (a.price || 0);
     });
 
-    const suggestions = dbResults.slice(0, 8).map(card => ({
+    const suggestions = dbResults.slice(0, 12).map(card => ({
         id: card.id,
         name: card.name,
         nameJP: card.nameJP || card.name,
