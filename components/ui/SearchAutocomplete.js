@@ -17,7 +17,7 @@ export default function SearchAutocomplete({
 }) {
     const t = useTranslations('Hero'); // Reuse Hero translations for search
     const [query, setQuery] = useState('');
-    const [searchType, setSearchType] = useState('setCode');
+    const [searchType, setSearchType] = useState('all');
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -89,9 +89,8 @@ export default function SearchAutocomplete({
                     onChange={(e) => setSearchType(e.target.value)}
                     className={styles.filterSelect}
                 >
-                    <option value="setCode">Set Code</option>
-                    <option value="name">Name</option>
                     <option value="all">All</option>
+                    <option value="name">Name</option>
                 </select>
                 <Input
                     value={query}
