@@ -11,7 +11,9 @@
     "update-db:jp": "node scripts/update-jp-cards.js",
     "clean-db": "node scripts/clean-db.js",
     "surgical-clean": "node scripts/surgical-clean.js",
-    "snkrdunk:link": "node scripts/snkrdunk-link-card.js"
+    "snkrdunk:link": "node scripts/snkrdunk-link-card.js",
+    "snkrdunk:index": "node scripts/snkrdunk-build-index.mjs",
+    "snkrdunk:match-index": "node scripts/snkrdunk-auto-match-from-index.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.36.9",
