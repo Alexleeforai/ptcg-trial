@@ -6,8 +6,8 @@ import { fetchSnkrdunkTradingCardQuote } from '@/lib/snkrdunk';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
-const BATCH = 12;
-const DELAY_MS = 700;
+const BATCH = 40;
+const DELAY_MS = 600;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
