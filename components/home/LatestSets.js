@@ -18,7 +18,8 @@ export default function LatestSets({ sets, rate = 0.052 }) {
             <h2 className={styles.title}>{t('title')}</h2>
             <div className={styles.grid}>
                 {sets.map(product => {
-                    const hasPrice = product.snkrdunkProductId > 0 && product.currency !== 'USD' && product.price > 0;
+                    const isMatched = product.snkrdunkProductId > 0;
+                    const hasPrice = isMatched && product.currency !== 'USD' && product.price > 0;
                     const hkdPrice = hasPrice ? snkrdunkToHkd(product.snkrdunkPriceUsd, product.price, rate) : 0;
                     const psa10Hkd = hasPrice && product.snkrdunkPricePSA10 > 0
                         ? snkrdunkToHkd(product.snkrdunkPricePSA10Usd, product.snkrdunkPricePSA10, rate) : 0;
@@ -45,8 +46,8 @@ export default function LatestSets({ sets, rate = 0.052 }) {
                                         </div>
                                     )}
                                     <div className={styles.priceRow}>
-                                        <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.85em' } : {}}>
-                                            {hasPrice ? `HK$${hkdPrice.toLocaleString()}` : '未配對'}
+                                        <span className={styles.price} style={!hasPrice ? { color: isMatched ? '#666' : '#555', fontSize: '0.85em' } : {}}>
+                                            {hasPrice ? `HK$${hkdPrice.toLocaleString()}` : isMatched ? '—' : '未配對'}
                                         </span>
                                         {psa10Hkd > 0 && (
                                             <div style={{ fontSize: '0.8rem', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

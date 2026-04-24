@@ -36,22 +36,25 @@ export async function GET() {
                 if (!quote) {
                     report.push({ id: row.id, snkrdunkProductId: pid, status: 'no_quote' });
                 } else {
-                    await Card.updateOne(
-                        { id: row.id },
-                        {
-                            $set: {
-                                price: quote.priceJpy,
-                                currency: 'JPY',
-                                snkrdunkUpdatedAt: new Date(),
-                                updatedAt: new Date()
-                            }
-                        }
-                    );
+                    const updateFields = {
+                        price: quote.priceJpy,
+                        currency: 'JPY',
+                        snkrdunkUpdatedAt: new Date(),
+                        updatedAt: new Date()
+                    };
+                    if (quote.priceUsd != null)       updateFields.snkrdunkPriceUsd      = quote.priceUsd;
+                    if (quote.pricePSA10Usd != null)  updateFields.snkrdunkPricePSA10Usd = quote.pricePSA10Usd;
+                    if (quote.pricePSA9Usd != null)   updateFields.snkrdunkPricePSA9Usd  = quote.pricePSA9Usd;
+                    if (quote.pricePSA10Jpy != null)  updateFields.snkrdunkPricePSA10    = quote.pricePSA10Jpy;
+                    if (quote.pricePSA9Jpy != null)   updateFields.snkrdunkPricePSA9     = quote.pricePSA9Jpy;
+
+                    await Card.updateOne({ id: row.id }, { $set: updateFields });
                     report.push({
                         id: row.id,
                         snkrdunkProductId: pid,
                         status: 'ok',
                         priceJpy: quote.priceJpy,
+                        priceUsd: quote.priceUsd,
                         sourceCurrency: quote.currency,
                         sourceMin: quote.minPrice
                     });

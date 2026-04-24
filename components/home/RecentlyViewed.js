@@ -84,7 +84,8 @@ export default function RecentlyViewed({ rate = 0.052 }) {
             </div>
             <div className={styles.grid}>
                 {cards.map(card => {
-                    const hasPrice = card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
+                    const isMatched = card.snkrdunkProductId > 0;
+                    const hasPrice = isMatched && card.currency !== 'USD' && card.price > 0;
                     const hkdPrice = hasPrice ? snkrdunkToHkd(card.snkrdunkPriceUsd, card.price, rate) : 0;
                     const psa10Hkd = hasPrice && card.snkrdunkPricePSA10 > 0
                         ? snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate) : 0;
@@ -122,8 +123,8 @@ export default function RecentlyViewed({ rate = 0.052 }) {
                             </div>
                             <div className={styles.cardInfo}>
                                 <div className={styles.cardName}>{card.name}</div>
-                                <div className={styles.cardPrice} style={!hasPrice ? { color: '#555', fontSize: '0.85em' } : {}}>
-                                    {hasPrice ? `HK$${hkdPrice.toLocaleString()}` : '未配對'}
+                                <div className={styles.cardPrice} style={!hasPrice ? { color: isMatched ? '#666' : '#555', fontSize: '0.85em' } : {}}>
+                                    {hasPrice ? `HK$${hkdPrice.toLocaleString()}` : isMatched ? '—' : '未配對'}
                                     {psa10Hkd > 0 && (
                                         <div style={{ fontSize: '0.75em', color: '#666', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                             PSA 10: HK${psa10Hkd.toLocaleString()}

@@ -6,16 +6,13 @@ import styles from '@/components/home/TrendingSection.module.css';
 import { useCurrency } from '@/hooks/useCurrency';
 import { snkrdunkConvertPrice, formatPrice } from '@/lib/currency';
 
-function snkHasPrice(card) {
-    return card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
-}
-
 export default function CardItem({ card }) {
     const currency = useCurrency();
 
     if (!card) return null;
 
-    const hasPrice = snkHasPrice(card);
+    const isMatched = card.snkrdunkProductId > 0;
+    const hasPrice = isMatched && card.currency !== 'USD' && card.price > 0;
     const displayPrice = hasPrice ? snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency) : null;
     const formattedPrice = hasPrice ? formatPrice(displayPrice, currency) : null;
 
@@ -34,8 +31,8 @@ export default function CardItem({ card }) {
             <div className={styles.info}>
                 <div className={styles.name}>{card.name}</div>
                 <div className={styles.priceData}>
-                    <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.8em' } : {}}>
-                        {hasPrice ? formattedPrice : '未配對'}
+                    <span className={styles.price} style={!hasPrice ? { color: hasPrice === false && isMatched ? '#666' : '#555', fontSize: '0.8em' } : {}}>
+                        {hasPrice ? formattedPrice : isMatched ? '—' : '未配對'}
                     </span>
                     <span className={styles.views} style={{ fontSize: '0.8rem', color: '#888' }}>
                         {card.set}

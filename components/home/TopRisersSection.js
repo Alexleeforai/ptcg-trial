@@ -23,7 +23,8 @@ export default function TopRisersSection({ cards }) {
             </div>
             <div className={styles.grid}>
                 {cards.map((card, index) => {
-                    const hasPrice = card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
+                    const isMatched = card.snkrdunkProductId > 0;
+                    const hasPrice = isMatched && card.currency !== 'USD' && card.price > 0;
                     const formattedPrice = hasPrice
                         ? formatPrice(snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency), currency)
                         : null;
@@ -55,8 +56,8 @@ export default function TopRisersSection({ cards }) {
                                     <div className={styles.name}>{card.name}</div>
                                     <div className={styles.priceData}>
                                         <div className={styles.priceColumn}>
-                                            <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.8em' } : {}}>
-                                                {hasPrice ? formattedPrice : '未配對'}
+                                            <span className={styles.price} style={!hasPrice ? { color: isMatched ? '#666' : '#555', fontSize: '0.8em' } : {}}>
+                                                {hasPrice ? formattedPrice : isMatched ? '—' : '未配對'}
                                             </span>
                                             {hasPrice && card.snkrdunkPricePSA10 > 0 && (
                                                 <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

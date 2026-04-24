@@ -143,28 +143,42 @@ export default async function SearchPage({ searchParams }) {
                                             <div className={styles.typeBlock}>({card.cardType.toLowerCase()})</div>
                                         )}
                                         <div className={styles.priceInfo}>
-                                            {card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0 ? (
-                                                <>
-                                                    <div className={styles.priceRow}>
-                                                        <span className={styles.priceLabel}>Raw</span>
-                                                        <span className={styles.price}>
-                                                            HK${snkrdunkToHkd(card.snkrdunkPriceUsd, card.price, rate).toLocaleString()}
-                                                        </span>
-                                                    </div>
-                                                    {card.snkrdunkPricePSA10 > 0 && (
+                                            {(() => {
+                                                const isMatched = card.snkrdunkProductId > 0;
+                                                const hasPrice = isMatched && card.currency !== 'USD' && card.price > 0;
+                                                if (!isMatched) {
+                                                    return (
                                                         <div className={styles.priceRow}>
-                                                            <span className={styles.priceLabel}>PSA 10</span>
+                                                            <span className={styles.price} style={{ color: '#555', fontSize: '0.85em' }}>未配對</span>
+                                                        </div>
+                                                    );
+                                                }
+                                                if (!hasPrice) {
+                                                    return (
+                                                        <div className={styles.priceRow}>
+                                                            <span className={styles.price} style={{ color: '#666', fontSize: '0.85em' }}>—</span>
+                                                        </div>
+                                                    );
+                                                }
+                                                return (
+                                                    <>
+                                                        <div className={styles.priceRow}>
+                                                            <span className={styles.priceLabel}>Raw</span>
                                                             <span className={styles.price}>
-                                                                HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate).toLocaleString()}
+                                                                HK${snkrdunkToHkd(card.snkrdunkPriceUsd, card.price, rate).toLocaleString()}
                                                             </span>
                                                         </div>
-                                                    )}
-                                                </>
-                                            ) : (
-                                                <div className={styles.priceRow}>
-                                                    <span className={styles.price} style={{ color: '#555', fontSize: '0.85em' }}>未配對</span>
-                                                </div>
-                                            )}
+                                                        {card.snkrdunkPricePSA10 > 0 && (
+                                                            <div className={styles.priceRow}>
+                                                                <span className={styles.priceLabel}>PSA 10</span>
+                                                                <span className={styles.price}>
+                                                                    HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate).toLocaleString()}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </>
+                                                );
+                                            })()}
                                         </div>
                                     </div>
                                 </Card>

@@ -123,7 +123,7 @@ export default function SearchAutocomplete({
                                     <span className={`${styles.suggestionPrice} ${s.snkrdunkProductId > 0 && s.currency !== 'USD' && s.price > 0 ? '' : styles.noPrice}`}>
                                         {s.snkrdunkProductId > 0 && s.currency !== 'USD' && s.price > 0
                                             ? `HK$${snkrdunkToHkd(s.snkrdunkPriceUsd, s.price, 0.049).toLocaleString()}`
-                                            : '未配對'
+                                            : s.snkrdunkProductId > 0 ? '—' : '未配對'
                                         }
                                     </span>
                                 </div>

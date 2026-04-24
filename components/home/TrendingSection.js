@@ -23,7 +23,8 @@ export default function TrendingSection({ cards }) {
             </div>
             <div className={styles.grid}>
                 {cards.map((card, index) => {
-                    const hasPrice = card.snkrdunkProductId > 0 && card.currency !== 'USD' && card.price > 0;
+                    const isMatched = card.snkrdunkProductId > 0;
+                    const hasPrice = isMatched && card.currency !== 'USD' && card.price > 0;
                     const formattedPrice = hasPrice
                         ? formatPrice(snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency), currency)
                         : null;
@@ -51,8 +52,8 @@ export default function TrendingSection({ cards }) {
                                     <div className={styles.name}>{card.name}</div>
                                     <div className={styles.priceData}>
                                         <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                            <span className={styles.price} style={!hasPrice ? { color: '#555', fontSize: '0.8em' } : {}}>
-                                                {hasPrice ? formattedPrice : '未配對'}
+                                            <span className={styles.price} style={!hasPrice ? { color: isMatched ? '#666' : '#555', fontSize: '0.8em' } : {}}>
+                                                {hasPrice ? formattedPrice : isMatched ? '—' : '未配對'}
                                             </span>
                                             {formattedPSA10 && (
                                                 <div style={{ fontSize: '0.7em', color: '#888', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '120px' }}>
