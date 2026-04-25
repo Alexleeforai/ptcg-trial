@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { SNKRDUNK_USD_TO_HKD } from '@/lib/currency';
 
 function extractProductId(input) {
     if (!input) return null;
@@ -43,7 +44,9 @@ export default function SnkrdunkAdminPanel({ cardId, currentProductId }) {
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || res.statusText);
             if (data.quote) {
-                const hkd = data.quote.priceHkd ?? (data.quote.priceUsd ? Math.round(data.quote.priceUsd * 7.78) : null);
+                const hkd =
+                    data.quote.priceHkd ??
+                    (data.quote.priceUsd ? Math.round(data.quote.priceUsd * SNKRDUNK_USD_TO_HKD) : null);
                 setResult({
                     productId: parsedId,
                     priceJpy: data.quote.priceJpy,

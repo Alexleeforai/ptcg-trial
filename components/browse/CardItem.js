@@ -13,7 +13,9 @@ export default function CardItem({ card }) {
 
     const isMatched = card.snkrdunkProductId > 0;
     const hasPrice = isMatched && card.currency !== 'USD' && card.price > 0;
-    const displayPrice = hasPrice ? snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency) : null;
+    const displayPrice = hasPrice
+        ? snkrdunkConvertPrice(card.snkrdunkPriceUsd, card.price, currency, card.snkrdunkPriceHkd)
+        : null;
     const formattedPrice = hasPrice ? formatPrice(displayPrice, currency) : null;
 
     return (
