@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './MatchDashboard.module.css';
@@ -126,9 +126,8 @@ export default function MatchDashboardPage() {
                                     const isExpanded = expanded === row.setCode;
                                     const cards = unmatchedMap[row.setCode];
                                     return (
-                                        <>
+                                        <Fragment key={row.setCode}>
                                             <tr
-                                                key={row.setCode}
                                                 className={`${styles.row} ${row.unmatched === 0 ? styles.rowDone : ''} ${isExpanded ? styles.rowExpanded : ''}`}
                                                 onClick={() => row.unmatched > 0 && toggleSet(row.setCode)}
                                                 style={{ cursor: row.unmatched > 0 ? 'pointer' : 'default' }}
@@ -156,7 +155,7 @@ export default function MatchDashboardPage() {
                                                 </td>
                                             </tr>
                                             {isExpanded && (
-                                                <tr key={`${row.setCode}-expand`} className={styles.expandRow}>
+                                                <tr className={styles.expandRow}>
                                                     <td colSpan={5}>
                                                         {loadingSet === row.setCode ? (
                                                             <p className={styles.hint}>載入中…</p>
@@ -185,7 +184,7 @@ export default function MatchDashboardPage() {
                                                     </td>
                                                 </tr>
                                             )}
-                                        </>
+                                        </Fragment>
                                     );
                                 })}
                             </tbody>
