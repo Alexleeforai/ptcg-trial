@@ -1,8 +1,8 @@
+import { Suspense } from 'react';
 import { findCards } from '@/lib/db';
 import SetMetadata from '@/models/SetMetadata';
 import { translateQuery } from '@/lib/translate';
-import { getJpyToHkdRate, convertJpyToHkd, snkrdunkToHkd } from '@/lib/currency';
-import { getHighQualityImage } from '@/lib/imageUtils';
+import { getJpyToHkdRate, snkrdunkToHkd } from '@/lib/currency';
 import { Link } from '@/lib/navigation';
 import SmartImage from '@/components/SmartImage';
 import Card from '@/components/ui/Card';
@@ -110,7 +110,7 @@ export default async function SearchPage({ searchParams }) {
                 {t('resultsFor')} <span className="text-gradient">"{q}"</span>
             </h1>
 
-            {rawResults.length > 0 && <SortFilter />}
+            {rawResults.length > 0 && <Suspense><SortFilter /></Suspense>}
 
             {results.length === 0 ? (
                 <div className={styles.noResults}>
@@ -165,14 +165,14 @@ export default async function SearchPage({ searchParams }) {
                                                         <div className={styles.priceRow}>
                                                             <span className={styles.priceLabel}>Raw</span>
                                                             <span className={styles.price}>
-                                                                HK${snkrdunkToHkd(card.snkrdunkPriceUsd, card.price, rate).toLocaleString()}
+                                                                HK${snkrdunkToHkd(card.snkrdunkPriceUsd, card.price, rate, card.snkrdunkPriceHkd).toLocaleString()}
                                                             </span>
                                                         </div>
-                                                        {card.snkrdunkPricePSA10 > 0 && (
+                                                        {(card.snkrdunkPricePSA10 > 0 || card.snkrdunkPricePSA10Hkd > 0) && (
                                                             <div className={styles.priceRow}>
                                                                 <span className={styles.priceLabel}>PSA 10</span>
                                                                 <span className={styles.price}>
-                                                                    HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate).toLocaleString()}
+                                                                    HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate, card.snkrdunkPricePSA10Hkd).toLocaleString()}
                                                                 </span>
                                                             </div>
                                                         )}
