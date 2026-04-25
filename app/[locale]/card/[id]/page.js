@@ -19,6 +19,7 @@ import { getHighQualityImage } from '@/lib/imageUtils';
 import InlineAddListingTrigger from '@/components/card/InlineAddListingTrigger';
 import { clerkClient } from '@clerk/nextjs/server';
 import Button from '@/components/ui/Button';
+import SnkrdunkAdminPanel from '@/components/admin/SnkrdunkAdminPanel';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,6 +40,7 @@ export default async function CardDetailPage({ params }) {
     let collectionItem = null;
     let isBookmarked = false;
     let isMerchant = false;
+    let isAdmin = false;
 
     if (userId) {
         if (card) {
@@ -51,6 +53,9 @@ export default async function CardDetailPage({ params }) {
             const userObj = await client.users.getUser(userId);
             if (userObj?.publicMetadata?.role === 'merchant') {
                 isMerchant = true;
+            }
+            if (userObj?.publicMetadata?.role === 'admin') {
+                isAdmin = true;
             }
         } catch (error) {
             console.error('Failed to fetch user role:', error);
@@ -108,7 +113,7 @@ export default async function CardDetailPage({ params }) {
 
     if (hasSnkrdunkPrice) {
         price = card.price;
-        hkdBenchmark = snkrdunkToHkd(card.snkrdunkPriceUsd, price, rate);
+        hkdBenchmark = snkrdunkToHkd(card.snkrdunkPriceUsd, price, rate, card.snkrdunkPriceHkd);
     } else if (card.priceRaw && card.currency === 'USD') {
         price = Math.round(card.priceRaw * 150);
         hkdBenchmark = Math.round(card.priceRaw * 7.8);
@@ -213,7 +218,7 @@ export default async function CardDetailPage({ params }) {
                                             <div style={{ fontSize: '0.82rem' }}>
                                                 <span style={{ color: '#9ca3af' }}>PSA 10：</span>
                                                 <span style={{ color: '#e5e7eb', fontWeight: 600 }}>
-                                                    約 HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate).toLocaleString()}
+                                                    約 HK${snkrdunkToHkd(card.snkrdunkPricePSA10Usd, card.snkrdunkPricePSA10, rate, card.snkrdunkPricePSA10Hkd).toLocaleString()}
                                                 </span>
                                                 <span style={{ color: '#6b7280', fontSize: '0.75rem' }}> (¥{card.snkrdunkPricePSA10.toLocaleString()})</span>
                                             </div>
@@ -222,7 +227,7 @@ export default async function CardDetailPage({ params }) {
                                             <div style={{ fontSize: '0.82rem' }}>
                                                 <span style={{ color: '#9ca3af' }}>PSA 9：</span>
                                                 <span style={{ color: '#e5e7eb', fontWeight: 600 }}>
-                                                    約 HK${snkrdunkToHkd(card.snkrdunkPricePSA9Usd, card.snkrdunkPricePSA9, rate).toLocaleString()}
+                                                    約 HK${snkrdunkToHkd(card.snkrdunkPricePSA9Usd, card.snkrdunkPricePSA9, rate, card.snkrdunkPricePSA9Hkd).toLocaleString()}
                                                 </span>
                                                 <span style={{ color: '#6b7280', fontSize: '0.75rem' }}> (¥{card.snkrdunkPricePSA9.toLocaleString()})</span>
                                             </div>
@@ -327,6 +332,13 @@ export default async function CardDetailPage({ params }) {
                                 psa10: card.pricePSA10 ? Math.round(card.pricePSA10 * 7.8) : 0,
                                 grade9: card.priceGrade9 ? Math.round(card.priceGrade9 * 7.8) : 0
                             }}
+                        />
+                    )}
+
+                    {isAdmin && (
+                        <SnkrdunkAdminPanel
+                            cardId={card.id}
+                            currentProductId={card.snkrdunkProductId}
                         />
                     )}
 

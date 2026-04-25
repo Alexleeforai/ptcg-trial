@@ -120,6 +120,23 @@ const TARGET_SETS = [
   { code: 'M1L', snkrCode: 'M1L' },
   { code: 'M1s', snkrCode: 'M1S' },
   // ── Others ───────────────────────────────────────────────────────────
+  // S-era extras
+  { code: 's1a', snkrCode: 'S1a' },
+  { code: 's1H', snkrCode: 'S1H' },
+  { code: 's2', snkrCode: 'S2' },
+  { code: 's3', snkrCode: 'S3' },
+  { code: 's4', snkrCode: 'S4' },
+  { code: 's5', snkrCode: 'S5' },
+  { code: 's6', snkrCode: 'S6' },
+  { code: 's6H', snkrCode: 'S6H' },
+  { code: 's7', snkrCode: 'S7' },
+  { code: 's7R', snkrCode: 'S7R' },
+  { code: 's8', snkrCode: 'S8' },
+  { code: 's9', snkrCode: 'S9' },
+  { code: 's10', snkrCode: 'S10' },
+  { code: 's10D', snkrCode: 'S10D' },
+  { code: 's11', snkrCode: 'S11' },
+  { code: 'VS', snkrCode: 'VS' },
   { code: 'JTG', snkrCode: 'JTG' },
   { code: '151c', snkrCode: '151c' },
 ];
@@ -129,11 +146,17 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 /**
  * Parse card number from SNKRDUNK product name.
  * e.g. "Bulbasaur C [SV2a 001/165]" → "001"
+ * e.g. "Shiftry [DP1 #325]" → "325"
  */
 function parseSnkrCardNum(name) {
   if (!name) return null;
-  const m = name.match(/\[[\w\d]+ (\d{1,4}[A-Za-z]?)\/\d+\]/);
-  return m ? m[1].replace(/^0+/, '') || '0' : null;
+  // Format 1: [XY7 043/081] or [SV2a 001/165]
+  let m = name.match(/\[[\w\d]+ (\d{1,4}[A-Za-z]?)\/\d+\]/);
+  if (m) return m[1].replace(/^0+/, '') || '0';
+  // Format 2: [DP1 #325] or [DP3 #182]
+  m = name.match(/\[[\w\d]+ #(\d{1,4})\]/);
+  if (m) return m[1].replace(/^0+/, '') || '0';
+  return null;
 }
 
 /**

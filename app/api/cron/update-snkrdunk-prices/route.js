@@ -42,7 +42,10 @@ export async function GET() {
                         snkrdunkUpdatedAt: new Date(),
                         updatedAt: new Date()
                     };
+                    if (quote.priceHkd != null)       updateFields.snkrdunkPriceHkd      = quote.priceHkd;
                     if (quote.priceUsd != null)       updateFields.snkrdunkPriceUsd      = quote.priceUsd;
+                    if (quote.pricePSA10Hkd != null)  updateFields.snkrdunkPricePSA10Hkd = quote.pricePSA10Hkd;
+                    if (quote.pricePSA9Hkd != null)   updateFields.snkrdunkPricePSA9Hkd  = quote.pricePSA9Hkd;
                     if (quote.pricePSA10Usd != null)  updateFields.snkrdunkPricePSA10Usd = quote.pricePSA10Usd;
                     if (quote.pricePSA9Usd != null)   updateFields.snkrdunkPricePSA9Usd  = quote.pricePSA9Usd;
                     if (quote.pricePSA10Jpy != null)  updateFields.snkrdunkPricePSA10    = quote.pricePSA10Jpy;

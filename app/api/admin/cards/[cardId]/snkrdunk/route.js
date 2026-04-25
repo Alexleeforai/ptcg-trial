@@ -72,11 +72,14 @@ export async function PATCH(req, { params }) {
                 update.$set.currency = 'JPY';
                 update.$set.snkrdunkUpdatedAt = new Date();
                 update.$set.updatedAt = new Date();
-                if (quote.pricePSA10Jpy != null) update.$set.snkrdunkPricePSA10 = quote.pricePSA10Jpy;
-                if (quote.pricePSA9Jpy != null) update.$set.snkrdunkPricePSA9 = quote.pricePSA9Jpy;
-                if (quote.priceUsd != null) update.$set.snkrdunkPriceUsd = quote.priceUsd;
-                if (quote.pricePSA10Usd != null) update.$set.snkrdunkPricePSA10Usd = quote.pricePSA10Usd;
-                if (quote.pricePSA9Usd != null) update.$set.snkrdunkPricePSA9Usd = quote.pricePSA9Usd;
+                if (quote.priceHkd != null)       update.$set.snkrdunkPriceHkd      = quote.priceHkd;
+                if (quote.priceUsd != null)       update.$set.snkrdunkPriceUsd      = quote.priceUsd;
+                if (quote.pricePSA10Hkd != null)  update.$set.snkrdunkPricePSA10Hkd = quote.pricePSA10Hkd;
+                if (quote.pricePSA9Hkd != null)   update.$set.snkrdunkPricePSA9Hkd  = quote.pricePSA9Hkd;
+                if (quote.pricePSA10Jpy != null)  update.$set.snkrdunkPricePSA10    = quote.pricePSA10Jpy;
+                if (quote.pricePSA9Jpy != null)   update.$set.snkrdunkPricePSA9     = quote.pricePSA9Jpy;
+                if (quote.pricePSA10Usd != null)  update.$set.snkrdunkPricePSA10Usd = quote.pricePSA10Usd;
+                if (quote.pricePSA9Usd != null)   update.$set.snkrdunkPricePSA9Usd  = quote.pricePSA9Usd;
             }
         }
 
@@ -92,6 +95,8 @@ export async function PATCH(req, { params }) {
             quote: quote
                 ? {
                       priceJpy: quote.priceJpy,
+                      priceHkd: quote.priceHkd,
+                      priceUsd: quote.priceUsd,
                       minPrice: quote.minPrice,
                       currency: quote.currency
                   }
