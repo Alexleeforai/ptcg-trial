@@ -1,0 +1,238 @@
+.page {
+    padding: 24px;
+    color: #e5e7eb;
+    max-width: 1100px;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #f9fafb;
+}
+
+/* Summary bar */
+.summary {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+.summaryItem {
+    background: #1f2937;
+    border-radius: 10px;
+    padding: 14px 20px;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.summaryNum {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #a5b4fc;
+}
+.summaryLabel {
+    font-size: 0.78rem;
+    color: #9ca3af;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #374151;
+}
+.tab {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover { color: #e5e7eb; }
+.tabActive {
+    color: #a5b4fc;
+    border-bottom-color: #6366f1;
+    font-weight: 600;
+}
+
+/* Table */
+.tableWrap {
+    overflow-x: auto;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+.table th {
+    text-align: left;
+    color: #6b7280;
+    font-weight: 500;
+    padding: 8px 10px;
+    border-bottom: 1px solid #374151;
+    white-space: nowrap;
+}
+.right { text-align: right !important; }
+
+.row {
+    border-bottom: 1px solid #1f2937;
+    transition: background 0.1s;
+}
+.row:hover { background: #1f2937; }
+.row td { padding: 10px; vertical-align: middle; }
+
+.rowDone { opacity: 0.55; }
+.rowExpanded { background: #1f2937; }
+
+.code {
+    font-family: monospace;
+    color: #a5b4fc;
+    font-size: 0.82rem;
+    white-space: nowrap;
+}
+.name { color: #d1d5db; max-width: 260px; }
+
+.done { color: #22c55e; font-weight: 600; }
+.doneTick { color: #22c55e; font-size: 1rem; }
+.unmatchedBadge {
+    background: #7f1d1d;
+    color: #fca5a5;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+/* Progress bar */
+.barWrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+}
+.bar {
+    height: 6px;
+    border-radius: 3px;
+    transition: width 0.3s;
+    min-width: 2px;
+    flex: 1 1 auto;
+    max-width: 120px;
+}
+.barPct {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    white-space: nowrap;
+    width: 34px;
+    text-align: right;
+}
+
+/* Expanded unmatched list */
+.expandRow td {
+    background: #111827;
+    padding: 12px 16px;
+}
+.unmatchedTitle {
+    font-size: 0.82rem;
+    color: #9ca3af;
+    margin-bottom: 10px;
+}
+.unmatchedGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.unmatchedCard {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    color: #c4b5fd;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.1s;
+}
+.unmatchedCard:hover { background: #374151; color: #e9d5ff; }
+.unmatchedName { color: #e5e7eb; }
+.unmatchedNum { color: #6b7280; font-size: 0.75rem; }
+
+/* Review tab */
+.reviewWrap { margin-top: 4px; }
+.section { margin-bottom: 32px; }
+.sectionTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f9fafb;
+    margin-bottom: 4px;
+}
+.sectionHint {
+    font-size: 0.82rem;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+.hint { color: #6b7280; font-size: 0.85rem; }
+
+.reviewGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.reviewCard {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 7px;
+    padding: 6px 12px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 160px;
+    transition: background 0.1s;
+}
+.reviewCard:hover { background: #374151; }
+.reviewCardName { font-size: 0.85rem; color: #e5e7eb; }
+.reviewCardMeta { font-size: 0.75rem; color: #9ca3af; }
+.reviewCardId { font-size: 0.72rem; color: #6b7280; font-family: monospace; }
+
+.reviewTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+.reviewTable th {
+    text-align: left;
+    color: #6b7280;
+    font-weight: 500;
+    padding: 8px 10px;
+    border-bottom: 1px solid #374151;
+}
+.reviewRow { border-bottom: 1px solid #1f2937; }
+.reviewRow td { padding: 8px 10px; vertical-align: middle; }
+.reviewRow:hover td { background: #1f2937; }
+
+.multiplier {
+    color: #f87171;
+    font-weight: 600;
+}
+.fixBtn {
+    background: #4f46e5;
+    color: #fff;
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-size: 0.78rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+.fixBtn:hover { background: #6366f1; }
+.unmatchedList { width: 100%; }
