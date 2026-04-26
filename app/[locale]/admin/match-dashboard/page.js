@@ -19,6 +19,25 @@ export default function MatchDashboardPage() {
     const [tab, setTab] = useState('progress'); // 'progress' | 'review'
     const [review, setReview] = useState(null);
     const [reviewLoading, setReviewLoading] = useState(false);
+    const [confirming, setConfirming] = useState({}); // cardId → true while saving
+
+    const confirmCard = async (cardId) => {
+        setConfirming(prev => ({ ...prev, [cardId]: true }));
+        try {
+            const res = await fetch(`/api/admin/cards/${encodeURIComponent(cardId)}/snkrdunk`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reviewOk: true }),
+            });
+            if (!res.ok) throw new Error('Failed');
+            setReview(prev => prev ? {
+                noQuote: prev.noQuote.filter(c => c.id !== cardId),
+                priceAnomalies: prev.priceAnomalies.filter(c => c.id !== cardId),
+            } : prev);
+        } finally {
+            setConfirming(prev => { const n = { ...prev }; delete n[cardId]; return n; });
+        }
+    };
 
     const fetchStats = useCallback(async () => {
         setLoading(true);
@@ -205,23 +224,49 @@ export default function MatchDashboardPage() {
                                     有 ID 但無報價（{review.noQuote?.length || 0} 張）
                                 </h2>
                                 <p className={styles.sectionHint}>
-                                    呢啲卡已配對 SNKRDUNK ID，但 fetch 後搵唔到任何掛單。可能係 ID 對錯咗，或該商品已下架。
+                                    呢啲卡已配對 SNKRDUNK ID，但 fetch 後搵唔到任何掛單。可能係 ID 對錯咗，或該商品已下架。確認無問題可撳 ✓ 移走。
                                 </p>
                                 {review.noQuote?.length === 0 && <p className={styles.hint}>無問題卡</p>}
-                                <div className={styles.reviewGrid}>
-                                    {(review.noQuote || []).map(c => (
-                                        <Link
-                                            key={c.id}
-                                            href={`/${locale}/card/${encodeURIComponent(c.id)}`}
-                                            className={styles.reviewCard}
-                                            target="_blank"
-                                        >
-                                            <span className={styles.reviewCardName}>{c.name}</span>
-                                            <span className={styles.reviewCardMeta}>{c.setCode} {c.number}</span>
-                                            <span className={styles.reviewCardId}>SNK#{c.snkrdunkProductId}</span>
-                                        </Link>
-                                    ))}
-                                </div>
+                                {review.noQuote?.length > 0 && (
+                                    <table className={styles.reviewTable}>
+                                        <thead>
+                                            <tr>
+                                                <th>卡名</th>
+                                                <th>Set</th>
+                                                <th>SNK ID</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {review.noQuote.map(c => (
+                                                <tr key={c.id} className={styles.reviewRow}>
+                                                    <td>
+                                                        <Link href={`/${locale}/card/${encodeURIComponent(c.id)}`} className={styles.cardLink} target="_blank">
+                                                            {c.name} {c.number || ''}
+                                                        </Link>
+                                                    </td>
+                                                    <td className={styles.code}>{c.setCode}</td>
+                                                    <td>
+                                                        <a href={`https://snkrdunk.com/en/trading-cards/${c.snkrdunkProductId}`} target="_blank" rel="noopener noreferrer" className={styles.snkLink}>
+                                                            SNK#{c.snkrdunkProductId}
+                                                        </a>
+                                                    </td>
+                                                    <td className={styles.actionCell}>
+                                                        <Link href={`/${locale}/card/${encodeURIComponent(c.id)}`} className={styles.fixBtn} target="_blank">去改</Link>
+                                                        <button
+                                                            className={styles.confirmBtn}
+                                                            disabled={!!confirming[c.id]}
+                                                            onClick={() => confirmCard(c.id)}
+                                                            title="確認無問題，移走"
+                                                        >
+                                                            {confirming[c.id] ? '…' : '✓'}
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
                             </section>
 
                             {/* Price anomaly section */}
@@ -230,45 +275,51 @@ export default function MatchDashboardPage() {
                                     價格異常（{review.priceAnomalies?.length || 0} 張）
                                 </h2>
                                 <p className={styles.sectionHint}>
-                                    呢啲卡嘅價格比同 set 平均貴 10 倍以上，可能係 match 錯咗去另一張貴卡。
+                                    呢啲卡嘅價格比同 set 平均貴 10 倍以上，可能係 match 錯咗去另一張貴卡。確認無問題可撳 ✓ 移走。
                                 </p>
                                 {review.priceAnomalies?.length === 0 && <p className={styles.hint}>無異常</p>}
-                                <table className={styles.reviewTable}>
-                                    <thead>
-                                        <tr>
-                                            <th>卡名</th>
-                                            <th>Set</th>
-                                            <th className={styles.right}>此卡價格</th>
-                                            <th className={styles.right}>Set 平均</th>
-                                            <th className={styles.right}>倍數</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {(review.priceAnomalies || []).map(c => (
-                                            <tr key={c.id} className={styles.reviewRow}>
-                                                <td>{c.name} {c.number || ''}</td>
-                                                <td className={styles.code}>{c.setCode}</td>
-                                                <td className={styles.right}>HK${c.snkrdunkPriceHkd?.toLocaleString()}</td>
-                                                <td className={styles.right}>HK${c.setAvgHkd?.toLocaleString()}</td>
-                                                <td className={styles.right}>
-                                                    <span className={styles.multiplier}>
-                                                        ×{Math.round(c.snkrdunkPriceHkd / c.setAvgHkd)}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <Link
-                                                        href={`/${locale}/card/${encodeURIComponent(c.id)}`}
-                                                        className={styles.fixBtn}
-                                                        target="_blank"
-                                                    >
-                                                        去改
-                                                    </Link>
-                                                </td>
+                                {review.priceAnomalies?.length > 0 && (
+                                    <table className={styles.reviewTable}>
+                                        <thead>
+                                            <tr>
+                                                <th>卡名</th>
+                                                <th>Set</th>
+                                                <th className={styles.right}>此卡價格</th>
+                                                <th className={styles.right}>Set 平均</th>
+                                                <th className={styles.right}>倍數</th>
+                                                <th></th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {review.priceAnomalies.map(c => (
+                                                <tr key={c.id} className={styles.reviewRow}>
+                                                    <td>
+                                                        <Link href={`/${locale}/card/${encodeURIComponent(c.id)}`} className={styles.cardLink} target="_blank">
+                                                            {c.name} {c.number || ''}
+                                                        </Link>
+                                                    </td>
+                                                    <td className={styles.code}>{c.setCode}</td>
+                                                    <td className={styles.right}>HK${c.snkrdunkPriceHkd?.toLocaleString()}</td>
+                                                    <td className={styles.right}>HK${c.setAvgHkd?.toLocaleString()}</td>
+                                                    <td className={styles.right}>
+                                                        <span className={styles.multiplier}>×{Math.round(c.snkrdunkPriceHkd / c.setAvgHkd)}</span>
+                                                    </td>
+                                                    <td className={styles.actionCell}>
+                                                        <Link href={`/${locale}/card/${encodeURIComponent(c.id)}`} className={styles.fixBtn} target="_blank">去改</Link>
+                                                        <button
+                                                            className={styles.confirmBtn}
+                                                            disabled={!!confirming[c.id]}
+                                                            onClick={() => confirmCard(c.id)}
+                                                            title="確認無問題，移走"
+                                                        >
+                                                            {confirming[c.id] ? '…' : '✓'}
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                )}
                             </section>
                         </>
                     )}

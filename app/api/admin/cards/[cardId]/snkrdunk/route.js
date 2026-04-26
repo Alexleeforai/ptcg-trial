@@ -24,9 +24,21 @@ export async function PATCH(req, { params }) {
 
         const { cardId } = await params;
         const body = await req.json();
-        const { snkrdunkProductId, fetchNow, confirm, snkrdunkName } = body;
+        const { snkrdunkProductId, fetchNow, confirm, reviewOk, snkrdunkName } = body;
 
         await connectToDatabase();
+
+        // "Review confirmed OK" mode: mark card as reviewed, exclude from review list
+        if (reviewOk === true) {
+            const res = await Card.updateOne(
+                { id: cardId },
+                { $set: { snkrdunkReviewOk: true, updatedAt: new Date() } }
+            );
+            if (res.matchedCount === 0) {
+                return NextResponse.json({ success: false, error: 'Card not found' }, { status: 404 });
+            }
+            return NextResponse.json({ success: true, reviewOk: true });
+        }
 
         // "確認正確" mode: just lock the auto-matched flag, keep everything else
         if (confirm === true) {

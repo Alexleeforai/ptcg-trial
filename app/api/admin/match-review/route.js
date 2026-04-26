@@ -26,6 +26,7 @@ export async function GET(req) {
             {
                 snkrdunkProductId: { $exists: true, $gt: 0 },
                 snkrdunkUpdatedAt: { $exists: true },
+                snkrdunkReviewOk: { $ne: true },
                 $or: [
                     { snkrdunkPriceHkd: { $exists: false } },
                     { snkrdunkPriceHkd: 0 },
@@ -63,7 +64,8 @@ export async function GET(req) {
         const anomalies = await Card.find(
             {
                 setCode: { $in: setCodes },
-                snkrdunkPriceHkd: { $exists: true, $gt: 0 }
+                snkrdunkPriceHkd: { $exists: true, $gt: 0 },
+                snkrdunkReviewOk: { $ne: true },
             },
             { id: 1, name: 1, number: 1, setCode: 1, set: 1, snkrdunkProductId: 1, snkrdunkPriceHkd: 1, _id: 0 }
         ).lean();

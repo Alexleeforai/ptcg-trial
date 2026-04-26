@@ -236,3 +236,39 @@
 }
 .fixBtn:hover { background: #6366f1; }
 .unmatchedList { width: 100%; }
+
+.cardLink {
+    color: #e5e7eb;
+    text-decoration: none;
+}
+.cardLink:hover { color: #a5b4fc; text-decoration: underline; }
+
+.snkLink {
+    color: #6b7280;
+    font-size: 0.78rem;
+    font-family: monospace;
+    text-decoration: none;
+}
+.snkLink:hover { color: #9ca3af; text-decoration: underline; }
+
+.actionCell {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.confirmBtn {
+    background: #14532d;
+    color: #86efac;
+    border: 1px solid #166534;
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.15s;
+    line-height: 1.4;
+}
+.confirmBtn:hover:not(:disabled) { background: #166534; }
+.confirmBtn:disabled { opacity: 0.5; cursor: not-allowed; }
